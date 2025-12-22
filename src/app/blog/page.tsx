@@ -1,115 +1,132 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
-import { BookOpen, FileText, Lightbulb, Users, ArrowRight } from "lucide-react";
+import BlogCard from "@/components/blog/BlogCard";
+import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
+import BlogListingSchema from "@/components/SEO/BlogSchema";
+import { client } from "@/sanity/lib/client";
+import { postsQuery } from "@/sanity/lib/queries";
 
-const upcomingTopics = [
-  {
-    icon: FileText,
-    title: "Watch Party Tips",
-    description: "Learn how to host the perfect watch party with friends and family.",
-    gradient: "from-rose-500 via-pink-500 to-fuchsia-500",
-  },
-  {
-    icon: Lightbulb,
-    title: "Feature Updates",
-    description: "Stay informed about new features and improvements to Movmash.",
-    gradient: "from-pink-500 via-fuchsia-500 to-purple-500",
-  },
-  {
-    icon: Users,
-    title: "Community Stories",
-    description: "Read inspiring stories from our community of watch party hosts.",
-    gradient: "from-fuchsia-500 via-purple-500 to-indigo-500",
-  },
-];
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
 
-export default function BlogPage() {
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "Insights, tips, and stories to help you get the most out of Movmash. Learn about watch parties, video synchronization, and how to make the most of your shared viewing experience.",
+  openGraph: {
+    title: "Movmash Blog",
+    description: "Insights, tips, and stories to help you get the most out of Movmash.",
+    url: `${baseUrl}/blog`,
+    type: "website",
+    images: [
+      {
+        url: `${baseUrl}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "Movmash Blog",
+      },
+    ],
+  },
+};
+
+// Revalidate every 60 seconds to get fresh data
+export const revalidate = 60;
+
+// Step 2: Fetch posts from Sanity
+async function getPosts() {
+  try {
+    const posts = await client.fetch(postsQuery, {}, {
+      next: { revalidate: 60 } // Revalidate every 60 seconds
+    });
+    console.log("Fetched posts:", posts?.length || 0, "posts");
+    return posts || [];
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return [];
+  }
+}
+
+export default async function BlogPage() {
+  // Fetch posts from Sanity
+  const posts = await getPosts();
+  
+  // Prepare blog posts for ItemList schema (just URLs, not full Article schemas)
+  const blogPosts = posts.slice(0, 10).map((post: any) => ({
+    title: post.title,
+    url: post.slug?.current ? `${baseUrl}/blog/${post.slug.current}` : '',
+  }));
+  
   return (
-    <div className="min-h-screen bg-[#18181b]">
+    <>
+      {/* ItemList Schema - Google recognizes this as a rich result type */}
+      <BlogListingSchema
+        title="Movmash Blog"
+        description="Insights, tips, and stories to help you get the most out of Movmash."
+        url={`${baseUrl}/blog`}
+        posts={blogPosts}
+      />
+      
+      {/* Breadcrumb Schema */}
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "Blog", url: `${baseUrl}/blog` },
+        ]}
+      />
+      
+      <div className="min-h-screen bg-[#18181b]">
       <Navbar />
       <main className="pt-32 pb-24 relative overflow-hidden">
-        {/* Background glow effects */}
+        {/* Background glow effects - same as contact page */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[radial-gradient(ellipse_at_center,_rgba(225,29,72,0.08)_0%,_transparent_70%)]" />
         <div className="absolute bottom-0 right-0 w-[600px] h-[500px] bg-[radial-gradient(ellipse_at_center,_rgba(236,72,153,0.06)_0%,_transparent_70%)]" />
         
         <div className="container mx-auto px-4 relative z-10">
-          {/* Hero Header */}
-          <div className="text-center mb-12 md:mb-16 animate-slide-up">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500 mb-4 animate-float-subtle">
-              <BookOpen className="w-6 h-6 text-white" />
+          <div className="max-w-5xl mx-auto">
+            {/* Compact Header */}
+            <div className="mb-10">
+              <h1 className="text-4xl md:text-5xl font-bold font-display mb-2 text-white">
+                <span className="text-gradient">Blog</span>
+              </h1>
+              <p className="text-white/60 text-sm md:text-base max-w-2xl">
+                Insights, tips, and stories to help you get the most out of Movmash.
+              </p>
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold font-display mb-3 text-white">
-              <span className="text-gradient">Blog</span>
-            </h1>
-            <p className="text-base md:text-lg text-white/70 max-w-2xl mx-auto">
-              Coming soon! We&apos;re working on content to help you get the most out of Movmash.
-            </p>
-          </div>
 
-          <div className="max-w-6xl mx-auto">
-            {/* Main Coming Soon Card with Integrated Topics */}
-            <section className="relative animate-slide-up" style={{ animationDelay: "0.1s" }}>
-              <div className="relative bg-gradient-to-br from-white/[0.08] via-white/[0.05] to-white/[0.02] backdrop-blur-sm rounded-3xl p-8 md:p-12 transition-all duration-300">
-                {/* Main Content */}
-                <div className="text-center mb-10 md:mb-12">
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold font-display mb-4 text-white">
-                    Something <span className="text-gradient">Amazing</span> is Coming
-                  </h2>
-                  <p className="text-base md:text-lg text-white/70 leading-relaxed max-w-2xl mx-auto">
-                    We&apos;re crafting valuable content to help you host unforgettable watch parties. 
-                    From expert tips to feature deep-dives, we&apos;ve got you covered.
-                  </p>
-                </div>
-
-                {/* Topics Grid - Integrated Design */}
-                <div className="grid md:grid-cols-3 gap-4 md:gap-6 mb-8">
-                  {upcomingTopics.map((topic, index) => (
-                    <div
-                      key={topic.title}
-                      className="relative animate-slide-up h-full flex"
-                      style={{ animationDelay: `${0.2 + index * 0.1}s` }}
-                    >
-                      <div 
-                        className="relative w-full bg-gradient-to-br from-white/[0.05] via-white/[0.03] to-white/[0.01] backdrop-blur-sm rounded-xl p-5 md:p-6 border border-white/5 flex flex-col animate-float-subtle" 
-                        style={{ animationDelay: `${0.5 + index * 0.2}s` }}
-                      >
-                        <div className="flex items-start gap-4 flex-grow">
-                          <div className={`relative flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br ${topic.gradient} p-[1px]`}>
-                            <div className="w-full h-full rounded-lg bg-[#18181b] flex items-center justify-center">
-                              <topic.icon className="w-5 h-5 text-white" />
-                            </div>
-                          </div>
-                          <div className="flex-1 min-w-0 flex flex-col">
-                            <h3 className="text-lg md:text-xl font-bold font-display mb-2 text-white">
-                              {topic.title}
-                            </h3>
-                            <p className="text-sm text-white/60 leading-relaxed flex-grow">
-                              {topic.description}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Call to Action */}
-                <div className="text-center pt-6 border-t border-white/10">
-                  <p className="text-sm md:text-base text-white/70 mb-4">
-                    Follow us on social media to be the first to know when we publish!
-                  </p>
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-br from-white/[0.08] via-white/[0.05] to-white/[0.02] backdrop-blur-sm border border-white/10">
-                    <span className="text-sm font-medium text-white/80">Get Notified</span>
-                    <ArrowRight className="w-4 h-4 text-rose-400" />
-                  </div>
-                </div>
+            {/* Blog Posts Grid */}
+            {posts.length > 0 ? (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {posts.map((post: any) => (
+                  <BlogCard key={post._id} post={post} />
+                ))}
               </div>
-            </section>
+            ) : (
+            <div className="text-center py-20">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-rose-500/10 to-pink-500/10 mb-4">
+                <svg
+                  className="w-7 h-7 text-rose-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                  />
+                </svg>
+              </div>
+              <p className="text-base text-white/70 mb-1">No blog posts yet</p>
+              <p className="text-sm text-white/50">
+                Check back soon for exciting content!
+              </p>
+            </div>
+          )}
           </div>
         </div>
       </main>
       <Footer />
     </div>
+    </>
   );
 }
-

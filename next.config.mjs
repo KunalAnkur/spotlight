@@ -2,7 +2,12 @@
 const nextConfig = {
   output: 'standalone',
   images: {
-    domains: [],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+      },
+    ],
   },
 };
 

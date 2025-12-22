@@ -1,7 +1,28 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Mail, MessageCircle, MapPin, Send, Shield, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
+
+export const metadata: Metadata = {
+  title: "Contact Us",
+  description: "Get in touch with Movmash. Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+  openGraph: {
+    title: "Contact Movmash",
+    description: "Get in touch with Movmash. Have questions? We'd love to hear from you.",
+    url: `${baseUrl}/contact`,
+    images: [
+      {
+        url: `${baseUrl}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "Contact Movmash",
+      },
+    ],
+  },
+};
 
 const contactMethods = [
   {

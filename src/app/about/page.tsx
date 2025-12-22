@@ -1,6 +1,27 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Heart, Users, Zap, Shield, Lock, Sparkles, Target, Globe } from "lucide-react";
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
+
+export const metadata: Metadata = {
+  title: "About Movmash",
+  description: "Learn about Movmash - our mission to bring people together through shared experiences. Discover our values, what we do, and our commitment to privacy and security.",
+  openGraph: {
+    title: "About Movmash",
+    description: "Learn about Movmash - our mission to bring people together through shared experiences.",
+    url: `${baseUrl}/about`,
+    images: [
+      {
+        url: `${baseUrl}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "About Movmash",
+      },
+    ],
+  },
+};
 
 const values = [
   {
