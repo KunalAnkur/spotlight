@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/studio/', '/api/'], // Disallow Sanity Studio and API routes
+        disallow: ['/studio/', '/api/'], 
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
