@@ -22,6 +22,9 @@ export const metadata: Metadata = {
       },
     ],
   },
+  alternates: {
+    canonical: `${baseUrl}/contact`,
+  },
 };
 
 const contactMethods = [

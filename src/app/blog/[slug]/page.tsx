@@ -91,6 +91,9 @@ export async function generateMetadata({
       description: description,
       images: [imageUrl],
     },
+    alternates: {
+      canonical: `${baseUrl}/blog/${params.slug}`,
+    },
   };
 }
 

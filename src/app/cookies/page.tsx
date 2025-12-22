@@ -21,6 +21,9 @@ export const metadata: Metadata = {
       },
     ],
   },
+  alternates: {
+    canonical: `${baseUrl}/cookies`,
+  },
 };
 
 const sections = [

@@ -26,6 +26,9 @@ export const metadata: Metadata = {
       },
     ],
   },
+  alternates: {
+    canonical: `${baseUrl}/blog`,
+  },
 };
 
 // Revalidate every 60 seconds to get fresh data
