@@ -1,6 +1,27 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Shield, Database, Lock, UserCheck, Mail, CheckCircle2 } from "lucide-react";
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Your privacy is important to us. Learn how Movmash collects, uses, and protects your information. We take your privacy seriously.",
+  openGraph: {
+    title: "Privacy Policy - Movmash",
+    description: "Your privacy is important to us. Learn how Movmash collects, uses, and protects your information.",
+    url: `${baseUrl}/privacy`,
+    images: [
+      {
+        url: `${baseUrl}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "Privacy Policy",
+      },
+    ],
+  },
+};
 
 const sections = [
   {

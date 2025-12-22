@@ -1,8 +1,32 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import BlogCard from "@/components/blog/BlogCard";
+import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
+import BlogListingSchema from "@/components/SEO/BlogSchema";
 import { client } from "@/sanity/lib/client";
 import { postsQuery } from "@/sanity/lib/queries";
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "Insights, tips, and stories to help you get the most out of Movmash. Learn about watch parties, video synchronization, and how to make the most of your shared viewing experience.",
+  openGraph: {
+    title: "Movmash Blog",
+    description: "Insights, tips, and stories to help you get the most out of Movmash.",
+    url: `${baseUrl}/blog`,
+    type: "website",
+    images: [
+      {
+        url: `${baseUrl}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "Movmash Blog",
+      },
+    ],
+  },
+};
 
 // Revalidate every 60 seconds to get fresh data
 export const revalidate = 60;
@@ -25,8 +49,31 @@ export default async function BlogPage() {
   // Fetch posts from Sanity
   const posts = await getPosts();
   
+  // Prepare blog posts for ItemList schema (just URLs, not full Article schemas)
+  const blogPosts = posts.slice(0, 10).map((post: any) => ({
+    title: post.title,
+    url: post.slug?.current ? `${baseUrl}/blog/${post.slug.current}` : '',
+  }));
+  
   return (
-    <div className="min-h-screen bg-[#18181b]">
+    <>
+      {/* ItemList Schema - Google recognizes this as a rich result type */}
+      <BlogListingSchema
+        title="Movmash Blog"
+        description="Insights, tips, and stories to help you get the most out of Movmash."
+        url={`${baseUrl}/blog`}
+        posts={blogPosts}
+      />
+      
+      {/* Breadcrumb Schema */}
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "Blog", url: `${baseUrl}/blog` },
+        ]}
+      />
+      
+      <div className="min-h-screen bg-[#18181b]">
       <Navbar />
       <main className="pt-32 pb-24 relative overflow-hidden">
         {/* Background glow effects - same as contact page */}
@@ -80,5 +127,6 @@ export default async function BlogPage() {
       </main>
       <Footer />
     </div>
+    </>
   );
 }

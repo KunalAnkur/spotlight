@@ -1,6 +1,27 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { FileText, Monitor, Users, FileCheck, Copyright, AlertCircle, RefreshCw, Mail, CheckCircle2 } from "lucide-react";
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description: "Read Movmash's Terms of Service. Understand your rights and responsibilities when using our watch party platform.",
+  openGraph: {
+    title: "Terms of Service - Movmash",
+    description: "Read Movmash's Terms of Service. Understand your rights and responsibilities when using our platform.",
+    url: `${baseUrl}/terms`,
+    images: [
+      {
+        url: `${baseUrl}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "Terms of Service",
+      },
+    ],
+  },
+};
 
 const sections = [
   {

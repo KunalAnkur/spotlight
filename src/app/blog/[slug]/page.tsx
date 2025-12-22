@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,12 +8,91 @@ import Footer from "@/components/landing/Footer";
 import BlogContent from "@/components/blog/BlogContent";
 import AuthorBio from "@/components/blog/AuthorBio";
 import BlogCard from "@/components/blog/BlogCard";
+import ArticleSchema from "@/components/blog/ArticleSchema";
+import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
 import { client } from "@/sanity/lib/client";
 import { postQuery, postSlugsQuery, relatedPostsQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
+
 // Revalidate every 60 seconds
 export const revalidate = 60;
+
+async function getPost(slug: string) {
+  try {
+    const post = await client.fetch(postQuery, { slug });
+    return post || null;
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    return null;
+  }
+}
+
+// Generate metadata for blog posts
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const post = await getPost(params.slug);
+
+  if (!post) {
+    return {
+      title: "Post Not Found",
+    };
+  }
+
+  const imageUrl = post.mainImage?.asset?._ref
+    ? urlFor(post.mainImage).width(1200).height(630).url()
+    : `${baseUrl}/og-image.png`;
+
+  const description = post.body
+    ? // Extract first paragraph from body if available
+      (typeof post.body === 'string' 
+        ? post.body.substring(0, 160) 
+        : 'Read this article on Movmash blog')
+    : `Read ${post.title} on Movmash blog`;
+
+  // Extract categories for keywords
+  const categoryKeywords = post.categories?.map((cat: any) => cat.title) || [];
+  const keywords = [
+    "watch party",
+    "video sync",
+    "watch together",
+    ...categoryKeywords,
+  ];
+
+  return {
+    title: post.title,
+    description: description,
+    keywords: keywords.join(", "),
+    authors: post.author?.name ? [{ name: post.author.name }] : undefined,
+    openGraph: {
+      title: post.title,
+      description: description,
+      url: `${baseUrl}/blog/${params.slug}`,
+      type: "article",
+      publishedTime: post.publishedAt,
+      authors: post.author?.name ? [post.author.name] : undefined,
+      tags: categoryKeywords,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: description,
+      images: [imageUrl],
+    },
+  };
+}
 
 // Generate static params for all blog posts
 export async function generateStaticParams() {
@@ -24,16 +104,6 @@ export async function generateStaticParams() {
   } catch (error) {
     console.error("Error generating static params:", error);
     return [];
-  }
-}
-
-async function getPost(slug: string) {
-  try {
-    const post = await client.fetch(postQuery, { slug });
-    return post || null;
-  } catch (error) {
-    console.error("Error fetching post:", error);
-    return null;
   }
 }
 
@@ -81,8 +151,56 @@ export default async function BlogPostPage({
       })
     : "";
 
+  // Prepare data for Article Schema
+  const articleImageUrl = imageUrl || `${baseUrl}/og-image.png`;
+  
+  // Extract description from body (Portable Text)
+  let articleDescription = `Read ${post.title} on Movmash blog`;
+  if (post.body && Array.isArray(post.body)) {
+    // Try to extract text from Portable Text blocks
+    const firstBlock = post.body.find((block: any) => block._type === 'block' && block.children);
+    if (firstBlock && firstBlock.children) {
+      const text = firstBlock.children
+        .map((child: any) => child.text || '')
+        .join(' ')
+        .substring(0, 160);
+      if (text) articleDescription = text;
+    }
+  }
+  
+  const authorImageUrl = post.author?.image?.asset?._ref
+    ? urlFor(post.author.image).width(200).height(200).url()
+    : undefined;
+
+  // Ensure we have a valid published date
+  const publishedDateISO = post.publishedAt || new Date().toISOString();
+
   return (
-    <div className="min-h-screen bg-[#18181b]">
+    <>
+      {/* Article Schema for Rich Results */}
+      <ArticleSchema
+        title={post.title}
+        description={articleDescription}
+        url={`${baseUrl}/blog/${params.slug}`}
+        image={articleImageUrl}
+        datePublished={publishedDateISO}
+        dateModified={publishedDateISO}
+        authorName={post.author?.name || "Movmash"}
+        authorImage={authorImageUrl}
+        publisherName="Movmash"
+        categories={post.categories?.map((cat: any) => cat.title) || []}
+      />
+      
+      {/* Breadcrumb Schema for Navigation */}
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "Blog", url: `${baseUrl}/blog` },
+          { name: post.title, url: `${baseUrl}/blog/${params.slug}` },
+        ]}
+      />
+      
+      <div className="min-h-screen bg-[#18181b]">
       <Navbar />
       <main className="pt-32 pb-24 relative overflow-hidden">
         {/* Background glow effects - same as other pages */}
@@ -109,16 +227,16 @@ export default async function BlogPostPage({
             </div>
 
             {/* Header - Modern Design */}
-            <header className="flex items-center justify-between mb-10">
-              {/* Title - Full Width */}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-display text-white leading-[1.1] break-words">
+            <header className="mb-10">
+              {/* Title - Full Width, Own Row */}
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-display text-white leading-[1.1] mb-6 break-words">
                 {post.title}
               </h1>
               
-              {/* Author and Date - Right Aligned, Modern Layout */}
-              <div className="flex items-center justify-end gap-6">
+              {/* Author and Date - Right Aligned, Separate Row - Fixed Height */}
+              <div className="flex items-center justify-start gap-6 flex-shrink-0">
                 {post.author && (
-                  <div className="flex items-center gap-3 group">
+                  <div className="flex items-center gap-3 group flex-shrink-0">
                     {post.author.image?.asset?._ref ? (
                       <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/10 group-hover:ring-rose-500/30 transition-all flex-shrink-0">
                         <Image
@@ -133,9 +251,9 @@ export default async function BlogPostPage({
                         <User className="w-6 h-6 text-rose-400" />
                       </div>
                     )}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col flex-shrink-0">
                       <span className="text-xs text-white/50 font-medium uppercase tracking-wide">Author</span>
-                      <span className="text-base text-white font-semibold">
+                      <span className="text-base text-white font-semibold whitespace-nowrap">
                         {post.author.name}
                       </span>
                     </div>
@@ -143,13 +261,13 @@ export default async function BlogPostPage({
                 )}
                 
                 {publishedDate && (
-                  <div className="flex items-center gap-3 group">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white/5 to-white/[0.02] flex items-center justify-center ring-2 ring-white/10 group-hover:ring-rose-500/30 transition-all">
+                  <div className="flex items-center gap-3 group flex-shrink-0">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white/5 to-white/[0.02] flex items-center justify-center ring-2 ring-white/10 group-hover:ring-rose-500/30 transition-all flex-shrink-0">
                       <Calendar className="w-5 h-5 text-rose-400" />
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col flex-shrink-0">
                       <span className="text-xs text-white/50 font-medium uppercase tracking-wide">Published</span>
-                      <span className="text-base text-white font-semibold">
+                      <span className="text-base text-white font-semibold whitespace-nowrap">
                         {publishedDate}
                       </span>
                     </div>
@@ -237,5 +355,6 @@ export default async function BlogPostPage({
       </main>
       <Footer />
     </div>
+    </>
   );
 }
