@@ -60,13 +60,14 @@ export default function ArticleSchema({
     schema.author.image = authorImage;
   }
 
-  // Add publisher logo if available
-  if (publisherLogo) {
-    schema.publisher.logo = {
-      "@type": "ImageObject",
-      url: publisherLogo,
-    };
-  }
+  // Add publisher logo (use provided or default)
+  const logoUrl = publisherLogo || `${process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com'}/assets/logo.svg`;
+  schema.publisher.logo = {
+    "@type": "ImageObject",
+    url: logoUrl,
+    width: 512,
+    height: 512,
+  };
 
   // Add articleSection (categories) if available
   if (categories.length > 0) {

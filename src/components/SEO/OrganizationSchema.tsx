@@ -6,7 +6,18 @@ export default function OrganizationSchema() {
     "@type": "Organization",
     name: "Movmash",
     url: baseUrl,
-    logo: `${baseUrl}/logo.png`,
+    logo: {
+      "@type": "ImageObject",
+      url: `${baseUrl}/assets/logo.svg`,
+      width: 512,
+      height: 512,
+    },
+    image: {
+      "@type": "ImageObject",
+      url: `${baseUrl}/assets/logo.svg`,
+      width: 512,
+      height: 512,
+    },
     description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
     sameAs: [
       // Add your social media links here when available

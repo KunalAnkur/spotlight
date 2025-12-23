@@ -63,6 +63,14 @@ export const metadata: Metadata = {
   alternates: {
     canonical: baseUrl,
   },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/assets/logo.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/assets/logo.svg',
+  },
   verification: {
     // Add your verification codes here when available
     // google: "your-google-verification-code",
