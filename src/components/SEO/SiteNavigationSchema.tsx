@@ -1,45 +1,43 @@
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
 
-export default function WebsiteSchema() {
+export default function SiteNavigationSchema() {
+  // SiteNavigationElement schema helps Google understand your navigation structure
+  // This helps Google create sitelinks (alt başlıklar) in search results
   const schema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${baseUrl}/#website`,
-    name: "Movmash",
     url: baseUrl,
-    description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
+    name: "Movmash",
     publisher: {
       "@type": "Organization",
       name: "Movmash",
-      url: baseUrl,
     },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${baseUrl}/blog?search={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
-    },
-    // Help Google understand main navigation for sitelinks
+    // Main navigation items that should appear as sitelinks
     mainEntity: {
       "@type": "ItemList",
       itemListElement: [
         {
           "@type": "ListItem",
           position: 1,
+          name: "Home",
+          url: baseUrl,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
           name: "About",
           url: `${baseUrl}/about`,
         },
         {
           "@type": "ListItem",
-          position: 2,
+          position: 3,
           name: "Blog",
           url: `${baseUrl}/blog`,
         },
         {
           "@type": "ListItem",
-          position: 3,
+          position: 4,
           name: "Contact",
           url: `${baseUrl}/contact`,
         },
@@ -54,5 +52,4 @@ export default function WebsiteSchema() {
     />
   );
 }
-
 

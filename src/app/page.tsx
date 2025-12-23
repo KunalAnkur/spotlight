@@ -11,6 +11,7 @@ import Footer from "@/components/landing/Footer";
 import FAQPageSchema from "@/components/SEO/FAQPageSchema";
 import WebPageSchema from "@/components/SEO/WebPageSchema";
 import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
+import SiteNavigationSchema from "@/components/SEO/SiteNavigationSchema";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
 
@@ -97,6 +98,9 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
+      {/* Site Navigation Schema - Helps Google understand site structure for sitelinks */}
+      <SiteNavigationSchema />
+      
       {/* FAQPage Schema - Google recognizes this as a rich result type */}
       <FAQPageSchema faqs={faqs} />
       

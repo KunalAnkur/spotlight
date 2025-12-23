@@ -1,5 +1,6 @@
 import { Play, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const CTASection = () => {
   return (
@@ -53,6 +54,23 @@ const CTASection = () => {
               Works on all devices
             </div>
           </div>
+
+          {/* Quick Links for SEO - Helps Google understand site structure for sitelinks */}
+          <nav className="mt-16 pt-8 border-t border-white/10" aria-label="Quick links">
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
+              <Link href="/about" className="text-white/60 hover:text-rose-400 transition-colors">
+                About Us
+              </Link>
+              <span className="text-white/30">•</span>
+              <Link href="/blog" className="text-white/60 hover:text-rose-400 transition-colors">
+                Blog
+              </Link>
+              <span className="text-white/30">•</span>
+              <Link href="/contact" className="text-white/60 hover:text-rose-400 transition-colors">
+                Contact
+              </Link>
+            </div>
+          </nav>
         </div>
       </div>
     </section>
