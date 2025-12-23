@@ -13,6 +13,7 @@ import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
 import { client } from "@/sanity/lib/client";
 import { postQuery, postSlugsQuery, relatedPostsQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
+import { blogPostKeywords } from "@/constants/seo-keywords";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
 
@@ -57,9 +58,7 @@ export async function generateMetadata({
   // Extract categories for keywords
   const categoryKeywords = post.categories?.map((cat: any) => cat.title) || [];
   const keywords = [
-    "watch party",
-    "video sync",
-    "watch together",
+    ...blogPostKeywords,
     ...categoryKeywords,
   ];
 

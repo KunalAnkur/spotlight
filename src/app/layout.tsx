@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import OrganizationSchema from "@/components/SEO/OrganizationSchema";
 import WebsiteSchema from "@/components/SEO/WebsiteSchema";
+import { baseKeywords } from "@/constants/seo-keywords";
 import "./globals.css";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     template: "%s | Movmash",
   },
   description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
-  keywords: ["watch party", "video sync", "watch together", "virtual watch party", "movie night", "friends", "streaming", "synchronized video"],
+  keywords: baseKeywords.join(", "),
   authors: [{ name: "Movmash" }],
   creator: "Movmash",
   publisher: "Movmash",

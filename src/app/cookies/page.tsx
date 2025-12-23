@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Cookie, Settings, Layers, Sliders, Mail, CheckCircle2, Info } from "lucide-react";
+import { cookiesKeywords } from "@/constants/seo-keywords";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
 
 export const metadata: Metadata = {
   title: "Cookie Policy",
   description: "Learn how Movmash uses cookies to enhance your experience and protect your privacy. Understand our cookie policy and how to manage your preferences.",
+  keywords: cookiesKeywords.join(", "),
   openGraph: {
     title: "Cookie Policy - Movmash",
     description: "Learn how Movmash uses cookies to enhance your experience and protect your privacy.",

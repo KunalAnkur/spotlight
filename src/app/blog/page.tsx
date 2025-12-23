@@ -6,12 +6,14 @@ import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
 import BlogListingSchema from "@/components/SEO/BlogSchema";
 import { client } from "@/sanity/lib/client";
 import { postsQuery } from "@/sanity/lib/queries";
+import { blogKeywords } from "@/constants/seo-keywords";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
 
 export const metadata: Metadata = {
   title: "Blog",
   description: "Insights, tips, and stories to help you get the most out of Movmash. Learn about watch parties, video synchronization, and how to make the most of your shared viewing experience.",
+  keywords: blogKeywords.join(", "),
   openGraph: {
     title: "Movmash Blog",
     description: "Insights, tips, and stories to help you get the most out of Movmash.",

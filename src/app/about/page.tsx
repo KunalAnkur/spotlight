@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Heart, Users, Zap, Shield, Lock, Sparkles, Target, Globe } from "lucide-react";
+import { aboutKeywords } from "@/constants/seo-keywords";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
 
 export const metadata: Metadata = {
   title: "About Movmash",
   description: "Learn about Movmash - our mission to bring people together through shared experiences. Discover our values, what we do, and our commitment to privacy and security.",
+  keywords: aboutKeywords.join(", "),
   openGraph: {
     title: "About Movmash",
     description: "Learn about Movmash - our mission to bring people together through shared experiences.",

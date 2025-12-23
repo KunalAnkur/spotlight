@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { FileText, Monitor, Users, FileCheck, Copyright, AlertCircle, RefreshCw, Mail, CheckCircle2 } from "lucide-react";
+import { termsKeywords } from "@/constants/seo-keywords";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
 
 export const metadata: Metadata = {
   title: "Terms of Service",
   description: "Read Movmash's Terms of Service. Understand your rights and responsibilities when using our watch party platform.",
+  keywords: termsKeywords.join(", "),
   openGraph: {
     title: "Terms of Service - Movmash",
     description: "Read Movmash's Terms of Service. Understand your rights and responsibilities when using our platform.",

@@ -3,12 +3,14 @@ import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import { Mail, MessageCircle, MapPin, Send, Shield, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { contactKeywords } from "@/constants/seo-keywords";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
 
 export const metadata: Metadata = {
   title: "Contact Us",
   description: "Get in touch with Movmash. Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+  keywords: contactKeywords.join(", "),
   openGraph: {
     title: "Contact Movmash",
     description: "Get in touch with Movmash. Have questions? We'd love to hear from you.",

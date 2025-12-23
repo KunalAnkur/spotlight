@@ -12,6 +12,7 @@ import FAQPageSchema from "@/components/SEO/FAQPageSchema";
 import WebPageSchema from "@/components/SEO/WebPageSchema";
 import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
 import SiteNavigationSchema from "@/components/SEO/SiteNavigationSchema";
+import { homePageKeywords } from "@/constants/seo-keywords";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
 
@@ -54,20 +55,7 @@ const faqs = [
 export const metadata: Metadata = {
   title: "Watch Together, Anywhere",
   description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance. Perfect for movie nights, TV shows, and shared experiences. Free to use, no account required for guests.",
-  keywords: [
-    "watch party",
-    "watch together",
-    "video sync",
-    "virtual watch party",
-    "movie night",
-    "watch movies together",
-    "synchronized video",
-    "long distance relationships",
-    "screen sharing",
-    "YouTube watch party",
-    "Netflix party",
-    "streaming together",
-  ],
+  keywords: homePageKeywords.join(", "),
   openGraph: {
     title: "Movmash - Watch Together, Anywhere",
     description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
