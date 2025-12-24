@@ -53,7 +53,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Watch Together, Anywhere",
+  title: "Movmash -Watch Together, Anywhere",
   description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance. Perfect for movie nights, TV shows, and shared experiences. Free to use, no account required for guests.",
   keywords: homePageKeywords.join(", "),
   openGraph: {
