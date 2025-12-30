@@ -12,7 +12,7 @@ const features = [
   {
     icon: Monitor,
     title: "Stream Mode",
-    description: "Share your screen or upload local files. Perfect for Netflix, Disney+, or your personal video collection.",
+    description: "Share your screen or upload local files. Perfect for premium streaming services or your personal video collection.",
     gradient: "from-pink-500 via-fuchsia-500 to-purple-500",
     bgGradient: "from-pink-600/30 via-fuchsia-600/25 to-purple-600/30",
     emoji: "📺",
@@ -65,7 +65,7 @@ const FeaturesSection = () => {
             <span className="text-gradient">Watch Together</span>
           </h2>
           <p className="text-base md:text-lg text-white/70 max-w-2xl mx-auto">
-            Two powerful modes, endless possibilities. Whether you&apos;re syncing YouTube or streaming Netflix, we&apos;ve got you covered.
+            Two powerful modes, endless possibilities. Whether you&apos;re syncing YouTube or streaming premium content, we&apos;ve got you covered.
           </p>
         </div>
 

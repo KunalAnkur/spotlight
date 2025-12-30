@@ -136,7 +136,7 @@ export default function AboutPage() {
                     <h2 className="text-2xl md:text-3xl font-bold font-display mb-4 text-white">What We Do</h2>
                     <p className="text-base md:text-lg text-white/70 leading-relaxed">
                       We&apos;ve built a platform that makes virtual watch parties effortless. Whether you&apos;re 
-                      syncing a YouTube video, sharing your screen to watch Netflix, or streaming your 
+                      syncing a YouTube video, sharing your screen to watch premium content, or streaming your 
                       personal video collection, Movmash keeps everyone perfectly in sync. Add in 
                       real-time chat and animated reactions, and it&apos;s the closest thing to being there.
                     </p>

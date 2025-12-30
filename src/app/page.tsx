@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     question: "What platforms can I watch together?",
-    answer: "Movmash supports YouTube, Vimeo, Twitch, Dailymotion, HLS streams, and more. You can also share your screen to watch Netflix, Disney+, or any other streaming service together.",
+    answer: "Movmash supports YouTube, Vimeo, Twitch, Dailymotion, HLS streams, and more. You can also share your screen to watch premium streaming services or any other platform together.",
   },
   {
     question: "How does screen sharing work?",
