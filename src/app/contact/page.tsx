@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
-import { Mail, MessageCircle, MapPin, Send, Shield, Clock } from "lucide-react";
+import { ContactForm } from "@/components/landing/ContactForm";
+import { Mail, MessageCircle, MapPin, Shield, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { contactKeywords } from "@/constants/seo-keywords";
 
@@ -123,7 +124,7 @@ export default function ContactPage() {
               ))}
             </div>
 
-            {/* Main Contact Card */}
+            {/* Main Contact Card with Form */}
             <section className="relative animate-slide-up" style={{ animationDelay: "0.4s" }}>
               <div className="relative bg-gradient-to-br from-white/[0.08] via-white/[0.05] to-white/[0.02] backdrop-blur-sm rounded-3xl p-8 md:p-10 transition-all duration-300">
                 <div className="text-center mb-8">
@@ -135,11 +136,18 @@ export default function ContactPage() {
                   </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Button variant="hero" size="lg" asChild className="w-full sm:w-auto">
+                {/* Contact Form */}
+                <div className="max-w-2xl mx-auto">
+                  <ContactForm />
+                </div>
+
+                {/* Alternative: Direct Email Link */}
+                <div className="mt-6 text-center">
+                  <p className="text-sm text-white/50 mb-3">Or send us an email directly:</p>
+                  <Button variant="outline" size="sm" asChild>
                     <a href="mailto:support@movmash.com" className="flex items-center gap-2">
-                      <Send className="w-5 h-5" />
-                      Send us an Email
+                      <Mail className="w-4 h-4" />
+                      support@movmash.com
                     </a>
                   </Button>
                 </div>
