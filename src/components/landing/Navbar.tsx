@@ -63,7 +63,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 z-10 hover:opacity-80 transition-opacity">
             <Image 
-              src="/assets/logo.svg" 
+              src="/android-chrome-512x512.png" 
               alt="Movmash Logo" 
               width={40}
               height={40}

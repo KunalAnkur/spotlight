@@ -61,7 +61,7 @@ export default function ArticleSchema({
   }
 
   // Add publisher logo (use provided or default)
-  const logoUrl = publisherLogo || `${process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com'}/assets/logo.svg`;
+  const logoUrl = publisherLogo || `${process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com'}/android-chrome-512x512.png`;
   schema.publisher.logo = {
     "@type": "ImageObject",
     url: logoUrl,
