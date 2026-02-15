@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     siteName: "Movmash",
     images: [
       {
-        url: `${baseUrl}/og-image.png`,
+        url: `${baseUrl}/assets/logo-square.png`,
         width: 1200,
         height: 630,
         alt: "Movmash - Watch Together, Anywhere",
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
     title: "Movmash - Watch Together, Anywhere",
     description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
     creator: "@movmash",
-    images: [`${baseUrl}/og-image.png`],
+    images: [`${baseUrl}/assets/logo-square.png`],
   },
   alternates: {
     canonical: baseUrl,

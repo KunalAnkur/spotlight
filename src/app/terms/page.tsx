@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     url: `${baseUrl}/terms`,
     images: [
       {
-        url: `${baseUrl}/og-image.png`,
+        url: `${baseUrl}/assets/logo-square.png`,
         width: 1200,
         height: 630,
         alt: "Terms of Service",

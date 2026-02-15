@@ -46,7 +46,7 @@ export async function generateMetadata({
 
   const imageUrl = post.mainImage?.asset?._ref
     ? urlFor(post.mainImage).width(1200).height(630).url()
-    : `${baseUrl}/og-image.png`;
+    : `${baseUrl}/assets/logo-square.png`;
 
   const description = post.body
     ? // Extract first paragraph from body if available
@@ -154,7 +154,7 @@ export default async function BlogPostPage({
     : "";
 
   // Prepare data for Article Schema
-  const articleImageUrl = imageUrl || `${baseUrl}/og-image.png`;
+  const articleImageUrl = imageUrl || `${baseUrl}/assets/logo-square.png`;
   
   // Extract description from body (Portable Text)
   let articleDescription = `Read ${post.title} on Movmash blog`;
