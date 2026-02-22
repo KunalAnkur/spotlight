@@ -78,6 +78,10 @@ export const metadata: Metadata = {
     // google: "your-google-verification-code",
     // yandex: "your-yandex-verification-code",
   },
+  // Hilltop ad service
+  other: {
+    fd87cbf9bf3e75b83b4c217a0c8b87af091a3348: "fd87cbf9bf3e75b83b4c217a0c8b87af091a3348",
+  },
 };
 
 export default function RootLayout({
@@ -100,4 +104,3 @@ export default function RootLayout({
     </html>
   );
 }
-
