@@ -1,4 +1,8 @@
 import Image from "next/image";
+import DemoVideoWithAd from "@/components/landing/DemoVideoWithAd";
+
+const demoVideoId = "QmiWGfZTHps";
+const hilltopAdUrl = "https://windy-imagination.com/dOm.F/zXdsG/NsvSZ/GBUK/Qe/m/9XumZJUHlWkSPvTeYQ4lMHT-ktzeN/jwUXtmN-j/g/x/OVTFMV2zOlQm";
 
 const ShowcaseSection = () => {
   return (
@@ -99,10 +103,30 @@ const ShowcaseSection = () => {
             </div>
           </div>
         </div>
+
+        {/* Product demo video */}
+        <div className="max-w-4xl mx-auto mt-12 md:mt-16">
+          <div className="text-center mb-8 md:mb-10">
+            <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold font-display text-white mb-2 md:mb-3">
+              Watch the{" "}
+              <span className="text-gradient">Demo</span>
+            </h3>
+            <p className="text-base md:text-lg text-white/70 max-w-2xl mx-auto">
+              A quick walkthrough of the real Movmash experience.
+            </p>
+          </div>
+
+          <div className="relative rounded-xl md:rounded-2xl overflow-hidden border border-white/10 bg-white/5 shadow-2xl">
+            <div className="absolute -inset-4 md:-inset-6 bg-gradient-to-r from-[#e11d48]/10 via-[#db2777]/10 to-[#c026d3]/10 blur-2xl opacity-50 pointer-events-none" />
+            <DemoVideoWithAd
+              videoId={demoVideoId}
+              adUrl={hilltopAdUrl}
+            />
+          </div>
+        </div>
       </div>
     </section>
   );
 };
 
 export default ShowcaseSection;
-
