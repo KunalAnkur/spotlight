@@ -19,6 +19,7 @@ const DemoVideoWithAd = ({
   const adRequestedRef = useRef(false);
   const [isAdPlaying, setIsAdPlaying] = useState(false);
   const [adFailed, setAdFailed] = useState(false);
+  const [isAdsReady, setIsAdsReady] = useState(!adTagUrl);
 
   const loadImaSdk = () =>
     new Promise<void>((resolve, reject) => {
@@ -53,7 +54,12 @@ const DemoVideoWithAd = ({
     const videoElement = videoRef.current;
     const adContainerElement = adContainerRef.current;
 
-    if (!videoElement || !adContainerElement || !adTagUrl) {
+    if (!videoElement || !adContainerElement) {
+      return;
+    }
+
+    if (!adTagUrl) {
+      setIsAdsReady(true);
       return;
     }
 
@@ -80,11 +86,29 @@ const DemoVideoWithAd = ({
       });
     };
 
+    const handleAdFailure = (event?: any) => {
+      if (process.env.NODE_ENV !== "production") {
+        const message = event?.getError?.()?.toString?.();
+        if (message) {
+          console.error("[IMA] Ad error:", message);
+        } else {
+          console.error("[IMA] Ad failed to load or play.");
+        }
+      }
+      setAdFailed(true);
+      setIsAdsReady(true);
+      cleanupAdsManager();
+      resumeContent();
+    };
+
     const initializeAds = async () => {
       try {
         await loadImaSdk();
       } catch {
-        if (isMounted) setAdFailed(true);
+        if (isMounted) {
+          setAdFailed(true);
+          setIsAdsReady(true);
+        }
         return;
       }
 
@@ -94,6 +118,7 @@ const DemoVideoWithAd = ({
       const ima = sdkWindow.google?.ima;
       if (!ima) {
         setAdFailed(true);
+        setIsAdsReady(true);
         return;
       }
 
@@ -108,11 +133,7 @@ const DemoVideoWithAd = ({
 
         adsManagerRef.current.addEventListener(
           ima.AdErrorEvent.Type.AD_ERROR,
-          () => {
-            setAdFailed(true);
-            cleanupAdsManager();
-            resumeContent();
-          }
+          handleAdFailure
         );
 
         adsManagerRef.current.addEventListener(
@@ -143,17 +164,11 @@ const DemoVideoWithAd = ({
           adsManagerRef.current.init(width, height, ima.ViewMode.NORMAL);
           adsManagerRef.current.start();
         } catch {
-          setAdFailed(true);
-          cleanupAdsManager();
-          resumeContent();
+          handleAdFailure();
         }
       };
 
-      const onAdError = () => {
-        setAdFailed(true);
-        cleanupAdsManager();
-        resumeContent();
-      };
+      const onAdError = (event: any) => handleAdFailure(event);
 
       adsLoaderRef.current.addEventListener(
         ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
@@ -185,12 +200,12 @@ const DemoVideoWithAd = ({
           adsLoaderRef.current.requestAds(adsRequest);
           videoElement.pause();
         } catch {
-          setAdFailed(true);
-          resumeContent();
+          handleAdFailure();
         }
       };
 
       videoElement.addEventListener("play", onFirstPlay, { once: true });
+      setIsAdsReady(true);
 
       onResize = () => {
         if (!adsManagerRef.current) return;
@@ -221,13 +236,15 @@ const DemoVideoWithAd = ({
   }, [adTagUrl]);
 
   const showAdBadge = isAdPlaying && !adFailed;
+  const showSetupBadge = !isAdsReady && !adFailed && Boolean(adTagUrl);
+  const showAdFailedBadge = adFailed && Boolean(adTagUrl);
 
   return (
     <div className="relative aspect-video">
       <video
         ref={videoRef}
         className="absolute inset-0 h-full w-full bg-black"
-        controls
+        controls={isAdsReady || adFailed || !adTagUrl}
         playsInline
         preload="metadata"
       >
@@ -242,6 +259,18 @@ const DemoVideoWithAd = ({
       {showAdBadge && (
         <div className="absolute left-3 top-3 z-30 rounded-md border border-white/20 bg-black/70 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-white">
           Advertisement
+        </div>
+      )}
+
+      {showSetupBadge && (
+        <div className="absolute left-3 top-3 z-30 rounded-md border border-white/20 bg-black/70 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-white">
+          Preparing ad...
+        </div>
+      )}
+
+      {showAdFailedBadge && (
+        <div className="absolute left-3 bottom-3 z-30 rounded-md border border-amber-300/30 bg-black/70 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-amber-200">
+          Ad unavailable
         </div>
       )}
     </div>
