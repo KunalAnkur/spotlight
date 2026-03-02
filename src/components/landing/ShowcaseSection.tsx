@@ -2,7 +2,7 @@ import Image from "next/image";
 import DemoVideoWithAd from "@/components/landing/DemoVideoWithAd";
 
 const demoVideoSrc = "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1080p.mp4";
-const hilltopAdTagUrl = "https://windy-imagination.com/dOm.F/zXdsG/NsvSZ/GBUK/Qe/m/9XumZJUHlWkSPvTeYQ4lMHT-ktzeN/jwUXtmN-j/g/x/OVTFMV2zOlQm";
+const hilltopAdTagUrl = "https://windy-imagination.com/dImAFrzed.GqNIvXZkGBUC/qehmT9FuKZGU/lvk/P/TkYF4wMVTPkZzmN/jhUUtFN-j/gFxJOTTRMk2QO/SAZ_s/aKW/1jpIdwDR0/xk";
 
 const ShowcaseSection = () => {
   return (
