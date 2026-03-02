@@ -1,8 +1,8 @@
 import Image from "next/image";
 import DemoVideoWithAd from "@/components/landing/DemoVideoWithAd";
 
-const demoVideoId = "QmiWGfZTHps";
-const hilltopAdUrl = "https://windy-imagination.com/dOm.F/zXdsG/NsvSZ/GBUK/Qe/m/9XumZJUHlWkSPvTeYQ4lMHT-ktzeN/jwUXtmN-j/g/x/OVTFMV2zOlQm";
+const demoVideoSrc = "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1080p.mp4";
+const hilltopAdTagUrl = "https://windy-imagination.com/dOm.F/zXdsG/NsvSZ/GBUK/Qe/m/9XumZJUHlWkSPvTeYQ4lMHT-ktzeN/jwUXtmN-j/g/x/OVTFMV2zOlQm";
 
 const ShowcaseSection = () => {
   return (
@@ -119,8 +119,8 @@ const ShowcaseSection = () => {
           <div className="relative rounded-xl md:rounded-2xl overflow-hidden border border-white/10 bg-white/5 shadow-2xl">
             <div className="absolute -inset-4 md:-inset-6 bg-gradient-to-r from-[#e11d48]/10 via-[#db2777]/10 to-[#c026d3]/10 blur-2xl opacity-50 pointer-events-none" />
             <DemoVideoWithAd
-              videoId={demoVideoId}
-              adUrl={hilltopAdUrl}
+              contentSrc={demoVideoSrc}
+              adTagUrl={hilltopAdTagUrl}
             />
           </div>
         </div>
