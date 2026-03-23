@@ -1,6 +1,7 @@
 "use client";
 
 import { Twitter, Instagram, Mail } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
@@ -53,15 +54,22 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#18181b] border-t border-white/10">
-      <div className="container mx-auto px-4 py-12">
+    <footer className="landing-open-divider">
+      <div className="landing-shell py-12">
         {/* Main Footer Content */}
         <div className="flex flex-col lg:flex-row items-start justify-between gap-12 mb-12">
           {/* Brand Section */}
           <div className="flex-1 max-w-md">
             <div className="mb-4">
-              <Link href="/" className="inline-block">
-                <span className="text-3xl md:text-4xl font-bold font-display text-gradient">Movmash</span>
+              <Link href="/" className="inline-flex items-center gap-2.5">
+                <Image
+                  src="/android-chrome-512x512.png"
+                  alt="Movmash Logo"
+                  width={28}
+                  height={28}
+                  className="h-7 w-7"
+                />
+                <span className="font-parkinsans text-2xl font-semibold tracking-tight text-white">Movmash</span>
               </Link>
             </div>
             <p className="text-base text-white/60 mb-6 leading-relaxed">
@@ -75,7 +83,7 @@ const Footer = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-gradient-to-br from-rose-500/20 to-pink-500/20 flex items-center justify-center text-white/60 hover:text-rose-400 hover:from-rose-500/30 hover:to-pink-500/30 transition-all duration-300 hover:scale-110 border border-white/5"
+                  className="flex h-10 w-10 items-center justify-center text-white/58 transition-colors duration-200 hover:text-white"
                   aria-label={social.label}
                 >
                   <social.icon className="w-5 h-5" />
@@ -88,7 +96,7 @@ const Footer = () => {
           <div className="flex flex-wrap gap-8 lg:gap-12">
             {/* Product Links */}
             <div className="flex flex-col">
-              <h4 className="font-bold font-display mb-4 text-white text-lg">Product</h4>
+              <h4 className="mb-4 font-parkinsans text-lg font-semibold tracking-tight text-white">Product</h4>
               <ul className="space-y-2.5">
                 {footerLinks.product.map((link) => (
                   <li key={link.label}>
@@ -106,7 +114,7 @@ const Footer = () => {
 
             {/* Company Links */}
             <div className="flex flex-col">
-              <h4 className="font-bold font-display mb-4 text-white text-lg">Company</h4>
+              <h4 className="mb-4 font-parkinsans text-lg font-semibold tracking-tight text-white">Company</h4>
               <ul className="space-y-2.5">
                 {footerLinks.company.map((link) => (
                   <li key={link.label}>
@@ -123,7 +131,7 @@ const Footer = () => {
 
             {/* Legal Links */}
             <div className="flex flex-col">
-              <h4 className="font-bold font-display mb-4 text-white text-lg">Legal</h4>
+              <h4 className="mb-4 font-parkinsans text-lg font-semibold tracking-tight text-white">Legal</h4>
               <ul className="space-y-2.5">
                 {footerLinks.legal.map((link) => (
                   <li key={link.label}>
@@ -141,7 +149,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="landing-open-divider flex flex-col items-center justify-between gap-4 pt-8 sm:flex-row">
           <p className="text-sm text-white/50">
             © {currentYear} Movmash. Made with <span className="text-rose-400">❤️</span> for movie lovers.
           </p>
@@ -159,4 +167,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

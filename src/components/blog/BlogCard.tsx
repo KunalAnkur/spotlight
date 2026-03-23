@@ -39,17 +39,21 @@ export default function BlogCard({ post }: BlogCardProps) {
   return (
     <Link
       href={`/blog/${post.slug.current}`}
-      className="group block bg-gradient-to-br from-white/[0.06] to-white/[0.02] backdrop-blur-sm rounded-xl overflow-hidden border border-white/5 hover:border-rose-500/20 transition-all duration-300"
+      className="group block overflow-hidden rounded-[1.4rem] backdrop-blur-md transition-[transform,background-color] duration-200 hover:-translate-y-1"
+      style={{
+        backgroundColor: "rgb(255 255 255 / 0.035)",
+        boxShadow: "0 18px 36px rgba(0, 0, 0, 0.14)",
+      }}
     >
       {/* Image or Default Placeholder */}
-      <div className="relative w-full h-48 overflow-hidden bg-gradient-to-br from-rose-500/10 via-pink-500/10 to-fuchsia-500/10">
+      <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br from-rose-500/12 via-pink-500/10 to-fuchsia-500/10">
         {imageUrl ? (
           <>
             <Image
               src={imageUrl}
               alt={post.title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
           </>
@@ -79,7 +83,7 @@ export default function BlogCard({ post }: BlogCardProps) {
         {/* Category Badge - Top Right with better gradient */}
         {post.categories && post.categories.length > 0 && (
           <div className="absolute top-2.5 right-2.5">
-            <span className="px-2.5 py-1 text-[10px] font-semibold rounded-md bg-gradient-to-r from-rose-500 via-pink-500 to-fuchsia-500 backdrop-blur-sm text-white shadow-lg shadow-rose-500/30">
+            <span className="rounded-full bg-black/28 px-2.5 py-1 text-[10px] font-semibold text-white/88 backdrop-blur-md">
               {post.categories[0].title}
             </span>
           </div>
@@ -88,7 +92,7 @@ export default function BlogCard({ post }: BlogCardProps) {
         {/* Date - Bottom Left over image */}
         {publishedDate && (
           <div className="absolute bottom-2.5 left-2.5">
-            <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-black/50 backdrop-blur-sm border border-white/10">
+            <div className="flex items-center gap-1.5 rounded-full bg-black/38 px-2.5 py-1 backdrop-blur-md">
               <Calendar className="w-3 h-3 text-white/80" />
               <span className="text-[10px] text-white/90 font-medium">{publishedDate}</span>
             </div>
@@ -97,11 +101,11 @@ export default function BlogCard({ post }: BlogCardProps) {
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-5">
         {/* Title and Author in same row */}
         <div className="flex items-start justify-between gap-2">
           {/* Title - Left Aligned */}
-          <h3 className="text-base font-bold font-display text-white group-hover:text-rose-400 transition-colors line-clamp-2 leading-snug flex-1 min-w-0">
+          <h3 className="min-w-0 flex-1 font-parkinsans text-base font-semibold leading-snug tracking-tight text-white transition-colors group-hover:text-white/86">
             {post.title || "Untitled Post"}
           </h3>
           
@@ -118,7 +122,7 @@ export default function BlogCard({ post }: BlogCardProps) {
                   />
                 </div>
               ) : (
-                <div className="w-4 h-4 rounded-full bg-gradient-to-br from-rose-500/40 to-pink-500/40 flex items-center justify-center">
+                <div className="flex h-4 w-4 items-center justify-center rounded-full bg-white/10">
                   <User className="w-2.5 h-2.5 text-rose-300" />
                 </div>
               )}

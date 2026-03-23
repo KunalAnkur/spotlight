@@ -50,36 +50,36 @@ const Navbar = () => {
   };
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled
-          ? "bg-[#18181b]/90 backdrop-blur-xl border-b border-white/10 py-3"
-          : "bg-transparent py-5"
-      )}
-    >
-      <div className="container mx-auto px-4">
-        <nav className="flex items-center justify-between relative">
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="landing-header-shell pt-4">
+        <nav
+          className={cn(
+            "relative flex h-10 w-full items-center justify-between",
+            isScrolled && "rounded-full bg-black/20 backdrop-blur-md"
+          )}
+        >
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 z-10 hover:opacity-80 transition-opacity">
+          <Link href="/" className="z-10 flex items-center gap-2.5 text-white/90 transition-opacity hover:opacity-80">
             <Image 
               src="/android-chrome-512x512.png" 
               alt="Movmash Logo" 
-              width={40}
-              height={40}
-              className="w-8 h-8 md:w-10 md:h-10"
+              width={28}
+              height={28}
+              className="h-7 w-7"
             />
-            <span className="text-xl md:text-2xl font-bold font-display text-white">Movmash</span>
+            <span className="font-parkinsans text-xl font-semibold leading-none tracking-tight text-white/90">
+              Movmash
+            </span>
           </Link>
 
           {/* Desktop Navigation - Centered */}
-          <div className="hidden lg:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
+          <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 lg:flex">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
                 onClick={(e) => handleNavLinkClick(e, link.hash)}
-                className="text-white/80 hover:text-white transition-all duration-300 font-medium text-base px-3 py-2 rounded-lg hover:bg-white/5"
+                className="font-parkinsans text-sm font-medium text-white/72 transition-colors duration-200 hover:text-white"
               >
                 {link.label}
               </a>
@@ -87,13 +87,13 @@ const Navbar = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center gap-3 z-10">
-            <Button variant="ghost" asChild className="hover:bg-white/10">
+          <div className="z-10 hidden items-center gap-3 md:flex">
+            <Button variant="ghost" asChild className="h-10 px-1 font-parkinsans text-sm">
               <a href="https://app.movmash.com/login" rel="noopener noreferrer">
                 Login
               </a>
             </Button>
-            <Button variant="hero" asChild>
+            <Button variant="hero" asChild className="font-parkinsans text-sm">
               <a href="https://app.movmash.com" rel="noopener noreferrer" className="flex items-center gap-2">
                 <Play className="w-4 h-4" />
                 Start Party
@@ -103,7 +103,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-white/70 hover:text-white transition-colors z-10"
+            className="z-10 flex h-10 w-10 items-center justify-center text-white/72 transition-colors hover:text-white md:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -113,25 +113,25 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-[#18181b]/95 backdrop-blur-xl border-b border-white/10 py-6 px-4 animate-slide-up">
+          <div className="landing-subtle-surface mt-3 animate-slide-up rounded-2xl px-4 py-5 md:hidden">
             <div className="flex flex-col gap-3">
               {navLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
                   onClick={(e) => handleNavLinkClick(e, link.hash)}
-                  className="text-lg text-white/80 hover:text-white hover:bg-white/5 transition-all duration-300 font-medium py-3 px-4 rounded-lg"
+                  className="rounded-xl px-4 py-3 font-parkinsans text-base font-medium text-white/76 transition-colors duration-200 hover:bg-white/[0.04] hover:text-white"
                 >
                   {link.label}
                 </a>
               ))}
-              <div className="flex flex-col gap-3 pt-4 border-t border-white/10">
-                <Button variant="ghost" asChild className="w-full">
-                  <a href="https://app.movmash.com" rel="noopener noreferrer">
+              <div className="landing-open-divider flex flex-col gap-3 pt-4">
+                <Button variant="ghost" asChild className="w-full font-parkinsans text-sm">
+                  <a href="https://app.movmash.com/login" rel="noopener noreferrer">
                     Login
                   </a>
                 </Button>
-                <Button variant="hero" asChild className="w-full">
+                <Button variant="hero" asChild className="w-full font-parkinsans text-sm">
                   <a href="https://app.movmash.com" rel="noopener noreferrer">
                     <Play className="w-4 h-4" />
                     Start Party
@@ -147,4 +147,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

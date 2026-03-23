@@ -38,7 +38,7 @@
     --radius: 0.75rem;
 
     /* Costume app color variables - matching exact colors */
-    --primaryDark: #191919;
+    --primaryDark: #09090c;
     --secondaryDark: #272626;
     --hover: #474747;
     --parkinsans: "Parkinsans", sans-serif;
@@ -92,12 +92,24 @@
 
   html {
     scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: #18181b;
+    background-color: #09090c;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  body::-webkit-scrollbar {
+    display: none;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -138,6 +150,184 @@
 
   .glass-hover {
     @apply transition-all duration-300 hover:bg-white/10 hover:border-rose-500/30;
+  }
+}
+
+@layer components {
+  .landing-shell {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+
+  .landing-header-shell {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+
+  .landing-section {
+    @apply relative overflow-hidden py-20 md:py-24;
+  }
+
+  .landing-section-heading {
+    @apply mb-12 text-center md:mb-16;
+  }
+
+  .landing-section-title {
+    @apply font-parkinsans text-3xl font-semibold leading-tight tracking-tight text-white md:text-4xl lg:text-5xl;
+  }
+
+  .landing-section-copy {
+    @apply mx-auto max-w-2xl text-base leading-7 md:text-lg md:leading-8;
+    color: rgb(255 255 255 / 0.68);
+  }
+
+  .landing-subtle-surface {
+    @apply rounded-2xl backdrop-blur-md;
+    background-color: rgb(255 255 255 / 0.04);
+  }
+
+  .landing-card-surface {
+    @apply rounded-3xl backdrop-blur-md transition-colors duration-200;
+    background-color: rgb(255 255 255 / 0.035);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.16);
+  }
+
+  .landing-card-surface:hover {
+    background-color: rgb(255 255 255 / 0.05);
+  }
+
+  .landing-icon-block {
+    @apply flex items-center justify-center rounded-2xl text-white;
+    width: 3.25rem;
+    height: 3.25rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  }
+
+  .landing-icon-block-lg {
+    @apply flex items-center justify-center rounded-2xl text-white;
+    width: 4rem;
+    height: 4rem;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  }
+
+  .landing-meta-line {
+    @apply flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm;
+    color: rgb(255 255 255 / 0.46);
+  }
+
+  .landing-platform-tile {
+    @apply relative flex aspect-square items-center justify-center overflow-hidden rounded-[1.35rem] p-4 text-center md:p-5;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      inset 0 -12px 24px rgba(0, 0, 0, 0.1),
+      0 16px 28px rgba(0, 0, 0, 0.12);
+  }
+
+  .landing-platform-tile-overlay {
+    @apply pointer-events-none absolute inset-0;
+    background:
+      radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 44%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.06));
+  }
+
+  .landing-platform-icon {
+    @apply relative z-10 text-white;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.14));
+  }
+
+  .landing-platform-label {
+    @apply relative z-10 font-parkinsans text-[11px] font-semibold leading-tight tracking-tight text-white md:text-[13px];
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .landing-open-divider {
+    @apply border-t;
+    border-color: rgb(255 255 255 / 0.08);
+  }
+
+  .secondary-page-main {
+    @apply relative overflow-hidden pb-24 pt-28 md:pb-28 md:pt-32;
+  }
+
+  .secondary-page-stack {
+    @apply space-y-12 md:space-y-16;
+  }
+
+  .secondary-page-hero {
+    @apply mx-auto max-w-3xl text-center;
+  }
+
+  .secondary-page-hero-icon {
+    @apply mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl text-white md:h-14 md:w-14;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.16),
+      0 18px 34px rgba(0, 0, 0, 0.16);
+  }
+
+  .secondary-page-title {
+    @apply font-parkinsans text-3xl font-semibold tracking-tight text-white md:text-4xl lg:text-5xl;
+  }
+
+  .secondary-page-copy {
+    @apply mx-auto mt-4 max-w-2xl text-base leading-7 md:text-lg md:leading-8;
+    color: rgb(255 255 255 / 0.68);
+  }
+
+  .secondary-page-meta {
+    @apply mt-3 text-sm md:text-base;
+    color: rgb(255 255 255 / 0.48);
+  }
+
+  .secondary-surface {
+    @apply rounded-[1.6rem] p-6 backdrop-blur-md md:p-8;
+    background-color: rgb(255 255 255 / 0.035);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+  }
+
+  .secondary-surface-soft {
+    @apply rounded-2xl p-5 backdrop-blur-md md:p-6;
+    background-color: rgb(255 255 255 / 0.028);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .secondary-surface-open {
+    @apply rounded-[1.6rem] p-0;
+  }
+
+  .secondary-icon-chip {
+    @apply flex h-12 w-12 items-center justify-center rounded-2xl text-white md:h-14 md:w-14;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  }
+
+  .secondary-card-title {
+    @apply font-parkinsans text-xl font-semibold tracking-tight text-white md:text-2xl;
+  }
+
+  .secondary-card-copy {
+    @apply text-sm leading-7 md:text-base;
+    color: rgb(255 255 255 / 0.64);
+  }
+
+  .secondary-inline-link {
+    @apply font-medium text-rose-400 transition-colors hover:text-rose-300;
+  }
+
+  .secondary-check-list {
+    @apply space-y-3;
+  }
+
+  .secondary-check-item {
+    @apply flex items-start gap-3 text-sm leading-6 md:text-base;
+    color: rgb(255 255 255 / 0.64);
+  }
+
+  .secondary-note-pill {
+    @apply inline-flex items-center gap-3 rounded-full px-4 py-3 text-sm md:px-5 md:text-base;
+    background-color: rgb(255 255 255 / 0.04);
+    color: rgb(255 255 255 / 0.74);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .secondary-blog-grid {
+    @apply grid gap-5 md:grid-cols-2 lg:grid-cols-3;
   }
 }
 
@@ -303,4 +493,3 @@
 .stagger-4 { animation-delay: 0.4s; }
 .stagger-5 { animation-delay: 0.5s; }
 .stagger-6 { animation-delay: 0.6s; }
-

@@ -1,90 +1,53 @@
 import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#18181b]">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0">
-        <Image 
-          src="/assets/hero-bg.jpg" 
-          alt="Watch party background" 
-          fill
-          className="object-cover opacity-30"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#18181b]/80 via-[#18181b]/60 to-[#18181b]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(225,29,72,0.12)_0%,_transparent_70%)]" />
-      </div>
-
-      {/* Floating Emojis */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <span className="absolute top-1/4 left-[10%] text-4xl animate-float opacity-60">🎬</span>
-        <span className="absolute top-1/3 right-[15%] text-3xl animate-float-delayed opacity-50">🍿</span>
-        <span className="absolute bottom-1/3 left-[20%] text-5xl animate-float opacity-40">😍</span>
-        <span className="absolute top-1/2 right-[10%] text-4xl animate-float-delayed opacity-50">🎉</span>
-        <span className="absolute bottom-1/4 right-[25%] text-3xl animate-float opacity-60">❤️</span>
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 py-20 text-center">
-        <div className="max-w-4xl mx-auto">
+    <section className="landing-section flex min-h-screen items-center">
+      <div className="landing-shell relative z-10 pb-16 pt-28 text-center sm:pt-32">
+        <div className="mx-auto max-w-5xl">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 animate-slide-up">
+          <div className="mb-8 inline-flex items-center gap-2 animate-slide-up">
             <span className="w-2 h-2 rounded-full bg-gradient-to-r from-[#e11d48] via-[#db2777] to-[#c026d3]" />
-            <span className="text-sm font-medium text-white/70">Watch together, anywhere</span>
+            <span className="font-parkinsans text-sm font-medium text-white/72">
+              Sync links, share screens, and watch together
+            </span>
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-5xl md:text-7xl font-bold font-display mb-6 animate-slide-up stagger-1 text-white">
-            Movie Night,{" "}
-            <span className="text-gradient">Reimagined</span>
+          <h1 className="mb-6 animate-slide-up font-parkinsans text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl lg:text-7xl">
+            Watch together
+            <br className="hidden sm:block" />{" "}
+            <span className="text-gradient">without the setup headache</span>
           </h1>
 
           {/* Subheadline */}
-          <p className="text-xl md:text-2xl text-white/70 mb-10 max-w-2xl mx-auto animate-slide-up stagger-2">
-            Watch videos together with friends in perfect sync. 
-            Chat, react, and share the moment — no matter the distance.
+          <p className="mx-auto mb-10 max-w-3xl animate-slide-up text-lg leading-8 text-white/68 md:text-[22px] md:leading-10">
+            Create a room, paste a link, or share your screen. Movmash keeps video, chat, and reactions in sync so everyone stays in the same moment.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up stagger-3">
-            <Button variant="hero" size="xl" asChild>
+            <Button variant="hero" size="xl" asChild className="font-parkinsans">
               <a href="https://app.movmash.com" target="_blank" rel="noopener noreferrer">
                 <Play className="w-5 h-5" />
-                Start Watching Free
+                Start Watching
               </a>
             </Button>
-            <Button variant="glass" size="xl" asChild>
+            <Button variant="outline" size="xl" asChild className="font-parkinsans">
               <a href="#how-it-works">
                 See How It Works
               </a>
             </Button>
           </div>
 
-          {/* Stats */}
-          {/* <div className="grid grid-cols-3 gap-8 max-w-lg mx-auto animate-slide-up stagger-4">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gradient font-display">10K+</div>
-              <div className="text-sm text-white/50">Active Users</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gradient font-display">50K+</div>
-              <div className="text-sm text-white/50">Watch Parties</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gradient font-display">99.9%</div>
-              <div className="text-sm text-white/50">Uptime</div>
-            </div>
-          </div> */}
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-2">
-          <div className="w-1 h-2 rounded-full bg-gradient-to-b from-[#e11d48] via-[#db2777] to-[#c026d3] animate-pulse" />
+          <div className="landing-meta-line mx-auto max-w-2xl">
+            <span>Free to start</span>
+            <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:block" />
+            <span>No downloads</span>
+            <span className="hidden h-1 w-1 rounded-full bg-white/20 sm:block" />
+            <span>Works anywhere</span>
+          </div>
         </div>
       </div>
     </section>
@@ -92,4 +55,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-

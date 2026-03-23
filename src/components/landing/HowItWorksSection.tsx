@@ -1,4 +1,4 @@
-import { Link, Play, Share2, ArrowRight } from "lucide-react";
+import { Link, Play, Share2 } from "lucide-react";
 
 const steps = [
   {
@@ -29,24 +29,21 @@ const steps = [
 
 const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="py-20 md:py-24 relative overflow-hidden bg-[#18181b]">
-      {/* Background glow - matching costume app */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-[radial-gradient(ellipse_at_center,_rgba(225,29,72,0.08)_0%,_transparent_70%)]" />
-      
-      <div className="container mx-auto px-4 relative z-10">
+    <section id="how-it-works" className="landing-section">
+      <div className="landing-shell relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-display mb-3 md:mb-4 text-white">
+        <div className="landing-section-heading">
+          <h2 className="landing-section-title mb-3 md:mb-4">
             Start in{" "}
             <span className="text-gradient">3 Simple Steps</span>
           </h2>
-          <p className="text-base md:text-lg text-white/70 max-w-2xl mx-auto">
+          <p className="landing-section-copy">
             No complicated setup. No downloads. Just share and watch.
           </p>
         </div>
 
         {/* Steps - Modern card-based design */}
-        <div className="max-w-7xl mx-auto">
+        <div className="mx-auto max-w-6xl">
           <div className="grid md:grid-cols-3 gap-8 md:gap-10">
             {steps.map((step, index) => (
               <div
@@ -56,66 +53,35 @@ const HowItWorksSection = () => {
                   animationDelay: `${index * 0.15}s`
                 }}
               >
-                {/* Glow effect on hover - matching costume app pattern */}
-                <div className={`absolute -inset-0.5 bg-gradient-to-br ${step.gradient} rounded-2xl blur opacity-0 group-hover:opacity-20 transition-opacity duration-300`}></div>
-                
-                {/* Card - glass morphism matching costume app with floating animation */}
-                <div 
-                  className="relative bg-gradient-to-br from-white/[0.08] via-white/[0.05] to-white/[0.02] backdrop-blur-sm rounded-2xl p-6 md:p-8 transition-all duration-300 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2 flex flex-col h-full animate-float-subtle"
+                <div
+                  className="landing-card-surface relative flex h-full flex-col p-6 md:p-8"
                   style={{
                     animationDelay: `${0.8 + index * 0.15}s`
                   }}
                 >
-                  {/* Step Number Badge */}
                   <div className="flex items-center justify-between mb-6">
-                    <div className={`relative flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br ${step.gradient} p-[1px]`}>
-                      <div className="w-full h-full rounded-xl bg-[#18181b] flex items-center justify-center">
-                        <step.icon className="w-7 h-7 text-white" />
-                      </div>
-                      {/* Icon glow on hover */}
-                      <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${step.gradient} opacity-0 group-hover:opacity-30 blur-md transition-opacity duration-300`}></div>
+                    <div className={`landing-icon-block-lg bg-gradient-to-br ${step.gradient}`}>
+                      <step.icon className="w-7 h-7 text-white" />
                     </div>
                     
-                    {/* Step Number */}
-                    <div className={`text-3xl md:text-4xl font-bold bg-gradient-to-br ${step.gradient} bg-clip-text text-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-300`}>
+                    <div className={`font-parkinsans text-3xl font-semibold tracking-tight bg-gradient-to-br ${step.gradient} bg-clip-text text-transparent opacity-70 md:text-4xl`}>
                       {step.number}
                     </div>
                   </div>
 
-                  {/* Content */}
                   <div className="flex-grow space-y-3">
-                    <div className="text-xs md:text-sm font-semibold text-white/50 uppercase tracking-wider">
+                    <div className="text-xs md:text-sm font-medium text-white/48 uppercase tracking-[0.18em]">
                       Step {step.number}
                     </div>
-                    <h3 className="text-xl md:text-2xl font-bold font-display text-white">
+                    <h3 className="font-parkinsans text-xl font-semibold tracking-tight text-white md:text-2xl">
                       {step.title}
                     </h3>
-                    <p className="text-sm md:text-base text-white/60 leading-relaxed">
+                    <p className="text-sm leading-7 text-white/62 md:text-base">
                       {step.description}
                     </p>
                   </div>
 
-                  {/* Arrow indicator for desktop */}
-                  {index < steps.length - 1 && (
-                    <div className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-20">
-                      <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${step.gradient} flex items-center justify-center shadow-lg`}>
-                        <ArrowRight className="w-4 h-4 text-white" />
-                      </div>
-                    </div>
-                  )}
                 </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Mobile connecting line - alternative design */}
-          <div className="md:hidden flex items-center justify-center gap-2 mt-8">
-            {steps.map((step, index) => (
-              <div key={step.number} className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full bg-gradient-to-br ${step.gradient}`}></div>
-                {index < steps.length - 1 && (
-                  <div className={`w-8 h-0.5 bg-gradient-to-r ${step.gradient} opacity-30`}></div>
-                )}
               </div>
             ))}
           </div>
@@ -126,4 +92,3 @@ const HowItWorksSection = () => {
 };
 
 export default HowItWorksSection;
-

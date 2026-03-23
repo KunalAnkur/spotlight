@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import OrganizationSchema from "@/components/SEO/OrganizationSchema";
 import WebsiteSchema from "@/components/SEO/WebsiteSchema";
+import MovmashBackdrop from "@/components/layout/MovmashBackdrop";
 import { baseKeywords } from "@/constants/seo-keywords";
 import "./globals.css";
 
@@ -93,13 +94,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <OrganizationSchema />
-        <WebsiteSchema />
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          {children}
-        </TooltipProvider>
+        <div className="relative min-h-screen text-white">
+          <MovmashBackdrop />
+          <div className="relative z-10">
+            <OrganizationSchema />
+            <WebsiteSchema />
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              {children}
+            </TooltipProvider>
+          </div>
+        </div>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ''} />
       </body>
     </html>

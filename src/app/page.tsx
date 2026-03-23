@@ -106,7 +106,7 @@ export default function Home() {
         ]}
       />
       
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen">
         <Navbar />
         <main>
           <HeroSection />
@@ -122,4 +122,3 @@ export default function Home() {
     </>
   );
 }
-
