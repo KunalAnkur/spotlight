@@ -51,11 +51,11 @@ const Navbar = () => {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <div className="landing-header-shell pt-4">
+      <div className="landing-header-shell relative">
         <nav
           className={cn(
-            "relative flex h-10 w-full items-center justify-between",
-            isScrolled && "rounded-full bg-black/20 backdrop-blur-md"
+            "relative flex h-14 w-full items-center justify-between bg-transparent transition-all duration-200",
+            isScrolled && "bg-[#09090c]/20 backdrop-blur-md"
           )}
         >
           {/* Logo */}
@@ -141,6 +141,14 @@ const Navbar = () => {
             </div>
           </div>
         )}
+
+        <div
+          aria-hidden="true"
+          className={cn(
+            "mx-auto h-px w-full max-w-6xl bg-gradient-to-r from-transparent via-white/[0.10] to-transparent transition-opacity duration-200",
+            isScrolled ? "opacity-100" : "opacity-75"
+          )}
+        />
       </div>
     </header>
   );

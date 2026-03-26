@@ -167,7 +167,7 @@
   }
 
   .landing-section-heading {
-    @apply mb-12 text-center md:mb-16;
+    @apply mx-auto mb-12 max-w-5xl text-center md:mb-16;
   }
 
   .landing-section-title {
@@ -175,7 +175,7 @@
   }
 
   .landing-section-copy {
-    @apply mx-auto max-w-2xl text-base leading-7 md:text-lg md:leading-8;
+    @apply mx-auto max-w-3xl text-base leading-7 md:text-lg md:leading-8;
     color: rgb(255 255 255 / 0.68);
   }
 
