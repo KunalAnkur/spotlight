@@ -213,31 +213,6 @@
     color: rgb(255 255 255 / 0.46);
   }
 
-  .landing-platform-tile {
-    @apply relative flex aspect-square items-center justify-center overflow-hidden rounded-[1.35rem] p-4 text-center md:p-5;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.14),
-      inset 0 -12px 24px rgba(0, 0, 0, 0.1),
-      0 16px 28px rgba(0, 0, 0, 0.12);
-  }
-
-  .landing-platform-tile-overlay {
-    @apply pointer-events-none absolute inset-0;
-    background:
-      radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 44%),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.06));
-  }
-
-  .landing-platform-icon {
-    @apply relative z-10 text-white;
-    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.14));
-  }
-
-  .landing-platform-label {
-    @apply relative z-10 font-parkinsans text-[11px] font-semibold leading-tight tracking-tight text-white md:text-[13px];
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
-  }
-
   .landing-open-divider {
     @apply border-t;
     border-color: rgb(255 255 255 / 0.08);

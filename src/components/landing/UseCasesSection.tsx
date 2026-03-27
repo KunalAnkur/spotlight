@@ -1,5 +1,22 @@
 import { BookOpen, Gamepad2, GraduationCap, Heart, House, Users } from "lucide-react";
 
+const sectionEmojis = [
+  {
+    emoji: "🫶",
+    className: "-left-8 top-24 xl:-left-10",
+    animationClass: "animate-float-gentle",
+    delay: "0.18s",
+    sizeClass: "text-[1.7rem]",
+  },
+  {
+    emoji: "✨",
+    className: "right-[8%] top-10",
+    animationClass: "animate-float-subtle",
+    delay: "0.34s",
+    sizeClass: "text-[1.45rem]",
+  },
+];
+
 const useCases = [
   {
     number: "01",
@@ -61,6 +78,21 @@ const UseCasesSection = () => {
   return (
     <section id="use-cases" className="landing-section">
       <div className="landing-shell relative z-10">
+        <div className="pointer-events-none absolute inset-0 hidden xl:block">
+          {sectionEmojis.map((item) => (
+            <div
+              key={`${item.emoji}-${item.className}`}
+              aria-hidden="true"
+              className={`absolute opacity-80 drop-shadow-[0_10px_18px_rgba(0,0,0,0.22)] ${item.sizeClass} ${item.className} ${item.animationClass}`}
+              style={{
+                animationDelay: item.delay,
+              }}
+            >
+              <span>{item.emoji}</span>
+            </div>
+          ))}
+        </div>
+
         <div className="mx-auto flex w-full justify-center">
           <div className="max-w-3xl text-center">
             <p className="mb-4 font-parkinsans text-xs font-semibold uppercase tracking-[0.28em] text-rose-400/80">

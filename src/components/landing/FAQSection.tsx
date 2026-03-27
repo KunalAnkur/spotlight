@@ -1,6 +1,7 @@
 "use client";
 
-import { ChevronDown, FileVideo, Globe, HelpCircle, Monitor, Shield, Users, Zap } from "lucide-react";
+import { FileVideo, Globe, HelpCircle, Monitor, Shield, Users, Zap } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const faqs = [
   {
@@ -67,28 +68,26 @@ const FAQSection = () => {
       <div className="landing-shell relative z-10">
         {/* Section Header */}
         <div className="landing-section-heading">
-          <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500">
-            <HelpCircle className="w-8 h-8 text-white" />
-          </div>
           <h2 className="landing-section-title mb-3 md:mb-4">
             Frequently Asked{" "}
             <span className="text-gradient">Questions</span>
           </h2>
-          <p className="landing-section-copy">
+          <p className="landing-section-copy max-w-6xl mx-auto">
             Everything you need to know about Movmash. Your privacy and security are our top priorities.
           </p>
         </div>
 
         {/* FAQ Accordion - Modern design */}
         <div className="max-w-4xl mx-auto">
-          <div className="space-y-4">
+          <Accordion type="single" collapsible className="space-y-4">
             {faqs.map((faq, index) => (
-              <details
+              <AccordionItem
                 key={index}
-                className="landing-card-surface group relative overflow-hidden rounded-2xl animate-slide-up"
+                value={`faq-${index}`}
+                className="landing-card-surface relative overflow-hidden rounded-2xl border-0 animate-slide-up"
                 style={{ animationDelay: `${index * 0.08}s` }}
               >
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 marker:content-none">
+                <AccordionTrigger className="gap-4 px-6 py-5 text-left hover:no-underline [&>svg]:text-white/60 [&>svg]:duration-300 [&[data-state=open]>svg]:text-rose-300">
                   <div className="flex w-full items-center gap-4 text-left">
                     <div className={`landing-icon-block flex-shrink-0 bg-gradient-to-br ${faq.gradient}`}>
                       <faq.icon className="h-6 w-6 text-white" />
@@ -100,19 +99,18 @@ const FAQSection = () => {
                       </h3>
                     </div>
                   </div>
-                  <ChevronDown className="h-4 w-4 flex-shrink-0 text-white/60 transition-transform duration-200 group-open:rotate-180 group-open:text-rose-300" />
-                </summary>
+                </AccordionTrigger>
 
-                <div className="px-6 pb-6 pt-0">
+                <AccordionContent className="px-6 pb-6 pt-0">
                   <div className="pl-16">
                     <p className="text-sm leading-7 text-white/68 md:text-base">
                       {faq.answer}
                     </p>
                   </div>
-                </div>
-              </details>
+                </AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </div>
 
         {/* Trust Badge */}

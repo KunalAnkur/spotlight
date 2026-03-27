@@ -12,6 +12,7 @@ const navLinks = [
   { label: "Features", href: "/#features", hash: "features" },
   { label: "How It Works", href: "/#how-it-works", hash: "how-it-works" },
   { label: "FAQ", href: "/#faq", hash: "faq" },
+  { label: "Blog", href: "/blog", hash: "" },
 ];
 
 const Navbar = () => {
@@ -28,7 +29,13 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+  const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string, href: string) => {
+    // If it's a regular page link (not a hash link), let it navigate normally
+    if (!hash) {
+      setIsMobileMenuOpen(false);
+      return;
+    }
+    
     e.preventDefault();
     if (pathname !== "/") {
       router.push("/");
@@ -50,7 +57,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    <header className="fixed inset-x-0 top-3 z-50 md:top-4">
       <div className="landing-header-shell relative">
         <nav
           className={cn(
@@ -78,7 +85,7 @@ const Navbar = () => {
               <a
                 key={link.label}
                 href={link.href}
-                onClick={(e) => handleNavLinkClick(e, link.hash)}
+                onClick={(e) => handleNavLinkClick(e, link.hash, link.href)}
                 className="font-parkinsans text-sm font-medium text-white/72 transition-colors duration-200 hover:text-white"
               >
                 {link.label}
@@ -119,7 +126,7 @@ const Navbar = () => {
                 <a
                   key={link.label}
                   href={link.href}
-                  onClick={(e) => handleNavLinkClick(e, link.hash)}
+                  onClick={(e) => handleNavLinkClick(e, link.hash, link.href)}
                   className="rounded-xl px-4 py-3 font-parkinsans text-base font-medium text-white/76 transition-colors duration-200 hover:bg-white/[0.04] hover:text-white"
                 >
                   {link.label}

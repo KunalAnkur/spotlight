@@ -2,11 +2,57 @@ import { Play, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
+const ctaEmojis = [
+  {
+    emoji: "✨",
+    className: "-left-10 top-10 xl:-left-14",
+    animationClass: "animate-float-subtle",
+    delay: "0.14s",
+    sizeClass: "text-[1.45rem]",
+  },
+  {
+    emoji: "🫶",
+    className: "right-2 top-0 xl:-right-8",
+    animationClass: "animate-float-gentle",
+    delay: "0.28s",
+    sizeClass: "text-[1.7rem]",
+  },
+  {
+    emoji: "🎬",
+    className: "left-6 bottom-20 xl:-left-4",
+    animationClass: "animate-float-delayed",
+    delay: "0.42s",
+    sizeClass: "text-[1.6rem]",
+  },
+  {
+    emoji: "💫",
+    className: "right-12 bottom-14 xl:right-0",
+    animationClass: "animate-float-subtle",
+    delay: "0.56s",
+    sizeClass: "text-[1.5rem]",
+  },
+];
+
 const CTASection = () => {
   return (
     <section className="landing-section">
       <div className="landing-shell relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="relative mx-auto max-w-4xl text-center">
+          <div className="pointer-events-none absolute inset-0 hidden xl:block">
+            {ctaEmojis.map((item) => (
+              <div
+                key={`${item.emoji}-${item.className}`}
+                aria-hidden="true"
+                className={`absolute opacity-80 drop-shadow-[0_10px_18px_rgba(0,0,0,0.22)] ${item.sizeClass} ${item.className} ${item.animationClass}`}
+                style={{
+                  animationDelay: item.delay,
+                }}
+              >
+                <span>{item.emoji}</span>
+              </div>
+            ))}
+          </div>
+
           {/* Heading */}
           <h2 className="mb-6 font-parkinsans text-4xl font-semibold leading-tight tracking-tight text-white md:text-6xl">
             Ready for Your Next{" "}
@@ -49,22 +95,6 @@ const CTASection = () => {
             </div>
           </div>
 
-          {/* Quick Links for SEO - Helps Google understand site structure for sitelinks */}
-          <nav className="landing-open-divider mt-16 pt-8" aria-label="Quick links">
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-              <Link href="/about" className="text-white/60 hover:text-rose-400 transition-colors">
-                About Us
-              </Link>
-              <span className="text-white/30">•</span>
-              <Link href="/blog" className="text-white/60 hover:text-rose-400 transition-colors">
-                Blog
-              </Link>
-              <span className="text-white/30">•</span>
-              <Link href="/contact" className="text-white/60 hover:text-rose-400 transition-colors">
-                Contact
-              </Link>
-            </div>
-          </nav>
         </div>
       </div>
     </section>
