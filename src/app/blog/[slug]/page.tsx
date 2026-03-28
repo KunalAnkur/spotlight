@@ -240,7 +240,7 @@ export default async function BlogPostPage({
                 {post.author && (
                   <div className="flex items-center gap-3 group flex-shrink-0">
                     {post.author.image?.asset?._ref ? (
-                      <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/10 group-hover:ring-rose-500/30 transition-all flex-shrink-0">
+                      <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/10 group-hover:ring-white/16 transition-all flex-shrink-0">
                         <Image
                           src={urlFor(post.author.image).width(48).height(48).url()}
                           alt={post.author.name}
@@ -249,8 +249,8 @@ export default async function BlogPostPage({
                         />
                       </div>
                     ) : (
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-500/30 to-pink-500/30 flex items-center justify-center ring-2 ring-white/10 group-hover:ring-rose-500/30 transition-all flex-shrink-0">
-                        <User className="w-6 h-6 text-rose-400" />
+                      <div className="w-12 h-12 rounded-full bg-white/[0.06] flex items-center justify-center ring-2 ring-white/10 group-hover:ring-white/16 transition-all flex-shrink-0">
+                        <User className="w-6 h-6 text-white/56" />
                       </div>
                     )}
                     <div className="flex flex-col flex-shrink-0">
@@ -264,8 +264,8 @@ export default async function BlogPostPage({
                 
                 {publishedDate && (
                   <div className="flex items-center gap-3 group flex-shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white/5 to-white/[0.02] flex items-center justify-center ring-2 ring-white/10 group-hover:ring-rose-500/30 transition-all flex-shrink-0">
-                      <Calendar className="w-5 h-5 text-rose-400" />
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white/5 to-white/[0.02] flex items-center justify-center ring-2 ring-white/10 group-hover:ring-white/16 transition-all flex-shrink-0">
+                      <Calendar className="w-5 h-5 text-white/56" />
                     </div>
                     <div className="flex flex-col flex-shrink-0">
                       <span className="text-xs text-white/50 font-medium uppercase tracking-wide">Published</span>
@@ -310,8 +310,8 @@ export default async function BlogPostPage({
                       />
                     </div>
                   ) : (
-                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-rose-500/20 to-pink-500/20 flex items-center justify-center flex-shrink-0 ring-1 ring-white/10">
-                      <User className="w-7 h-7 text-rose-400" />
+                    <div className="w-14 h-14 rounded-full bg-white/[0.06] flex items-center justify-center flex-shrink-0 ring-1 ring-white/10">
+                      <User className="w-7 h-7 text-white/56" />
                     </div>
                   )}
                   <div className="flex-1 min-w-0">

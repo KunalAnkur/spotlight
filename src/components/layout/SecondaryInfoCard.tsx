@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 interface SecondaryInfoCardProps {
   icon: LucideIcon;
   title: string;
-  description: ReactNode;
+  description?: ReactNode;
   gradientClassName: string;
   footer?: ReactNode;
   className?: string;
@@ -26,9 +26,9 @@ export default function SecondaryInfoCard({
       </div>
       <div className="mt-5 space-y-3">
         <h2 className="secondary-card-title">{title}</h2>
-        <div className="secondary-card-copy">{description}</div>
+        {description ? <div className="secondary-card-copy">{description}</div> : null}
       </div>
-      {footer ? <div className="mt-6 border-t border-white/8 pt-5">{footer}</div> : null}
+      {footer ? <div className="mt-5">{footer}</div> : null}
     </article>
   );
 }

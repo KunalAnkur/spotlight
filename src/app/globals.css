@@ -240,8 +240,7 @@
 
   .secondary-page-hero-icon {
     @apply mt-0.5 inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[0.85rem] text-white;
-    border: 1px solid rgb(255 255 255 / 0.07);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    background-color: rgb(255 255 255 / 0.04);
   }
 
   .secondary-page-title {
@@ -264,21 +263,17 @@
 
   .secondary-section-kicker {
     @apply text-[11px] font-semibold uppercase tracking-[0.3em];
-    color: rgb(251 113 133 / 0.82);
+    color: rgb(255 255 255 / 0.36);
   }
 
   .secondary-surface {
-    @apply rounded-[1.5rem] p-6 backdrop-blur-sm md:p-7;
-    background-color: rgb(255 255 255 / 0.03);
-    border: 1px solid rgb(255 255 255 / 0.06);
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+    @apply rounded-[1.5rem] p-6 md:p-7;
+    background-color: rgb(255 255 255 / 0.022);
   }
 
   .secondary-surface-soft {
-    @apply rounded-[1.35rem] p-5 backdrop-blur-sm md:p-6;
-    background-color: rgb(255 255 255 / 0.02);
-    border: 1px solid rgb(255 255 255 / 0.05);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+    @apply rounded-[1.35rem] p-5 md:p-6;
+    background-color: rgb(255 255 255 / 0.016);
   }
 
   .secondary-surface-open {
@@ -287,7 +282,7 @@
 
   .secondary-icon-chip {
     @apply flex h-11 w-11 items-center justify-center rounded-[1.15rem] text-white md:h-12 md:w-12;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    background-color: rgb(255 255 255 / 0.045);
   }
 
   .secondary-card-title {
@@ -300,7 +295,8 @@
   }
 
   .secondary-inline-link {
-    @apply font-medium text-rose-400 transition-colors hover:text-rose-300;
+    @apply font-medium transition-colors hover:text-white;
+    color: rgb(255 255 255 / 0.78);
   }
 
   .secondary-check-list {
@@ -314,9 +310,8 @@
 
   .secondary-note-pill {
     @apply inline-flex items-center gap-3 rounded-full px-4 py-3 text-sm md:px-5 md:text-base;
-    background-color: rgb(255 255 255 / 0.04);
+    background-color: rgb(255 255 255 / 0.03);
     color: rgb(255 255 255 / 0.74);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
   .secondary-blog-grid {

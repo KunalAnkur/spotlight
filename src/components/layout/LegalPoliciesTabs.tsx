@@ -147,7 +147,7 @@ export default function LegalPoliciesTabs({
                 "inline-flex items-center gap-2 rounded-full px-4 py-2 text-left transition-all duration-200",
                 isActive
                   ? "bg-white/[0.06] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
-                  : "bg-white/[0.02] text-white/48 hover:bg-white/[0.04] hover:text-white/78"
+                  : "bg-white/[0.02] text-white/56 hover:bg-white/[0.04] hover:text-white/82"
               )}
               role="tab"
               aria-selected={isActive}
@@ -155,7 +155,7 @@ export default function LegalPoliciesTabs({
               <div
                 className={cn(
                   "flex flex-shrink-0 items-center justify-center",
-                  isActive ? "text-white/72" : "text-white/30"
+                  isActive ? "text-[#ffd3d8]" : "text-white/38"
                 )}
               >
                 <PolicyIcon className="h-4 w-4" />
@@ -196,7 +196,7 @@ export default function LegalPoliciesTabs({
                           key={`${policy.key}-${section.number}`}
                           className="grid grid-cols-[1rem_minmax(0,1fr)] items-start gap-4"
                         >
-                          <div className="pt-1 text-white/36">
+                          <div className="pt-1 text-[#ffd8dc]/70">
                             <SectionIcon className="h-4 w-4" />
                           </div>
 
@@ -224,7 +224,7 @@ export default function LegalPoliciesTabs({
                               <ul className="secondary-check-list pt-1">
                                 {section.items.map((item) => (
                                   <li key={item} className="secondary-check-item">
-                                    <CheckCircle2 className="mt-0.5 h-4.5 w-4.5 flex-shrink-0 text-white/34" />
+                                    <CheckCircle2 className="mt-0.5 h-4.5 w-4.5 flex-shrink-0 text-[#ffd8dc]/62" />
                                     <span>{item}</span>
                                   </li>
                                 ))}
@@ -239,7 +239,7 @@ export default function LegalPoliciesTabs({
                   {policy.note && NoteIcon ? (
                     <div className="border-t border-white/6 pt-6">
                       <div className="flex max-w-[56ch] items-start gap-3 text-sm text-white/62">
-                        <NoteIcon className="h-4.5 w-4.5 flex-shrink-0 text-white/36" />
+                        <NoteIcon className="h-4.5 w-4.5 flex-shrink-0 text-[#ffd8dc]/68" />
                         <span>{policy.note}</span>
                       </div>
                     </div>

@@ -1,10 +1,11 @@
+import type { ReactNode } from "react";
 import type { Metadata } from "next";
-import { Clock, Mail, MapPin, MessageCircle, Shield } from "lucide-react";
-import SecondaryInfoCard from "@/components/layout/SecondaryInfoCard";
+import { Mail, MessageCircle, type LucideIcon } from "lucide-react";
 import SecondaryPageLayout from "@/components/layout/SecondaryPageLayout";
 import { ContactForm } from "@/components/landing/ContactForm";
-import { Button } from "@/components/ui/button";
+import { movmashSocialLinks } from "@/components/shared/MovmashSocialLinks";
 import { contactKeywords } from "@/constants/seo-keywords";
+import { cn } from "@/lib/utils";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://movmash.com";
 
@@ -31,13 +32,16 @@ export const metadata: Metadata = {
   },
 };
 
-const contactMethods = [
+const contactMethods: Array<{
+  icon: LucideIcon;
+  title: string;
+  content: ReactNode;
+  gradientClassName: string;
+}> = [
   {
     icon: Mail,
-    title: "Email us",
-    description:
-      "Send us a message and we will usually get back within one business day.",
-    footer: (
+    title: "Email",
+    content: (
       <a href="mailto:support@movmash.com" className="secondary-inline-link text-base">
         support@movmash.com
       </a>
@@ -46,79 +50,93 @@ const contactMethods = [
   },
   {
     icon: MessageCircle,
-    title: "Social updates",
-    description:
-      "Follow the latest product updates, launches, and smaller improvements across our channels.",
-    footer: <p className="text-base font-medium text-white/80">@movmash</p>,
+    title: "Social",
+    content: (
+      <div className="flex flex-wrap gap-2.5 pt-1">
+        {movmashSocialLinks.map((social) => {
+          const Icon = social.icon;
+
+          return (
+            <a
+              key={social.label}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={social.label}
+              className="inline-flex items-center gap-2 rounded-full bg-white/[0.04] px-3 py-2 text-sm text-white/72 transition-colors duration-200 hover:bg-white/[0.07] hover:text-white"
+            >
+              <span
+                className={cn(
+                  "flex h-7 w-7 items-center justify-center rounded-full",
+                  social.contactChipClassName
+                )}
+              >
+                <Icon className={cn("h-3.5 w-3.5", social.contactIconClassName)} />
+              </span>
+              <span>{social.label}</span>
+            </a>
+          );
+        })}
+      </div>
+    ),
     gradientClassName: "bg-gradient-to-br from-pink-500 via-fuchsia-500 to-purple-500",
-  },
-  {
-    icon: MapPin,
-    title: "Remote team",
-    description:
-      "Movmash is built remotely, which helps us stay flexible and close to our community.",
-    footer: <p className="text-base font-medium text-white/80">Working from everywhere</p>,
-    gradientClassName: "bg-gradient-to-br from-fuchsia-500 via-purple-500 to-indigo-500",
   },
 ];
 
 export default function ContactPage() {
   return (
-    <SecondaryPageLayout>
-      <section className="mx-auto max-w-6xl">
-        <div className="grid gap-5 md:grid-cols-3">
-          {contactMethods.map((method) => (
-            <SecondaryInfoCard key={method.title} {...method} className="secondary-surface-soft" />
-          ))}
-        </div>
-      </section>
+    <SecondaryPageLayout mainClassName="pb-10 md:pb-12">
+      <section className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-start lg:gap-14">
+        <div className="space-y-8 lg:pt-4">
+          <div className="max-w-lg space-y-4">
+            <div className="secondary-section-kicker">Contact</div>
+            <h1 className="landing-section-title text-left text-3xl md:text-[2.75rem]">
+              Reach out without the friction.
+            </h1>
+            <p className="secondary-page-copy max-w-[34rem]">
+              Questions, feedback, or something not working right. Send a note and we will take a look.
+            </p>
+          </div>
 
-      <section className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
-        <div className="secondary-surface">
-          <div className="max-w-2xl">
-            <div className="secondary-section-kicker">Message us</div>
-            <h2 className="secondary-card-title mt-3">Tell us what is happening</h2>
-            <p className="secondary-card-copy mt-3">
-              If something feels unclear, broken, or worth improving, send it our way.
-              We read every message.
+          <div className="space-y-1">
+            {contactMethods.map((method, index) => {
+              const Icon = method.icon;
+
+              return (
+                <div
+                  key={method.title}
+                  className={cn(
+                    "flex items-center gap-4 py-4",
+                    index > 0 ? "border-t border-white/6" : ""
+                  )}
+                >
+                  <div className={cn("secondary-icon-chip h-10 w-10 rounded-[1rem] md:h-11 md:w-11", method.gradientClassName)}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/36">
+                      {method.title}
+                    </p>
+                    <div className="mt-1 text-sm text-white/74 md:text-[15px]">
+                      {method.content}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="secondary-surface rounded-[1.75rem] p-6 md:p-8 lg:p-9">
+          <div className="max-w-xl">
+            <div className="secondary-section-kicker">Send a message</div>
+            <p className="mt-3 text-sm text-white/58 md:text-[15px]">
+              Keep it simple. We will read it carefully.
             </p>
           </div>
 
           <div className="mt-8">
             <ContactForm />
-          </div>
-
-          <div className="mt-8 border-t border-white/8 pt-6">
-            <p className="text-sm text-white/48">Prefer email instead?</p>
-            <div className="mt-3">
-              <Button variant="outline" size="sm" asChild>
-                <a href="mailto:support@movmash.com">support@movmash.com</a>
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <div className="secondary-surface-soft">
-            <div className="secondary-icon-chip bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500">
-              <Clock className="h-6 w-6" />
-            </div>
-            <h3 className="secondary-card-title mt-5 text-xl">What to expect</h3>
-            <p className="secondary-card-copy mt-3">
-              Most replies go out within one business day, and often quite a bit sooner.
-            </p>
-          </div>
-
-          <div className="secondary-surface-soft">
-            <div className="secondary-icon-chip bg-gradient-to-br from-pink-500 via-fuchsia-500 to-purple-500">
-              <Shield className="h-6 w-6" />
-            </div>
-            <h3 className="secondary-card-title mt-5 text-xl">Helpful details</h3>
-            <ul className="mt-4 space-y-3 text-sm leading-6 text-white/64 md:text-[15px]">
-              <li>Include the room flow or feature you were using.</li>
-              <li>Tell us what felt confusing, broken, or missing.</li>
-              <li>Support messages stay private and only help us respond or improve the product.</li>
-            </ul>
           </div>
         </div>
       </section>

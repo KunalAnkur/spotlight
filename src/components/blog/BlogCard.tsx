@@ -39,7 +39,7 @@ export default function BlogCard({ post }: BlogCardProps) {
   return (
     <Link
       href={`/blog/${post.slug.current}`}
-      className="group flex h-full flex-col overflow-hidden rounded-[1.25rem] border border-white/6 bg-white/[0.03] transition-[transform,background-color,border-color] duration-200 hover:-translate-y-1 hover:border-white/10 hover:bg-white/[0.04]"
+      className="group flex h-full flex-col overflow-hidden rounded-[1.25rem] bg-white/[0.02] transition-colors duration-200 hover:bg-white/[0.03]"
     >
       <div className="relative h-40 w-full overflow-hidden bg-gradient-to-br from-rose-500/12 via-pink-500/8 to-fuchsia-500/10">
         {imageUrl ? (
@@ -48,7 +48,7 @@ export default function BlogCard({ post }: BlogCardProps) {
               src={imageUrl}
               alt={post.title}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#09090c]/72 via-[#09090c]/18 to-transparent" />
           </>
@@ -57,7 +57,7 @@ export default function BlogCard({ post }: BlogCardProps) {
             <div className="text-center">
               <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/[0.05]">
                 <svg
-                  className="h-8 w-8 text-rose-300/60"
+                  className="h-8 w-8 text-white/40"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -79,7 +79,7 @@ export default function BlogCard({ post }: BlogCardProps) {
       <div className="flex flex-1 flex-col p-4">
         <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/40">
           {post.categories && post.categories.length > 0 ? (
-            <span className="text-rose-300/80">{post.categories[0].title}</span>
+            <span className="text-white/56">{post.categories[0].title}</span>
           ) : (
             <span>Movmash</span>
           )}
@@ -111,7 +111,7 @@ export default function BlogCard({ post }: BlogCardProps) {
               </div>
             ) : (
               <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white/8">
-                <User className="h-3 w-3 text-rose-300" />
+                <User className="h-3 w-3 text-white/50" />
               </div>
             )}
             <span>{post.author.name}</span>

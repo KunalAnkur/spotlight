@@ -1,9 +1,10 @@
 "use client";
 
-import { Twitter, Instagram, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import MovmashSocialLinks from "@/components/shared/MovmashSocialLinks";
 
 const footerLinks = {
   product: [
@@ -22,11 +23,6 @@ const footerLinks = {
     { label: "Cookie Policy", href: "/legal?tab=cookies" },
   ],
 };
-
-const socialLinks = [
-  { icon: Twitter, href: "https://twitter.com/movmash", label: "Twitter" },
-  { icon: Instagram, href: "https://instagram.com/movmash", label: "Instagram" }
-];
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -76,20 +72,7 @@ const Footer = () => {
               Watch videos together, no matter where you are. Real-time sync, live chat, and fun reactions.
             </p>
             {/* Social Links */}
-            <div className="flex items-center gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-10 w-10 items-center justify-center text-white/58 transition-colors duration-200 hover:text-white"
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-5 h-5" />
-                </a>
-              ))}
-            </div>
+            <MovmashSocialLinks />
           </div>
 
           {/* Links Grid */}
@@ -103,7 +86,7 @@ const Footer = () => {
                     <a
                       href={link.href}
                       onClick={(e) => handleProductLinkClick(e, link.hash)}
-                      className="text-white/60 hover:text-rose-400 transition-colors text-base inline-block"
+                      className="text-white/60 hover:text-white transition-colors text-base inline-block"
                     >
                       {link.label}
                     </a>
@@ -120,7 +103,7 @@ const Footer = () => {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-white/60 hover:text-rose-400 transition-colors text-base inline-block"
+                      className="text-white/60 hover:text-white transition-colors text-base inline-block"
                     >
                       {link.label}
                     </Link>
@@ -137,7 +120,7 @@ const Footer = () => {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-white/60 hover:text-rose-400 transition-colors text-base inline-block"
+                      className="text-white/60 hover:text-white transition-colors text-base inline-block"
                     >
                       {link.label}
                     </Link>
@@ -151,11 +134,11 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="landing-open-divider flex flex-col items-center justify-between gap-4 pt-8 sm:flex-row">
           <p className="text-sm text-white/50">
-            © {currentYear} Movmash. Made with <span className="text-rose-400">❤️</span> for movie lovers.
+            © {currentYear} Movmash. Made with ❤️ for movie lovers.
           </p>
           <a 
             href="mailto:support@movmash.com" 
-            className="flex items-center gap-2 text-sm text-white/50 hover:text-rose-400 transition-colors"
+            className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
           >
             <Mail className="w-4 h-4" />
             <span>support@movmash.com</span>
