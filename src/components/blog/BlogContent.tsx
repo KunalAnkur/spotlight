@@ -11,9 +11,8 @@ export default function BlogContent({ body }: BlogContentProps) {
   if (!body) return null;
 
   return (
-    <div className="prose prose-invert max-w-none">
+    <div className="max-w-none">
       <PortableText value={body} components={portableTextComponents} />
     </div>
   );
 }
-

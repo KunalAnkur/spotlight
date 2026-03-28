@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { Heart, Shield, Sparkles, Target, Users, Zap, type LucideIcon } from "lucide-react";
+import Image from "next/image";
+import { Clapperboard, MessageCircleHeart, Shield, Sparkles, type LucideIcon } from "lucide-react";
 import SecondaryPageLayout from "@/components/layout/SecondaryPageLayout";
 import { aboutKeywords } from "@/constants/seo-keywords";
+import { cn } from "@/lib/utils";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://movmash.com";
 
@@ -29,165 +31,164 @@ export const metadata: Metadata = {
   },
 };
 
-interface AboutHighlight {
-  number: string;
+interface AboutPoint {
   icon: LucideIcon;
   title: string;
   description: string;
-  iconClass: string;
-  numberClass: string;
-  lineClass: string;
+  iconClassName: string;
 }
 
-const summaryItems: AboutHighlight[] = [
+const roomSignals = [
   {
-    number: "01",
-    icon: Target,
-    title: "The goal",
-    description: "Make shared watching feel quick to start and calm to use.",
-    iconClass: "from-rose-500 via-pink-500 to-fuchsia-500",
-    numberClass: "text-rose-300/80",
-    lineClass: "from-rose-400/55 via-pink-400/20 to-transparent",
+    label: "Sync playback",
+    className: "bg-amber-400/8 text-amber-100",
+    dotClassName: "bg-amber-300",
   },
   {
-    number: "02",
-    icon: Zap,
-    title: "What we build",
-    description: "Sync, chat, reactions, screen sharing, and local file streaming in one room.",
-    iconClass: "from-pink-500 via-fuchsia-500 to-purple-500",
-    numberClass: "text-pink-300/80",
-    lineClass: "from-pink-400/55 via-fuchsia-400/22 to-transparent",
+    label: "Room chat",
+    className: "bg-rose-400/8 text-rose-100",
+    dotClassName: "bg-rose-300",
   },
   {
-    number: "03",
-    icon: Users,
-    title: "Why it works",
-    description: "Guests understand the room quickly, so hosting feels easy and reassuring.",
-    iconClass: "from-fuchsia-500 via-purple-500 to-indigo-500",
-    numberClass: "text-fuchsia-300/80",
-    lineClass: "from-fuchsia-400/55 via-purple-400/22 to-transparent",
+    label: "Reactions",
+    className: "bg-violet-400/8 text-violet-100",
+    dotClassName: "bg-violet-300",
+  },
+  {
+    label: "Screen share",
+    className: "bg-sky-400/8 text-sky-100",
+    dotClassName: "bg-sky-300",
   },
 ];
 
-const principles: AboutHighlight[] = [
+const aboutPoints: AboutPoint[] = [
   {
-    number: "04",
-    icon: Shield,
-    title: "Private by default",
-    description: "Rooms stay invite-based, so sharing feels more controlled and easier to trust.",
-    iconClass: "from-rose-500 via-pink-500 to-fuchsia-500",
-    numberClass: "text-rose-200/80",
-    lineClass: "from-rose-300/50 via-pink-400/20 to-transparent",
-  },
-  {
-    number: "05",
-    icon: Heart,
-    title: "Made to feel welcoming",
-    description: "The room layout stays social without becoming noisy, cluttered, or hard to follow.",
-    iconClass: "from-pink-500 via-fuchsia-500 to-purple-500",
-    numberClass: "text-pink-200/80",
-    lineClass: "from-pink-300/50 via-fuchsia-400/20 to-transparent",
-  },
-  {
-    number: "06",
     icon: Sparkles,
-    title: "Always being refined",
-    description: "We keep improving sync, flow, and small details that make the product feel smoother.",
-    iconClass: "from-fuchsia-500 via-purple-500 to-indigo-500",
-    numberClass: "text-fuchsia-200/80",
-    lineClass: "from-fuchsia-300/50 via-purple-400/18 to-transparent",
+    title: "Simple to join",
+    description: "Links open fast and guests understand the room right away.",
+    iconClassName: "bg-amber-400/12 text-amber-200",
+  },
+  {
+    icon: Clapperboard,
+    title: "Video stays central",
+    description: "The room keeps the watch experience front and center.",
+    iconClassName: "bg-rose-400/12 text-rose-200",
+  },
+  {
+    icon: MessageCircleHeart,
+    title: "Social without clutter",
+    description: "Chat and reactions feel close, not distracting.",
+    iconClassName: "bg-violet-400/12 text-violet-200",
+  },
+  {
+    icon: Shield,
+    title: "Comfortable to host",
+    description: "Private rooms and clear controls make the space easier to trust.",
+    iconClassName: "bg-emerald-400/12 text-emerald-200",
   },
 ];
-
-function AboutHighlightsSection({
-  kicker,
-  title,
-  copy,
-  items,
-}: {
-  kicker: string;
-  title: string;
-  copy: string;
-  items: AboutHighlight[];
-}) {
-  return (
-    <section className="space-y-8">
-      <div className="max-w-3xl space-y-4">
-        <div className="secondary-section-kicker">{kicker}</div>
-        <h2 className="landing-section-title text-left text-2xl md:text-[2.35rem]">{title}</h2>
-        <p className="secondary-page-copy max-w-[38rem]">{copy}</p>
-      </div>
-
-      <div className="flex w-full flex-wrap justify-between gap-y-10">
-        {items.map((item) => {
-          const Icon = item.icon;
-
-          return (
-            <article
-              key={item.title}
-              className="flex basis-full flex-col gap-4 md:basis-[calc((100%-1.5rem)/2)] xl:basis-[calc((100%-3rem)/3)]"
-            >
-              <div className="flex items-center gap-4">
-                <span
-                  className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${item.iconClass} text-white shadow-[0_14px_30px_rgba(244,63,94,0.12)]`}
-                >
-                  <Icon className="h-5 w-5" />
-                </span>
-
-                <div className="min-w-0 flex-1">
-                  <div className="mb-2 flex items-center gap-3">
-                    <span
-                      className={`font-parkinsans text-[11px] font-semibold uppercase tracking-[0.24em] ${item.numberClass}`}
-                    >
-                      {item.number}
-                    </span>
-                    <span className={`h-px flex-1 bg-gradient-to-r ${item.lineClass}`} />
-                  </div>
-                  <h3 className="font-parkinsans text-xl font-semibold tracking-tight text-white md:text-[1.35rem]">
-                    {item.title}
-                  </h3>
-                </div>
-              </div>
-
-              <p className="pl-16 text-sm leading-7 text-white/68 md:text-[15px]">
-                {item.description}
-              </p>
-            </article>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
 
 export default function AboutPage() {
   return (
-    <SecondaryPageLayout mainClassName="pb-12 md:pb-14">
-      <section className="mx-auto max-w-6xl space-y-16">
-        <div className="max-w-3xl space-y-4">
-          <div className="secondary-section-kicker">About</div>
-          <h1 className="landing-section-title text-left text-3xl md:text-[2.9rem]">
-            Shared watching should feel effortless.
-          </h1>
-          <p className="secondary-page-copy max-w-[40rem]">
-            Movmash is built for movie nights, episode drops, and the small moments where
-            people want to watch together without fighting the setup first.
-          </p>
-        </div>
+    <SecondaryPageLayout mainClassName="pb-16 md:pb-20">
+      <section className="mx-auto max-w-6xl space-y-[4.5rem] md:space-y-20">
+        <section className="relative overflow-hidden rounded-[2.6rem] px-4 py-10 md:px-6 md:py-12">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-[radial-gradient(circle_at_top,rgba(244,63,94,0.10),transparent_66%)] blur-3xl" />
 
-        <AboutHighlightsSection
-          kicker="Movmash in short"
-          title="A calmer way to understand the product"
-          copy="The core idea is simple: help people get into a room fast, stay in sync, and keep the experience clear once they are inside."
-          items={summaryItems}
-        />
+          <div className="relative z-10 mx-auto max-w-4xl text-center">
+            <div className="secondary-section-kicker">About</div>
+            <h1 className="mt-4 font-parkinsans text-3xl font-semibold leading-[1.02] tracking-[-0.04em] text-white md:text-[4rem]">
+              Built to make watch parties feel easy.
+            </h1>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/58 md:text-base md:leading-8">
+              Movmash keeps the room clear, social, and simple to join so people can
+              focus on watching together instead of figuring things out first.
+            </p>
 
-        <AboutHighlightsSection
-          kicker="Principles"
-          title="Built to feel clear, safe, and social"
-          copy="Good watch-party tools should stay out of the way. We keep the product focused on comfort, trust, and clarity."
-          items={principles}
-        />
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              {roomSignals.map((signal) => (
+                <span
+                  key={signal.label}
+                  className={cn(
+                    "inline-flex items-center gap-2.5 rounded-full px-4 py-2 text-sm font-medium",
+                    signal.className
+                  )}
+                >
+                  <span className={cn("h-1.5 w-1.5 rounded-full", signal.dotClassName)} />
+                  {signal.label}
+                </span>
+              ))}
+            </div>
+
+            <div className="relative mx-auto mt-10 w-full max-w-5xl overflow-hidden rounded-[2.1rem] bg-white/[0.03] shadow-[0_32px_90px_rgba(0,0,0,0.32)] ring-1 ring-white/6">
+              <div className="pointer-events-none absolute inset-x-20 top-5 h-24 bg-gradient-to-r from-[#f59e0b]/12 via-[#f43f5e]/10 to-[#a855f7]/12 blur-3xl" />
+              <Image
+                src="/assets/app-showcase.png"
+                alt="Movmash room interface with synced video, chat, and reactions"
+                width={1280}
+                height={720}
+                className="relative z-10 h-auto w-full"
+                priority
+              />
+            </div>
+          </div>
+        </section>
+
+        <section className="grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start">
+          <div className="space-y-5">
+            <div className="secondary-section-kicker">What guides the product</div>
+            <div className="max-w-4xl space-y-4">
+              <p className="font-parkinsans text-[1.9rem] font-semibold leading-[1.25] tracking-[-0.04em] md:text-[2.6rem]">
+                <span className="text-white/34">Sync, chat, reactions, and sharing </span>
+                <span className="text-white">in one room that still feels calm.</span>
+              </p>
+              <p className="max-w-2xl text-sm leading-7 text-white/58 md:text-base md:leading-8">
+                The room should help people settle in quickly, see the video clearly,
+                and feel comfortable hosting friends without extra explanation.
+              </p>
+            </div>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-xl overflow-hidden rounded-[2rem] bg-white/[0.02] px-5 py-5 ring-1 ring-white/5 md:px-6 md:py-6">
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/8" />
+            <Image
+              src="/assets/app-showcase.png"
+              alt="Movmash layout preview"
+              width={1000}
+              height={562}
+              className="h-auto w-full rounded-[1.35rem] object-cover"
+            />
+          </div>
+        </section>
+
+        <section className="grid gap-x-10 gap-y-10 md:grid-cols-2">
+          {aboutPoints.map((point) => {
+            const Icon = point.icon;
+
+            return (
+              <article key={point.title} className="border-t border-white/8 pt-5">
+                <div className="flex items-start gap-4">
+                  <span
+                    className={cn(
+                      "flex h-11 w-11 shrink-0 items-center justify-center rounded-full",
+                      point.iconClassName
+                    )}
+                  >
+                    <Icon className="h-4.5 w-4.5" />
+                  </span>
+                  <div className="min-w-0 space-y-2">
+                    <h2 className="font-parkinsans text-[1.12rem] font-semibold tracking-tight text-white md:text-[1.2rem]">
+                      {point.title}
+                    </h2>
+                    <p className="max-w-[28rem] text-sm leading-7 text-white/62 md:text-[15px]">
+                      {point.description}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </section>
       </section>
     </SecondaryPageLayout>
   );

@@ -21,6 +21,7 @@ export interface MovmashSocialLink {
   label: string;
   contactChipClassName: string;
   contactIconClassName: string;
+  footerIconClassName: string;
 }
 
 export const movmashSocialLinks: MovmashSocialLink[] = [
@@ -30,6 +31,7 @@ export const movmashSocialLinks: MovmashSocialLink[] = [
     label: "Twitter",
     contactChipClassName: "bg-sky-400/10",
     contactIconClassName: "text-sky-300",
+    footerIconClassName: "text-white/66 hover:text-white/90",
   },
   {
     icon: Instagram,
@@ -37,6 +39,7 @@ export const movmashSocialLinks: MovmashSocialLink[] = [
     label: "Instagram",
     contactChipClassName: "bg-pink-400/10",
     contactIconClassName: "text-pink-300",
+    footerIconClassName: "text-white/66 hover:text-white/90",
   },
   {
     icon: TikTokIcon,
@@ -44,6 +47,7 @@ export const movmashSocialLinks: MovmashSocialLink[] = [
     label: "TikTok",
     contactChipClassName: "bg-white/8",
     contactIconClassName: "text-white/82",
+    footerIconClassName: "text-white/66 hover:text-white/90",
   },
   {
     icon: Linkedin,
@@ -51,6 +55,7 @@ export const movmashSocialLinks: MovmashSocialLink[] = [
     label: "LinkedIn",
     contactChipClassName: "bg-blue-400/10",
     contactIconClassName: "text-blue-300",
+    footerIconClassName: "text-white/66 hover:text-white/90",
   },
 ];
 
@@ -66,7 +71,7 @@ export default function MovmashSocialLinks({
   iconClassName,
 }: MovmashSocialLinksProps) {
   return (
-    <div className={cn("flex items-center gap-3", className)}>
+    <div className={cn("flex items-center gap-0", className)}>
       {movmashSocialLinks.map((social) => (
         <a
           key={social.label}
@@ -75,7 +80,8 @@ export default function MovmashSocialLinks({
           rel="noopener noreferrer"
           aria-label={social.label}
           className={cn(
-            "flex h-10 w-10 items-center justify-center text-white/68 transition-colors duration-200 hover:text-[#ffd3d8]",
+            "flex h-10 w-10 items-center justify-center transition-all duration-200 hover:-mx-0.5",
+            social.footerIconClassName,
             linkClassName
           )}
         >

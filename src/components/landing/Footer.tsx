@@ -51,12 +51,12 @@ const Footer = () => {
 
   return (
     <footer className="landing-open-divider">
-      <div className="landing-shell py-12">
+      <div className="landing-shell py-8 md:py-9">
         {/* Main Footer Content */}
-        <div className="flex flex-col lg:flex-row items-start justify-between gap-12 mb-12">
+        <div className="mb-8 flex flex-col items-start justify-between gap-8 lg:flex-row lg:gap-10">
           {/* Brand Section */}
           <div className="flex-1 max-w-md">
-            <div className="mb-4">
+            <div className="mb-3">
               <Link href="/" className="inline-flex items-center gap-2.5">
                 <Image
                   src="/android-chrome-512x512.png"
@@ -68,7 +68,7 @@ const Footer = () => {
                 <span className="font-parkinsans text-2xl font-semibold tracking-tight text-white">Movmash</span>
               </Link>
             </div>
-            <p className="text-base text-white/60 mb-6 leading-relaxed">
+            <p className="mb-4 max-w-sm text-sm leading-7 text-white/60 md:text-[15px]">
               Watch videos together, no matter where you are. Real-time sync, live chat, and fun reactions.
             </p>
             {/* Social Links */}
@@ -76,17 +76,17 @@ const Footer = () => {
           </div>
 
           {/* Links Grid */}
-          <div className="flex flex-wrap gap-8 lg:gap-12">
+          <div className="flex flex-wrap gap-7 md:gap-9 lg:gap-10">
             {/* Product Links */}
             <div className="flex flex-col">
-              <h4 className="mb-4 font-parkinsans text-lg font-semibold tracking-tight text-white">Product</h4>
-              <ul className="space-y-2.5">
+              <h4 className="mb-3 font-parkinsans text-base font-semibold tracking-tight text-white">Product</h4>
+              <ul className="space-y-2">
                 {footerLinks.product.map((link) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
                       onClick={(e) => handleProductLinkClick(e, link.hash)}
-                      className="text-white/60 hover:text-white transition-colors text-base inline-block"
+                      className="inline-block text-sm text-white/60 transition-colors hover:text-white md:text-[15px]"
                     >
                       {link.label}
                     </a>
@@ -97,13 +97,13 @@ const Footer = () => {
 
             {/* Company Links */}
             <div className="flex flex-col">
-              <h4 className="mb-4 font-parkinsans text-lg font-semibold tracking-tight text-white">Company</h4>
-              <ul className="space-y-2.5">
+              <h4 className="mb-3 font-parkinsans text-base font-semibold tracking-tight text-white">Company</h4>
+              <ul className="space-y-2">
                 {footerLinks.company.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-white/60 hover:text-white transition-colors text-base inline-block"
+                      className="inline-block text-sm text-white/60 transition-colors hover:text-white md:text-[15px]"
                     >
                       {link.label}
                     </Link>
@@ -114,13 +114,13 @@ const Footer = () => {
 
             {/* Legal Links */}
             <div className="flex flex-col">
-              <h4 className="mb-4 font-parkinsans text-lg font-semibold tracking-tight text-white">Legal</h4>
-              <ul className="space-y-2.5">
+              <h4 className="mb-3 font-parkinsans text-base font-semibold tracking-tight text-white">Legal</h4>
+              <ul className="space-y-2">
                 {footerLinks.legal.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-white/60 hover:text-white transition-colors text-base inline-block"
+                      className="inline-block text-sm text-white/60 transition-colors hover:text-white md:text-[15px]"
                     >
                       {link.label}
                     </Link>
@@ -132,7 +132,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="landing-open-divider flex flex-col items-center justify-between gap-4 pt-8 sm:flex-row">
+        <div className="landing-open-divider flex flex-col items-center justify-between gap-3 pt-6 sm:flex-row">
           <p className="text-sm text-white/50">
             © {currentYear} Movmash. Made with ❤️ for movie lovers.
           </p>
