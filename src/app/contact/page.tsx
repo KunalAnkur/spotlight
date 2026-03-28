@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Clock, Mail, MapPin, MessageCircle, Shield } from "lucide-react";
 import SecondaryInfoCard from "@/components/layout/SecondaryInfoCard";
-import SecondaryPageHero from "@/components/layout/SecondaryPageHero";
 import SecondaryPageLayout from "@/components/layout/SecondaryPageLayout";
 import { ContactForm } from "@/components/landing/ContactForm";
 import { Button } from "@/components/ui/button";
@@ -66,30 +65,21 @@ const contactMethods = [
 export default function ContactPage() {
   return (
     <SecondaryPageLayout>
-      <SecondaryPageHero
-        icon={MessageCircle}
-        title={
-          <>
-            Get in <span className="text-gradient">touch</span>
-          </>
-        }
-        description="Questions, feedback, and ideas are always welcome. We want support to feel as easy and clear as the product itself."
-      />
-
-      <section className="mx-auto max-w-5xl">
-        <div className="grid gap-6 md:grid-cols-3">
+      <section className="mx-auto max-w-6xl">
+        <div className="grid gap-5 md:grid-cols-3">
           {contactMethods.map((method) => (
-            <SecondaryInfoCard key={method.title} {...method} />
+            <SecondaryInfoCard key={method.title} {...method} className="secondary-surface-soft" />
           ))}
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(280px,0.8fr)]">
+      <section className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
         <div className="secondary-surface">
           <div className="max-w-2xl">
-            <h2 className="secondary-card-title">Send a message</h2>
+            <div className="secondary-section-kicker">Message us</div>
+            <h2 className="secondary-card-title mt-3">Tell us what is happening</h2>
             <p className="secondary-card-copy mt-3">
-              If something feels unclear, broken, or worth improving, tell us directly.
+              If something feels unclear, broken, or worth improving, send it our way.
               We read every message.
             </p>
           </div>
@@ -98,7 +88,7 @@ export default function ContactPage() {
             <ContactForm />
           </div>
 
-          <div className="mt-8">
+          <div className="mt-8 border-t border-white/8 pt-6">
             <p className="text-sm text-white/48">Prefer email instead?</p>
             <div className="mt-3">
               <Button variant="outline" size="sm" asChild>
@@ -113,9 +103,9 @@ export default function ContactPage() {
             <div className="secondary-icon-chip bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500">
               <Clock className="h-6 w-6" />
             </div>
-            <h3 className="secondary-card-title mt-5 text-xl">Quick responses</h3>
+            <h3 className="secondary-card-title mt-5 text-xl">What to expect</h3>
             <p className="secondary-card-copy mt-3">
-              We usually reply within 24 hours on business days, and often much sooner.
+              Most replies go out within one business day, and often quite a bit sooner.
             </p>
           </div>
 
@@ -123,10 +113,12 @@ export default function ContactPage() {
             <div className="secondary-icon-chip bg-gradient-to-br from-pink-500 via-fuchsia-500 to-purple-500">
               <Shield className="h-6 w-6" />
             </div>
-            <h3 className="secondary-card-title mt-5 text-xl">Private by default</h3>
-            <p className="secondary-card-copy mt-3">
-              Support messages stay confidential, and we only use them to help you or improve the service.
-            </p>
+            <h3 className="secondary-card-title mt-5 text-xl">Helpful details</h3>
+            <ul className="mt-4 space-y-3 text-sm leading-6 text-white/64 md:text-[15px]">
+              <li>Include the room flow or feature you were using.</li>
+              <li>Tell us what felt confusing, broken, or missing.</li>
+              <li>Support messages stay private and only help us respond or improve the product.</li>
+            </ul>
           </div>
         </div>
       </section>

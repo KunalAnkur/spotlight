@@ -3,7 +3,6 @@ import { BookOpenText } from "lucide-react";
 import BlogCard from "@/components/blog/BlogCard";
 import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
 import BlogListingSchema from "@/components/SEO/BlogSchema";
-import SecondaryPageHero from "@/components/layout/SecondaryPageHero";
 import SecondaryPageLayout from "@/components/layout/SecondaryPageLayout";
 import { blogKeywords } from "@/constants/seo-keywords";
 import { client } from "@/sanity/lib/client";
@@ -71,18 +70,16 @@ export default async function BlogPage() {
       />
 
       <SecondaryPageLayout>
-        <SecondaryPageHero
-          icon={BookOpenText}
-          title={
-            <>
-              Movmash <span className="text-gradient">blog</span>
-            </>
-          }
-          description="Guides, product notes, and ideas for making shared watching feel smoother, more social, and a little more fun."
-        />
-
         {posts.length > 0 ? (
-          <section className="mx-auto w-full max-w-6xl">
+          <section className="mx-auto w-full max-w-6xl space-y-6">
+            <div className="flex flex-col items-center justify-between gap-3 text-center md:flex-row md:text-left">
+              <p className="text-sm text-white/50">
+                Fresh notes on the product, shared watching, and better room experiences.
+              </p>
+              <p className="text-sm font-medium text-white/38">
+                {posts.length} post{posts.length === 1 ? "" : "s"}
+              </p>
+            </div>
             <div className="secondary-blog-grid">
               {posts.map((post: any) => (
                 <BlogCard key={post._id} post={post} />

@@ -42,19 +42,23 @@ export default function SecondaryPolicyPage({
         meta={updatedLabel}
       />
 
-      <div className="mx-auto max-w-4xl space-y-5 md:space-y-6">
+      <div className="mx-auto grid max-w-6xl gap-5 md:grid-cols-2">
         {sections.map((section) => (
-          <section key={section.number} className="secondary-surface">
-            <div className="flex flex-col gap-5 md:flex-row md:items-start">
-              <div className={`secondary-icon-chip ${section.gradient}`}>
-                <section.icon className="h-6 w-6" />
+          <section key={section.number} className="secondary-surface h-full">
+            <div className="flex h-full flex-col gap-5">
+              <div className="flex items-start justify-between gap-4">
+                <div className={`secondary-icon-chip ${section.gradient}`}>
+                  <section.icon className="h-6 w-6" />
+                </div>
+                <div className="text-xs font-semibold tracking-[0.28em] text-white/28">
+                  {section.number.padStart(2, "0")}
+                </div>
               </div>
 
-              <div className="min-w-0 flex-1">
-                <div className="mb-3 flex flex-wrap items-center gap-3">
-                  <span className="text-sm font-semibold text-white/38">{section.number}</span>
-                  <h2 className="secondary-card-title text-xl md:text-2xl">{section.title}</h2>
-                </div>
+              <div className="space-y-3">
+                <h2 className="secondary-card-title text-[1.24rem] md:text-[1.38rem]">
+                  {section.title}
+                </h2>
 
                 <p className="secondary-card-copy">
                   {section.description}
@@ -67,18 +71,18 @@ export default function SecondaryPolicyPage({
                     </>
                   ) : null}
                 </p>
-
-                {section.items.length ? (
-                  <ul className="secondary-check-list mt-5">
-                    {section.items.map((item) => (
-                      <li key={item} className="secondary-check-item">
-                        <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-rose-400" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
               </div>
+
+              {section.items.length ? (
+                <ul className="secondary-check-list">
+                  {section.items.map((item) => (
+                    <li key={item} className="secondary-check-item">
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-rose-400" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </div>
           </section>
         ))}

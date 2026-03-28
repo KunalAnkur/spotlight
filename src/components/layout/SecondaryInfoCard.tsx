@@ -28,7 +28,7 @@ export default function SecondaryInfoCard({
         <h2 className="secondary-card-title">{title}</h2>
         <div className="secondary-card-copy">{description}</div>
       </div>
-      {footer ? <div className="mt-5">{footer}</div> : null}
+      {footer ? <div className="mt-6 border-t border-white/8 pt-5">{footer}</div> : null}
     </article>
   );
 }

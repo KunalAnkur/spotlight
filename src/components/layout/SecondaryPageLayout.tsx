@@ -11,6 +11,8 @@ export default function SecondaryPageLayout({ children }: SecondaryPageLayoutPro
     <div className="min-h-screen text-white">
       <Navbar />
       <main className="secondary-page-main">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top,rgba(244,63,94,0.12),transparent_58%)]" />
+        <div className="pointer-events-none absolute inset-x-0 top-12 h-px bg-white/6" />
         <div className="landing-shell relative z-10 secondary-page-stack">{children}</div>
       </main>
       <Footer />

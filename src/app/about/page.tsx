@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Globe, Heart, Lock, Shield, Sparkles, Target, Users, Zap } from "lucide-react";
 import SecondaryInfoCard from "@/components/layout/SecondaryInfoCard";
-import SecondaryPageHero from "@/components/layout/SecondaryPageHero";
 import SecondaryPageLayout from "@/components/layout/SecondaryPageLayout";
 import { aboutKeywords } from "@/constants/seo-keywords";
 
@@ -82,81 +81,93 @@ const trustFeatures = [
 export default function AboutPage() {
   return (
     <SecondaryPageLayout>
-      <SecondaryPageHero
-        icon={Sparkles}
-        title={
-          <>
-            About <span className="text-gradient">Movmash</span>
-          </>
-        }
-        description="We are building a calmer, more human way to watch together online — with less friction and more shared moments."
-      />
-
-      <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2">
+      <section className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
         <section className="secondary-surface">
-          <div className="secondary-icon-chip bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500">
+          <div className="secondary-section-kicker">Our mission</div>
+          <div className="secondary-icon-chip mt-5 bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500">
             <Target className="h-6 w-6" />
           </div>
-          <div className="mt-5 space-y-3">
-            <h2 className="secondary-card-title">Our mission</h2>
+          <div className="mt-5 space-y-4">
+            <h2 className="secondary-card-title">Make shared watching feel easy again.</h2>
             <p className="secondary-card-copy">
-              Movmash started from a simple belief: distance should not make shared
-              experiences feel distant. We want movie nights, episode drops, and
-              spontaneous “watch this with me” moments to feel easy again.
+              Distance should not make movie nights, episode drops, or spontaneous
+              “watch this with me” moments feel harder than they need to be. We want
+              people to get into the room fast and stay focused on the experience, not
+              the setup.
             </p>
           </div>
         </section>
 
-        <section className="secondary-surface">
-          <div className="secondary-icon-chip bg-gradient-to-br from-pink-500 via-fuchsia-500 to-purple-500">
-            <Zap className="h-6 w-6" />
-          </div>
-          <div className="mt-5 space-y-3">
-            <h2 className="secondary-card-title">What we do</h2>
-            <p className="secondary-card-copy">
-              We bring together synchronized playback, room chat, reactions, file
-              streaming, and screen sharing so people can spend less time setting up and
-              more time actually enjoying something together.
-            </p>
-          </div>
-        </section>
-      </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
+          <section className="secondary-surface-soft">
+            <div className="secondary-icon-chip bg-gradient-to-br from-pink-500 via-fuchsia-500 to-purple-500">
+              <Zap className="h-6 w-6" />
+            </div>
+            <div className="mt-5 space-y-3">
+              <h2 className="secondary-card-title text-[1.2rem] md:text-[1.35rem]">
+                What we build
+              </h2>
+              <p className="secondary-card-copy">
+                Sync, room chat, reactions, screen sharing, and file streaming in one
+                calm room layout.
+              </p>
+            </div>
+          </section>
 
-      <section className="mx-auto max-w-5xl">
-        <div className="landing-section-heading mb-8 md:mb-10">
-          <h2 className="landing-section-title text-2xl md:text-3xl">What guides us</h2>
+          <section className="secondary-surface-soft">
+            <div className="secondary-icon-chip bg-gradient-to-br from-fuchsia-500 via-purple-500 to-indigo-500">
+              <Users className="h-6 w-6" />
+            </div>
+            <div className="mt-5 space-y-3">
+              <h2 className="secondary-card-title text-[1.2rem] md:text-[1.35rem]">
+                Why people stay
+              </h2>
+              <p className="secondary-card-copy">
+                The product aims to feel familiar right away, so hosting and joining are
+                both easy to understand.
+              </p>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl">
+        <div className="secondary-section-heading">
+          <div className="secondary-section-kicker">Principles</div>
+          <h2 className="landing-section-title mt-3 text-2xl md:text-3xl">What guides the product</h2>
           <p className="landing-section-copy">
-            The product should feel welcoming, fast, and quietly reliable — never noisy
-            or complicated.
+            Every decision tries to keep the room welcoming, lightweight, and easy to
+            read.
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-3">
           {values.map((value) => (
-            <SecondaryInfoCard key={value.title} {...value} />
+            <SecondaryInfoCard key={value.title} {...value} className="secondary-surface-soft" />
           ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl">
-        <div className="landing-section-heading mb-8 md:mb-10">
-          <h2 className="landing-section-title text-2xl md:text-3xl">
-            Privacy and trust
+      <section className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+        <div className="max-w-xl">
+          <div className="secondary-section-kicker">Trust</div>
+          <h2 className="landing-section-title mt-3 text-left text-2xl md:text-3xl">
+            Built to feel safe and clear
           </h2>
-          <p className="landing-section-copy">
-            Good shared experiences only work when people feel safe, respected, and in
-            control.
+          <p className="landing-section-copy mt-4 text-left">
+            Shared experiences work best when rooms feel private, dependable, and easy to
+            host without second guessing what is happening.
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-3">
           {trustFeatures.map((feature) => (
             <SecondaryInfoCard key={feature.title} {...feature} className="secondary-surface-soft" />
           ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl text-center">
+      <section className="mx-auto max-w-5xl text-center">
         <div className="secondary-surface">
           <div className="secondary-page-hero-icon bg-gradient-to-br from-fuchsia-500 via-purple-500 to-indigo-500 mb-5">
             <Users className="h-6 w-6" />
@@ -164,8 +175,8 @@ export default function AboutPage() {
           <h2 className="secondary-card-title text-2xl md:text-3xl">Why it matters</h2>
           <p className="secondary-page-copy mt-4">
             Whether it is a movie night with friends, a long-distance date, or a room
-            full of your community, Movmash exists to make those moments easier to start
-            and nicer to share.
+            full of your community, Movmash is here to make those moments quicker to
+            start and nicer to share.
           </p>
         </div>
       </section>

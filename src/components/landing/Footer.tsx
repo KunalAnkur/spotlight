@@ -17,9 +17,9 @@ const footerLinks = {
     { label: "Blog", href: "/blog" },
   ],
   legal: [
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
-    { label: "Cookie Policy", href: "/cookies" },
+    { label: "Privacy Policy", href: "/legal?tab=privacy" },
+    { label: "Terms of Service", href: "/legal?tab=terms" },
+    { label: "Cookie Policy", href: "/legal?tab=cookies" },
   ],
 };
 
