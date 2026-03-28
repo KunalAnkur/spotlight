@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Globe, Heart, Lock, Shield, Sparkles, Target, Users, Zap } from "lucide-react";
-import SecondaryInfoCard from "@/components/layout/SecondaryInfoCard";
+import { Heart, Shield, Sparkles, Target, Users, Zap, type LucideIcon } from "lucide-react";
 import SecondaryPageLayout from "@/components/layout/SecondaryPageLayout";
 import { aboutKeywords } from "@/constants/seo-keywords";
 
@@ -30,155 +29,165 @@ export const metadata: Metadata = {
   },
 };
 
-const values = [
+interface AboutHighlight {
+  number: string;
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  iconClass: string;
+  numberClass: string;
+  lineClass: string;
+}
+
+const summaryItems: AboutHighlight[] = [
   {
-    icon: Heart,
-    title: "Built with care",
-    description:
-      "Every detail is shaped around making watch parties feel easy, reliable, and genuinely fun to use.",
-    gradientClassName: "bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500",
+    number: "01",
+    icon: Target,
+    title: "The goal",
+    description: "Make shared watching feel quick to start and calm to use.",
+    iconClass: "from-rose-500 via-pink-500 to-fuchsia-500",
+    numberClass: "text-rose-300/80",
+    lineClass: "from-rose-400/55 via-pink-400/20 to-transparent",
   },
   {
-    icon: Users,
-    title: "Community first",
-    description:
-      "We keep listening to the people using Movmash so the product keeps evolving in the right direction.",
-    gradientClassName: "bg-gradient-to-br from-pink-500 via-fuchsia-500 to-purple-500",
-  },
-  {
+    number: "02",
     icon: Zap,
-    title: "Always improving",
-    description:
-      "We keep refining sync, streaming, and room interactions so shared viewing keeps feeling smoother over time.",
-    gradientClassName: "bg-gradient-to-br from-fuchsia-500 via-purple-500 to-indigo-500",
+    title: "What we build",
+    description: "Sync, chat, reactions, screen sharing, and local file streaming in one room.",
+    iconClass: "from-pink-500 via-fuchsia-500 to-purple-500",
+    numberClass: "text-pink-300/80",
+    lineClass: "from-pink-400/55 via-fuchsia-400/22 to-transparent",
+  },
+  {
+    number: "03",
+    icon: Users,
+    title: "Why it works",
+    description: "Guests understand the room quickly, so hosting feels easy and reassuring.",
+    iconClass: "from-fuchsia-500 via-purple-500 to-indigo-500",
+    numberClass: "text-fuchsia-300/80",
+    lineClass: "from-fuchsia-400/55 via-purple-400/22 to-transparent",
   },
 ];
 
-const trustFeatures = [
+const principles: AboutHighlight[] = [
   {
+    number: "04",
     icon: Shield,
-    title: "Privacy protected",
-    description:
-      "Rooms stay private by default, and only people with the link can join your session.",
-    gradientClassName: "bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500",
+    title: "Private by default",
+    description: "Rooms stay invite-based, so sharing feels more controlled and easier to trust.",
+    iconClass: "from-rose-500 via-pink-500 to-fuchsia-500",
+    numberClass: "text-rose-200/80",
+    lineClass: "from-rose-300/50 via-pink-400/20 to-transparent",
   },
   {
-    icon: Lock,
-    title: "Secure by design",
-    description:
-      "Core communication stays encrypted so your rooms, messages, and activity feel dependable.",
-    gradientClassName: "bg-gradient-to-br from-pink-500 via-fuchsia-500 to-purple-500",
+    number: "05",
+    icon: Heart,
+    title: "Made to feel welcoming",
+    description: "The room layout stays social without becoming noisy, cluttered, or hard to follow.",
+    iconClass: "from-pink-500 via-fuchsia-500 to-purple-500",
+    numberClass: "text-pink-200/80",
+    lineClass: "from-pink-300/50 via-fuchsia-400/20 to-transparent",
   },
   {
-    icon: Globe,
-    title: "File-friendly",
-    description:
-      "Local video files stay on your own device, which keeps the experience lighter and more private.",
-    gradientClassName: "bg-gradient-to-br from-fuchsia-500 via-purple-500 to-indigo-500",
+    number: "06",
+    icon: Sparkles,
+    title: "Always being refined",
+    description: "We keep improving sync, flow, and small details that make the product feel smoother.",
+    iconClass: "from-fuchsia-500 via-purple-500 to-indigo-500",
+    numberClass: "text-fuchsia-200/80",
+    lineClass: "from-fuchsia-300/50 via-purple-400/18 to-transparent",
   },
 ];
+
+function AboutHighlightsSection({
+  kicker,
+  title,
+  copy,
+  items,
+}: {
+  kicker: string;
+  title: string;
+  copy: string;
+  items: AboutHighlight[];
+}) {
+  return (
+    <section className="space-y-8">
+      <div className="max-w-3xl space-y-4">
+        <div className="secondary-section-kicker">{kicker}</div>
+        <h2 className="landing-section-title text-left text-2xl md:text-[2.35rem]">{title}</h2>
+        <p className="secondary-page-copy max-w-[38rem]">{copy}</p>
+      </div>
+
+      <div className="flex w-full flex-wrap justify-between gap-y-10">
+        {items.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <article
+              key={item.title}
+              className="flex basis-full flex-col gap-4 md:basis-[calc((100%-1.5rem)/2)] xl:basis-[calc((100%-3rem)/3)]"
+            >
+              <div className="flex items-center gap-4">
+                <span
+                  className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${item.iconClass} text-white shadow-[0_14px_30px_rgba(244,63,94,0.12)]`}
+                >
+                  <Icon className="h-5 w-5" />
+                </span>
+
+                <div className="min-w-0 flex-1">
+                  <div className="mb-2 flex items-center gap-3">
+                    <span
+                      className={`font-parkinsans text-[11px] font-semibold uppercase tracking-[0.24em] ${item.numberClass}`}
+                    >
+                      {item.number}
+                    </span>
+                    <span className={`h-px flex-1 bg-gradient-to-r ${item.lineClass}`} />
+                  </div>
+                  <h3 className="font-parkinsans text-xl font-semibold tracking-tight text-white md:text-[1.35rem]">
+                    {item.title}
+                  </h3>
+                </div>
+              </div>
+
+              <p className="pl-16 text-sm leading-7 text-white/68 md:text-[15px]">
+                {item.description}
+              </p>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
 
 export default function AboutPage() {
   return (
-    <SecondaryPageLayout>
-      <section className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-        <section className="secondary-surface">
-          <div className="secondary-section-kicker">Our mission</div>
-          <div className="secondary-icon-chip mt-5 bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500">
-            <Target className="h-6 w-6" />
-          </div>
-          <div className="mt-5 space-y-4">
-            <h2 className="secondary-card-title">Make shared watching feel easy again.</h2>
-            <p className="secondary-card-copy">
-              Distance should not make movie nights, episode drops, or spontaneous
-              “watch this with me” moments feel harder than they need to be. We want
-              people to get into the room fast and stay focused on the experience, not
-              the setup.
-            </p>
-          </div>
-        </section>
-
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
-          <section className="secondary-surface-soft">
-            <div className="secondary-icon-chip bg-gradient-to-br from-pink-500 via-fuchsia-500 to-purple-500">
-              <Zap className="h-6 w-6" />
-            </div>
-            <div className="mt-5 space-y-3">
-              <h2 className="secondary-card-title text-[1.2rem] md:text-[1.35rem]">
-                What we build
-              </h2>
-              <p className="secondary-card-copy">
-                Sync, room chat, reactions, screen sharing, and file streaming in one
-                calm room layout.
-              </p>
-            </div>
-          </section>
-
-          <section className="secondary-surface-soft">
-            <div className="secondary-icon-chip bg-gradient-to-br from-fuchsia-500 via-purple-500 to-indigo-500">
-              <Users className="h-6 w-6" />
-            </div>
-            <div className="mt-5 space-y-3">
-              <h2 className="secondary-card-title text-[1.2rem] md:text-[1.35rem]">
-                Why people stay
-              </h2>
-              <p className="secondary-card-copy">
-                The product aims to feel familiar right away, so hosting and joining are
-                both easy to understand.
-              </p>
-            </div>
-          </section>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl">
-        <div className="secondary-section-heading">
-          <div className="secondary-section-kicker">Principles</div>
-          <h2 className="landing-section-title mt-3 text-2xl md:text-3xl">What guides the product</h2>
-          <p className="landing-section-copy">
-            Every decision tries to keep the room welcoming, lightweight, and easy to
-            read.
+    <SecondaryPageLayout mainClassName="pb-12 md:pb-14">
+      <section className="mx-auto max-w-6xl space-y-16">
+        <div className="max-w-3xl space-y-4">
+          <div className="secondary-section-kicker">About</div>
+          <h1 className="landing-section-title text-left text-3xl md:text-[2.9rem]">
+            Shared watching should feel effortless.
+          </h1>
+          <p className="secondary-page-copy max-w-[40rem]">
+            Movmash is built for movie nights, episode drops, and the small moments where
+            people want to watch together without fighting the setup first.
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
-          {values.map((value) => (
-            <SecondaryInfoCard key={value.title} {...value} className="secondary-surface-soft" />
-          ))}
-        </div>
-      </section>
+        <AboutHighlightsSection
+          kicker="Movmash in short"
+          title="A calmer way to understand the product"
+          copy="The core idea is simple: help people get into a room fast, stay in sync, and keep the experience clear once they are inside."
+          items={summaryItems}
+        />
 
-      <section className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
-        <div className="max-w-xl">
-          <div className="secondary-section-kicker">Trust</div>
-          <h2 className="landing-section-title mt-3 text-left text-2xl md:text-3xl">
-            Built to feel safe and clear
-          </h2>
-          <p className="landing-section-copy mt-4 text-left">
-            Shared experiences work best when rooms feel private, dependable, and easy to
-            host without second guessing what is happening.
-          </p>
-        </div>
-
-        <div className="grid gap-5 md:grid-cols-3">
-          {trustFeatures.map((feature) => (
-            <SecondaryInfoCard key={feature.title} {...feature} className="secondary-surface-soft" />
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-5xl text-center">
-        <div className="secondary-surface">
-          <div className="secondary-page-hero-icon bg-gradient-to-br from-fuchsia-500 via-purple-500 to-indigo-500 mb-5">
-            <Users className="h-6 w-6" />
-          </div>
-          <h2 className="secondary-card-title text-2xl md:text-3xl">Why it matters</h2>
-          <p className="secondary-page-copy mt-4">
-            Whether it is a movie night with friends, a long-distance date, or a room
-            full of your community, Movmash is here to make those moments quicker to
-            start and nicer to share.
-          </p>
-        </div>
+        <AboutHighlightsSection
+          kicker="Principles"
+          title="Built to feel clear, safe, and social"
+          copy="Good watch-party tools should stay out of the way. We keep the product focused on comfort, trust, and clarity."
+          items={principles}
+        />
       </section>
     </SecondaryPageLayout>
   );

@@ -63,17 +63,17 @@ const contactMethods: Array<{
               target="_blank"
               rel="noopener noreferrer"
               aria-label={social.label}
-              className="inline-flex items-center gap-2 rounded-full bg-white/[0.04] px-3 py-2 text-sm text-white/72 transition-colors duration-200 hover:bg-white/[0.07] hover:text-white"
+              className="inline-flex items-center gap-2.5 whitespace-nowrap rounded-full bg-white/[0.04] px-3 py-2 text-sm text-white/72 transition-colors duration-200 hover:bg-white/[0.07] hover:text-white"
             >
               <span
                 className={cn(
-                  "flex h-7 w-7 items-center justify-center rounded-full",
+                  "flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full",
                   social.contactChipClassName
                 )}
               >
                 <Icon className={cn("h-3.5 w-3.5", social.contactIconClassName)} />
               </span>
-              <span>{social.label}</span>
+              <span className="leading-none">{social.label}</span>
             </a>
           );
         })}
@@ -110,7 +110,12 @@ export default function ContactPage() {
                     index > 0 ? "border-t border-white/6" : ""
                   )}
                 >
-                  <div className={cn("secondary-icon-chip h-10 w-10 rounded-[1rem] md:h-11 md:w-11", method.gradientClassName)}>
+                  <div
+                    className={cn(
+                      "secondary-icon-chip h-10 w-10 flex-shrink-0 rounded-[1rem] md:h-11 md:w-11",
+                      method.gradientClassName
+                    )}
+                  >
                     <Icon className="h-5 w-5" />
                   </div>
                   <div className="min-w-0">
