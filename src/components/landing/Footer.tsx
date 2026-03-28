@@ -6,22 +6,30 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import MovmashSocialLinks from "@/components/shared/MovmashSocialLinks";
 
+interface FooterLinkItem {
+  label: string;
+  href: string;
+  hash?: string;
+}
+
 const footerLinks = {
   product: [
     { label: "Features", href: "/#features", hash: "features" },
     { label: "How It Works", href: "/#how-it-works", hash: "how-it-works" },
+    { label: "Watch Together", href: "/watch-together" },
+    { label: "Date Night", href: "/long-distance-date-night" },
     { label: "FAQ", href: "/#faq", hash: "faq" },
-  ],
+  ] satisfies FooterLinkItem[],
   company: [
     { label: "About Us", href: "/about" },
     { label: "Contact", href: "/contact" },
     { label: "Blog", href: "/blog" },
-  ],
+  ] satisfies FooterLinkItem[],
   legal: [
     { label: "Privacy Policy", href: "/legal?tab=privacy" },
     { label: "Terms of Service", href: "/legal?tab=terms" },
     { label: "Cookie Policy", href: "/legal?tab=cookies" },
-  ],
+  ] satisfies FooterLinkItem[],
 };
 
 const Footer = () => {
@@ -29,7 +37,10 @@ const Footer = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleProductLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+  const handleProductLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash?: string) => {
+    if (!hash) {
+      return;
+    }
     e.preventDefault();
     if (pathname !== "/") {
       router.push("/");

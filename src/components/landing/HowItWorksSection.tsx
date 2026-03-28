@@ -29,7 +29,7 @@ const steps = [
 
 const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="landing-section">
+    <section id="how-it-works" className="landing-section scroll-mt-28 md:scroll-mt-32">
       <div className="landing-shell relative z-10">
         {/* Section Header */}
         <div className="landing-section-heading">

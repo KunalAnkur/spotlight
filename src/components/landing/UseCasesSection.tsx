@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BookOpen, Gamepad2, GraduationCap, Heart, House, Users } from "lucide-react";
 
 const sectionEmojis = [
@@ -105,6 +106,22 @@ const UseCasesSection = () => {
             <p className="landing-section-copy max-w-2xl">
               Built for private nights in, study sessions, club discussions, and shared community moments.
             </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-sm text-white/56">
+              <Link
+                href="/watch-together"
+                className="inline-flex items-center gap-2 rounded-full bg-white/[0.035] px-4 py-2 transition-colors hover:bg-white/[0.06] hover:text-white"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-rose-300/80" />
+                Watch together online
+              </Link>
+              <Link
+                href="/long-distance-date-night"
+                className="inline-flex items-center gap-2 rounded-full bg-white/[0.035] px-4 py-2 transition-colors hover:bg-white/[0.06] hover:text-white"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-fuchsia-300/80" />
+                Long-distance date night
+              </Link>
+            </div>
           </div>
         </div>
 

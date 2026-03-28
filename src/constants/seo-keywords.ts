@@ -46,6 +46,26 @@ export const homePageKeywords = [
   "movie night with friends",
 ];
 
+export const watchTogetherKeywords = [
+  ...baseKeywords,
+  "watch together online",
+  "watch movies together",
+  "watch at the same time",
+  "watch together app",
+  "online movie night",
+  "shared movie room",
+];
+
+export const longDistanceDateNightKeywords = [
+  ...baseKeywords,
+  "long distance date night",
+  "ldr date night",
+  "watch movies together long distance",
+  "virtual movie date",
+  "long distance relationship movie night",
+  "date night ideas online",
+];
+
 export const blogKeywords = [
   ...baseKeywords,
   "blog",
@@ -120,4 +140,3 @@ export const cookiesKeywords = [
   "privacy settings",
   "data cookies",
 ];
-

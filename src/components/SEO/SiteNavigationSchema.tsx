@@ -41,6 +41,18 @@ export default function SiteNavigationSchema() {
           name: "Contact",
           url: `${baseUrl}/contact`,
         },
+        {
+          "@type": "ListItem",
+          position: 5,
+          name: "Watch Together",
+          url: `${baseUrl}/watch-together`,
+        },
+        {
+          "@type": "ListItem",
+          position: 6,
+          name: "Long Distance Date Night",
+          url: `${baseUrl}/long-distance-date-night`,
+        },
       ],
     },
   };
@@ -52,4 +64,3 @@ export default function SiteNavigationSchema() {
     />
   );
 }
-
