@@ -1,131 +1,41 @@
 import Image from "next/image";
 
-const demoVideoEmbedUrl = "https://www.youtube-nocookie.com/embed/QmiWGfZTHps?rel=0";
+const quickSignals = ["Private rooms", "Synced playback", "Live chat", "No install"];
 
 const ShowcaseSection = () => {
   return (
-    <section className="py-20 md:py-24 relative overflow-hidden bg-[#18181b]">
-      {/* Background glow - more subtle */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-[radial-gradient(ellipse_at_center,_rgba(225,29,72,0.08)_0%,_transparent_70%)]" />
-      </div>
-
-      {/* Floating emojis in background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <span className="absolute top-[15%] left-[8%] text-3xl md:text-4xl animate-float opacity-40">🎬</span>
-        <span className="absolute top-[25%] right-[12%] text-2xl md:text-3xl animate-float-delayed opacity-30">💬</span>
-        <span className="absolute bottom-[20%] left-[10%] text-3xl md:text-4xl animate-float opacity-35" style={{ animationDelay: '1s' }}>🎉</span>
-        <span className="absolute bottom-[30%] right-[8%] text-2xl md:text-3xl animate-float-delayed opacity-30" style={{ animationDelay: '1.5s' }}>❤️</span>
-        <span className="absolute top-[40%] left-[5%] text-2xl md:text-3xl animate-float opacity-25" style={{ animationDelay: '2s' }}>⭐</span>
-      </div>
-
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-10 md:mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-display mb-3 md:mb-4 text-white">
-            See It In{" "}
-            <span className="text-gradient">Action</span>
+    <section id="showcase" className="landing-section pt-8 md:pt-10">
+      <div className="landing-shell relative z-10">
+        <div className="landing-section-heading mb-10 md:mb-12">
+          <h2 className="landing-section-title mb-3 md:mb-4">
+            A Room Layout That Feels{" "}
+            <span className="text-gradient">Clear Right Away</span>
           </h2>
-          <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
-            A beautiful interface designed for watching together. Video, chat, and reactions — all in perfect harmony.
+          <p className="landing-section-copy">
+            The room keeps the video prominent while chat, reactions, and controls stay easy to understand.
           </p>
         </div>
 
-        {/* App Showcase Image - smaller and more refined */}
-        <div className="max-w-4xl mx-auto">
-          <div className="relative group">
-            {/* Subtle glow effect behind image */}
-            <div className="absolute -inset-4 md:-inset-6 bg-gradient-to-r from-[#e11d48]/10 via-[#db2777]/10 to-[#c026d3]/10 blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-500 rounded-3xl" />
-            
-            {/* Image container with modern frame */}
-            <div className="relative rounded-xl md:rounded-2xl overflow-hidden border border-white/10 bg-white/5 shadow-2xl group-hover:border-white/20 transition-all duration-500">
-              {/* Gradient border effect */}
-              <div className="absolute inset-0 rounded-xl md:rounded-2xl bg-gradient-to-r from-[#e11d48]/0 via-[#db2777]/0 to-[#c026d3]/0 group-hover:from-[#e11d48]/10 group-hover:via-[#db2777]/10 group-hover:to-[#c026d3]/10 transition-all duration-500 pointer-events-none" />
-              
-              <Image
-                src="/assets/app-showcase.png"
-                alt="Movmash app interface showing video player with chat and reactions"
-                width={1200}
-                height={675}
-                className="w-full h-auto relative z-10"
-              />
-              
-              {/* Subtle overlay for depth */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#18181b]/30 via-transparent to-transparent pointer-events-none z-20" />
-            </div>
+        <div className="mx-auto max-w-6xl animate-slide-up">
+          <div className="relative overflow-hidden rounded-[1.5rem]">
+            <div className="pointer-events-none absolute inset-x-12 top-10 -z-10 h-28 bg-gradient-to-r from-[#e11d48]/14 via-[#db2777]/10 to-[#c026d3]/14 blur-3xl" />
+            <Image
+              src="/assets/app-showcase.png"
+              alt="Movmash app interface showing video player with chat and reactions"
+              width={1200}
+              height={675}
+              className="h-auto w-full"
+            />
 
-            {/* Modern feature callouts with better positioning */}
-            <div className="absolute -left-3 md:-left-6 top-[20%] hidden lg:block animate-slide-in-left z-30">
-              <div className="glass glass-hover px-3 md:px-4 py-2 md:py-2.5 rounded-lg md:rounded-xl shadow-lg backdrop-blur-xl group/callout">
-                <div className="flex items-center gap-2">
-                  <span className="text-base md:text-lg">🎬</span>
-                  <span className="text-xs md:text-sm font-semibold text-white group-hover/callout:text-gradient transition-colors">
-                    Synced Playback
+            <div className="absolute inset-x-0 bottom-0 bg-[linear-gradient(180deg,rgba(9,9,12,0)_0%,rgba(9,9,12,0.78)_100%)] px-4 py-4 sm:px-6">
+              <div className="landing-meta-line justify-center gap-x-5 gap-y-2 text-white/66">
+                {quickSignals.map((item) => (
+                  <span key={item} className="inline-flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-rose-400/75" />
+                    {item}
                   </span>
-                </div>
+                ))}
               </div>
-            </div>
-            
-            <div className="absolute -right-3 md:-right-6 top-[30%] hidden lg:block animate-slide-in-right z-30" style={{ animationDelay: '0.1s' }}>
-              <div className="glass glass-hover px-3 md:px-4 py-2 md:py-2.5 rounded-lg md:rounded-xl shadow-lg backdrop-blur-xl group/callout">
-                <div className="flex items-center gap-2">
-                  <span className="text-base md:text-lg">💬</span>
-                  <span className="text-xs md:text-sm font-semibold text-white group-hover/callout:text-gradient transition-colors">
-                    Live Chat
-                  </span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="absolute -right-3 md:-right-6 bottom-[35%] hidden lg:block animate-slide-in-right z-30" style={{ animationDelay: '0.2s' }}>
-              <div className="glass glass-hover px-3 md:px-4 py-2 md:py-2.5 rounded-lg md:rounded-xl shadow-lg backdrop-blur-xl group/callout">
-                <div className="flex items-center gap-2">
-                  <span className="text-base md:text-lg">🎉</span>
-                  <span className="text-xs md:text-sm font-semibold text-white group-hover/callout:text-gradient transition-colors">
-                    Flying Reactions
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Additional floating feature badge */}
-            <div className="absolute -left-3 md:-left-6 bottom-[25%] hidden xl:block animate-slide-in-left z-30" style={{ animationDelay: '0.3s' }}>
-              <div className="glass glass-hover px-3 md:px-4 py-2 md:py-2.5 rounded-lg md:rounded-xl shadow-lg backdrop-blur-xl group/callout">
-                <div className="flex items-center gap-2">
-                  <span className="text-base md:text-lg">⚡</span>
-                  <span className="text-xs md:text-sm font-semibold text-white group-hover/callout:text-gradient transition-colors">
-                    Real-time Sync
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Product demo video */}
-        <div className="max-w-4xl mx-auto mt-12 md:mt-16">
-          <div className="text-center mb-8 md:mb-10">
-            <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold font-display text-white mb-2 md:mb-3">
-              Watch the{" "}
-              <span className="text-gradient">Demo</span>
-            </h3>
-            <p className="text-base md:text-lg text-white/70 max-w-2xl mx-auto">
-              A quick walkthrough of the real Movmash experience.
-            </p>
-          </div>
-
-          <div className="relative rounded-xl md:rounded-2xl overflow-hidden border border-white/10 bg-white/5 shadow-2xl">
-            <div className="absolute -inset-4 md:-inset-6 bg-gradient-to-r from-[#e11d48]/10 via-[#db2777]/10 to-[#c026d3]/10 blur-2xl opacity-50 pointer-events-none" />
-            <div className="relative aspect-video">
-              <iframe
-                className="absolute inset-0 h-full w-full"
-                src={demoVideoEmbedUrl}
-                title="Movmash demo video"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              />
             </div>
           </div>
         </div>

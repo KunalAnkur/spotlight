@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { HelpCircle, Shield, Users, Globe, Zap, FileVideo, Monitor } from "lucide-react";
+import { FileVideo, Globe, HelpCircle, Monitor, Shield, Users, Zap } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const faqs = [
   {
@@ -69,21 +64,15 @@ const faqs = [
 
 const FAQSection = () => {
   return (
-    <section id="faq" className="py-20 md:py-24 relative overflow-hidden bg-[#18181b]">
-      {/* Background glow - matching costume app */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-[radial-gradient(ellipse_at_center,_rgba(225,29,72,0.08)_0%,_transparent_70%)]" />
-      
-      <div className="container mx-auto px-4 relative z-10">
+    <section id="faq" className="landing-section">
+      <div className="landing-shell relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-12 md:mb-16">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500 mb-6">
-            <HelpCircle className="w-8 h-8 text-white" />
-          </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-display mb-3 md:mb-4 text-white">
+        <div className="landing-section-heading">
+          <h2 className="landing-section-title mb-3 md:mb-4">
             Frequently Asked{" "}
             <span className="text-gradient">Questions</span>
           </h2>
-          <p className="text-base md:text-lg text-white/70 max-w-2xl mx-auto">
+          <p className="landing-section-copy max-w-6xl mx-auto">
             Everything you need to know about Movmash. Your privacy and security are our top priorities.
           </p>
         </div>
@@ -94,47 +83,31 @@ const FAQSection = () => {
             {faqs.map((faq, index) => (
               <AccordionItem
                 key={index}
-                value={`item-${index}`}
-                className="group relative animate-slide-up border-b-0"
+                value={`faq-${index}`}
+                className="landing-card-surface relative overflow-hidden rounded-2xl border-0 animate-slide-up"
                 style={{ animationDelay: `${index * 0.08}s` }}
               >
-                {/* Glow effect on hover - matching costume app pattern */}
-                <div className={`absolute -inset-0.5 bg-gradient-to-br ${faq.gradient} rounded-2xl blur opacity-0 group-hover:opacity-20 data-[state=open]:opacity-20 transition-opacity duration-300`}></div>
-                
-                {/* Card - glass morphism matching costume app */}
-                <div className="relative bg-gradient-to-br from-white/[0.08] via-white/[0.05] to-white/[0.02] backdrop-blur-sm rounded-2xl transition-all duration-300 shadow-lg group-hover:shadow-xl overflow-hidden">
-                  <AccordionTrigger className="px-6 py-5 hover:no-underline group/trigger [&>svg]:text-white/60 [&>svg]:hover:text-rose-400 [&>svg]:transition-colors">
-                    <div className="flex items-center gap-4 w-full text-left">
-                      {/* Icon with gradient background */}
-                      <div className={`relative flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${faq.gradient} p-[1px]`}>
-                        <div className="w-full h-full rounded-xl bg-[#18181b] flex items-center justify-center">
-                          <faq.icon className="w-6 h-6 text-white" />
-                        </div>
-                        {/* Icon glow */}
-                        <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${faq.gradient} opacity-0 group-hover/trigger:opacity-30 blur-md transition-opacity duration-300`}></div>
-                      </div>
-                      
-                      {/* Question */}
-                      <div className="flex-1">
-                        <h3 className="text-base md:text-lg font-bold font-display text-white">
-                          {faq.question}
-                        </h3>
-                      </div>
+                <AccordionTrigger className="gap-4 px-6 py-5 text-left hover:no-underline [&>svg]:text-white/60 [&>svg]:duration-300 [&[data-state=open]>svg]:text-rose-300">
+                  <div className="flex w-full items-center gap-4 text-left">
+                    <div className={`landing-icon-block flex-shrink-0 bg-gradient-to-br ${faq.gradient}`}>
+                      <faq.icon className="h-6 w-6 text-white" />
                     </div>
-                  </AccordionTrigger>
-                  
-                  <AccordionContent className="px-6 pb-6 pt-0">
-                    <div className="pl-16">
-                      <div className="relative">
-                        {/* Decorative line */}
-                        <div className={`absolute -left-4 top-0 bottom-0 w-0.5 bg-gradient-to-b ${faq.gradient} opacity-30`}></div>
-                        <p className="text-sm md:text-base text-white/70 leading-relaxed">
-                          {faq.answer}
-                        </p>
-                      </div>
+
+                    <div className="flex-1">
+                      <h3 className="font-parkinsans text-base font-semibold tracking-tight text-white md:text-lg">
+                        {faq.question}
+                      </h3>
                     </div>
-                  </AccordionContent>
-                </div>
+                  </div>
+                </AccordionTrigger>
+
+                <AccordionContent className="px-6 pb-6 pt-0">
+                  <div className="pl-16">
+                    <p className="text-sm leading-7 text-white/68 md:text-base">
+                      {faq.answer}
+                    </p>
+                  </div>
+                </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
@@ -142,9 +115,9 @@ const FAQSection = () => {
 
         {/* Trust Badge */}
         <div className="mt-12 md:mt-16 text-center">
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-br from-white/[0.08] via-white/[0.05] to-white/[0.02] backdrop-blur-sm border border-white/10">
+          <div className="inline-flex items-center gap-3 rounded-full px-1 py-1 text-sm text-white/72">
             <Shield className="w-5 h-5 text-rose-400" />
-            <span className="text-sm font-medium text-white/80">
+            <span className="font-medium">
               Your privacy is protected. All data is encrypted and secure.
             </span>
           </div>
@@ -155,4 +128,3 @@ const FAQSection = () => {
 };
 
 export default FAQSection;
-

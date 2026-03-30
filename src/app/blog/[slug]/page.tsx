@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, ArrowLeft, User, BookOpen } from "lucide-react";
+import { ArrowLeft, BookOpen, Calendar, User } from "lucide-react";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import BlogContent from "@/components/blog/BlogContent";
@@ -11,14 +11,45 @@ import BlogCard from "@/components/blog/BlogCard";
 import ArticleSchema from "@/components/blog/ArticleSchema";
 import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
 import { client } from "@/sanity/lib/client";
-import { postQuery, postSlugsQuery, relatedPostsQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
+import { postQuery, postSlugsQuery, relatedPostsQuery } from "@/sanity/lib/queries";
 import { blogPostKeywords } from "@/constants/seo-keywords";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://movmash.com";
 
-// Revalidate every 60 seconds
 export const revalidate = 60;
+
+function getArticleExcerpt(body: any, fallbackTitle?: string) {
+  if (typeof body === "string") {
+    const text = body.trim();
+    return text ? `${text.slice(0, 180)}${text.length > 180 ? "..." : ""}` : fallbackTitle;
+  }
+
+  if (Array.isArray(body)) {
+    const firstBlock = body.find((block: any) => block._type === "block" && block.children);
+    const text = firstBlock?.children
+      ?.map((child: any) => child.text || "")
+      .join(" ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    if (text) {
+      return `${text.slice(0, 180)}${text.length > 180 ? "..." : ""}`;
+    }
+  }
+
+  return fallbackTitle;
+}
+
+function getArticleIntro(body: any, title: string) {
+  const excerpt = getArticleExcerpt(body)?.trim();
+
+  if (excerpt && excerpt !== `Read ${title} on Movmash blog`) {
+    return excerpt;
+  }
+
+  return "A Movmash note on making watch parties smoother, clearer, and easier to enjoy together.";
+}
 
 async function getPost(slug: string) {
   try {
@@ -30,7 +61,6 @@ async function getPost(slug: string) {
   }
 }
 
-// Generate metadata for blog posts
 export async function generateMetadata({
   params,
 }: {
@@ -48,28 +78,21 @@ export async function generateMetadata({
     ? urlFor(post.mainImage).width(1200).height(630).url()
     : `${baseUrl}/assets/logo-square.png`;
 
-  const description = post.body
-    ? // Extract first paragraph from body if available
-      (typeof post.body === 'string' 
-        ? post.body.substring(0, 160) 
-        : 'Read this article on Movmash blog')
-    : `Read ${post.title} on Movmash blog`;
+  const description =
+    getArticleExcerpt(post.body, `Read ${post.title} on Movmash blog`) ||
+    `Read ${post.title} on Movmash blog`;
 
-  // Extract categories for keywords
   const categoryKeywords = post.categories?.map((cat: any) => cat.title) || [];
-  const keywords = [
-    ...blogPostKeywords,
-    ...categoryKeywords,
-  ];
+  const keywords = [...blogPostKeywords, ...categoryKeywords];
 
   return {
     title: post.title,
-    description: description,
+    description,
     keywords: keywords.join(", "),
     authors: post.author?.name ? [{ name: post.author.name }] : undefined,
     openGraph: {
       title: post.title,
-      description: description,
+      description,
       url: `${baseUrl}/blog/${params.slug}`,
       type: "article",
       publishedTime: post.publishedAt,
@@ -87,7 +110,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: post.title,
-      description: description,
+      description,
       images: [imageUrl],
     },
     alternates: {
@@ -96,7 +119,6 @@ export async function generateMetadata({
   };
 }
 
-// Generate static params for all blog posts
 export async function generateStaticParams() {
   try {
     const slugs = await client.fetch<{ slug: string }[]>(postSlugsQuery);
@@ -134,15 +156,11 @@ export default async function BlogPostPage({
     notFound();
   }
 
-  // Get category references for related posts query
   const categoryRefs = (post as any).categoryRefs?.filter(Boolean) || [];
-  
-  // Fetch related posts
   const relatedPosts = await getRelatedPosts(post._id, categoryRefs);
 
-  // Safely get image URL - check if image has asset
   const imageUrl = post.mainImage?.asset?._ref
-    ? urlFor(post.mainImage).width(1200).height(600).url()
+    ? urlFor(post.mainImage).width(1400).height(800).url()
     : null;
 
   const publishedDate = post.publishedAt
@@ -153,33 +171,21 @@ export default async function BlogPostPage({
       })
     : "";
 
-  // Prepare data for Article Schema
   const articleImageUrl = imageUrl || `${baseUrl}/assets/logo-square.png`;
-  
-  // Extract description from body (Portable Text)
-  let articleDescription = `Read ${post.title} on Movmash blog`;
-  if (post.body && Array.isArray(post.body)) {
-    // Try to extract text from Portable Text blocks
-    const firstBlock = post.body.find((block: any) => block._type === 'block' && block.children);
-    if (firstBlock && firstBlock.children) {
-      const text = firstBlock.children
-        .map((child: any) => child.text || '')
-        .join(' ')
-        .substring(0, 160);
-      if (text) articleDescription = text;
-    }
-  }
-  
+  const articleDescription =
+    getArticleExcerpt(post.body, `Read ${post.title} on Movmash blog`) ||
+    `Read ${post.title} on Movmash blog`;
+  const articleIntro = getArticleIntro(post.body, post.title);
+
   const authorImageUrl = post.author?.image?.asset?._ref
     ? urlFor(post.author.image).width(200).height(200).url()
     : undefined;
 
-  // Ensure we have a valid published date
   const publishedDateISO = post.publishedAt || new Date().toISOString();
+  const categoryLabel = post.categories?.[0]?.title || "Movmash";
 
   return (
     <>
-      {/* Article Schema for Rich Results */}
       <ArticleSchema
         title={post.title}
         description={articleDescription}
@@ -192,8 +198,7 @@ export default async function BlogPostPage({
         publisherName="Movmash"
         categories={post.categories?.map((cat: any) => cat.title) || []}
       />
-      
-      {/* Breadcrumb Schema for Navigation */}
+
       <BreadcrumbSchema
         items={[
           { name: "Home", url: baseUrl },
@@ -201,162 +206,129 @@ export default async function BlogPostPage({
           { name: post.title, url: `${baseUrl}/blog/${params.slug}` },
         ]}
       />
-      
-      <div className="min-h-screen bg-[#18181b]">
-      <Navbar />
-      <main className="pt-32 pb-24 relative overflow-hidden">
-        {/* Background glow effects - same as other pages */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[radial-gradient(ellipse_at_center,_rgba(225,29,72,0.08)_0%,_transparent_70%)]" />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[500px] bg-[radial-gradient(ellipse_at_center,_rgba(236,72,153,0.06)_0%,_transparent_70%)]" />
 
-        <div className="container mx-auto px-4 relative z-10">
-          <article className="max-w-5xl mx-auto">
-            {/* Top Bar: Back Button and Category */}
-            <div className="flex items-center justify-between mb-6">
-              <Link
-                href="/blog"
-                className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors group"
-              >
-                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                <span>Back</span>
-              </Link>
-              
-              {post.categories && post.categories.length > 0 && (
-                <span className="px-3 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-fuchsia-500 text-white">
-                  {post.categories[0].title}
-                </span>
-              )}
-            </div>
+      <div className="min-h-screen text-white">
+        <Navbar />
+        <main className="relative overflow-hidden pb-24 pt-24 md:pb-28 md:pt-28">
+          <div className="pointer-events-none absolute left-1/2 top-0 h-48 w-[34rem] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(244,63,94,0.10)_0%,rgba(244,63,94,0.04)_34%,transparent_76%)] blur-[60px] md:w-[48rem]" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(244,63,94,0.03)_0%,transparent_100%)]" />
 
-            {/* Header - Modern Design */}
-            <header className="mb-10">
-              {/* Title - Full Width, Own Row */}
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-display text-white leading-[1.1] mb-6 break-words">
-                {post.title}
-              </h1>
-              
-              {/* Author and Date - Right Aligned, Separate Row - Fixed Height */}
-              <div className="flex items-center justify-start gap-6 flex-shrink-0">
-                {post.author && (
-                  <div className="flex items-center gap-3 group flex-shrink-0">
+          <div className="landing-shell relative z-10">
+            <article className="mx-auto max-w-6xl">
+              <div className="mx-auto max-w-6xl">
+                <header className="mt-6 w-full max-w-6xl space-y-5 pb-5 md:pb-6">
+                  <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <Link
+                      href="/blog"
+                      className="inline-flex items-center gap-2 text-sm text-white/50 transition-colors hover:text-white"
+                    >
+                      <ArrowLeft className="h-4 w-4" />
+                      <span>Back to blog</span>
+                    </Link>
+
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/38 md:justify-end">
+                      {publishedDate ? (
+                        <span className="inline-flex items-center gap-2">
+                          <Calendar className="h-4 w-4" />
+                          <span>{publishedDate}</span>
+                        </span>
+                      ) : null}
+                      {post.author?.name ? <span>By {post.author.name}</span> : null}
+                      <span className="inline-flex items-center rounded-full bg-[linear-gradient(90deg,rgba(251,113,133,0.16)_0%,rgba(251,191,36,0.08)_100%)] px-3 py-1.5 text-white/78">
+                        {categoryLabel}
+                      </span>
+                    </div>
+                  </div>
+
+                  <h1 className="max-w-5xl font-parkinsans text-[2rem] font-semibold leading-[1.02] tracking-[-0.035em] text-white md:text-[2.6rem] lg:text-[3.1rem]">
+                    {post.title}
+                  </h1>
+
+                  <p className="max-w-5xl text-base leading-8 text-white/64 md:text-[1.05rem] md:leading-8">
+                    {articleIntro}
+                  </p>
+                </header>
+              </div>
+
+              {imageUrl ? (
+                <div className="mx-auto mt-5 max-w-6xl md:mt-6">
+                  <div className="relative aspect-[16/9] overflow-hidden rounded-[2rem] bg-white/[0.03] ring-1 ring-white/[0.05] shadow-[0_34px_90px_rgba(0,0,0,0.26)]">
+                    <Image
+                      src={imageUrl}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,9,12,0.02)_0%,rgba(9,9,12,0.16)_100%)]" />
+                  </div>
+                </div>
+              ) : null}
+
+              <div className="mt-16 w-full max-w-5xl">
+                <BlogContent body={post.body} />
+              </div>
+
+              {post.author?.bio ? (
+                <section className="mt-16 w-full max-w-5xl border-t border-white/6 pt-10">
+                  <div className="flex items-start gap-4">
                     {post.author.image?.asset?._ref ? (
-                      <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/10 group-hover:ring-rose-500/30 transition-all flex-shrink-0">
+                      <div className="relative h-14 w-14 overflow-hidden rounded-full ring-1 ring-white/10">
                         <Image
-                          src={urlFor(post.author.image).width(48).height(48).url()}
+                          src={urlFor(post.author.image).width(56).height(56).url()}
                           alt={post.author.name}
                           fill
                           className="object-cover"
                         />
                       </div>
                     ) : (
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-500/30 to-pink-500/30 flex items-center justify-center ring-2 ring-white/10 group-hover:ring-rose-500/30 transition-all flex-shrink-0">
-                        <User className="w-6 h-6 text-rose-400" />
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[linear-gradient(135deg,rgba(251,113,133,0.16)_0%,rgba(255,255,255,0.05)_100%)] ring-1 ring-white/8">
+                        <User className="h-6 w-6 text-white/60" />
                       </div>
                     )}
-                    <div className="flex flex-col flex-shrink-0">
-                      <span className="text-xs text-white/50 font-medium uppercase tracking-wide">Author</span>
-                      <span className="text-base text-white font-semibold whitespace-nowrap">
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/34">
+                        About the author
+                      </p>
+                      <h2 className="mt-2 font-parkinsans text-[1.3rem] font-semibold tracking-tight text-white">
                         {post.author.name}
-                      </span>
+                      </h2>
+                      <div className="mt-3 text-sm leading-relaxed text-white/62">
+                        <AuthorBio bio={post.author.bio} />
+                      </div>
                     </div>
                   </div>
-                )}
-                
-                {publishedDate && (
-                  <div className="flex items-center gap-3 group flex-shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white/5 to-white/[0.02] flex items-center justify-center ring-2 ring-white/10 group-hover:ring-rose-500/30 transition-all flex-shrink-0">
-                      <Calendar className="w-5 h-5 text-rose-400" />
-                    </div>
-                    <div className="flex flex-col flex-shrink-0">
-                      <span className="text-xs text-white/50 font-medium uppercase tracking-wide">Published</span>
-                      <span className="text-base text-white font-semibold whitespace-nowrap">
-                        {publishedDate}
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </header>
+                </section>
+              ) : null}
 
-            {/* Featured Image - Only if exists */}
-            {imageUrl && (
-              <div className="relative w-full aspect-video mb-12 rounded-xl overflow-hidden">
-                <Image
-                  src={imageUrl}
-                  alt={post.title}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            )}
-
-            {/* Content - Clean and Readable */}
-            <div className="prose prose-invert prose-lg max-w-none">
-              <BlogContent body={post.body} />
-            </div>
-
-            {/* Author Bio - Subtle Section */}
-            {post.author && post.author.bio && (
-              <div className="mt-20 pt-12 border-t border-white/5">
-                <div className="flex gap-4 items-start">
-                  {post.author.image?.asset?._ref ? (
-                    <div className="relative w-14 h-14 rounded-full overflow-hidden ring-1 ring-white/10 flex-shrink-0">
-                      <Image
-                        src={urlFor(post.author.image).width(56).height(56).url()}
-                        alt={post.author.name}
-                        fill
-                        className="object-cover"
-                      />
+              {relatedPosts.length > 0 ? (
+                <section className="mt-20 border-t border-white/6 pt-12">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,rgba(251,113,133,0.12)_0%,rgba(251,191,36,0.08)_100%)]">
+                      <BookOpen className="h-5 w-5 text-white/74" />
                     </div>
-                  ) : (
-                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-rose-500/20 to-pink-500/20 flex items-center justify-center flex-shrink-0 ring-1 ring-white/10">
-                      <User className="w-7 h-7 text-rose-400" />
-                    </div>
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-base font-bold font-display mb-2 text-white">
-                      {post.author.name}
-                    </h3>
-                    <div className="text-sm text-white/60 leading-relaxed">
-                      <AuthorBio bio={post.author.bio} />
+                    <div>
+                      <h2 className="font-parkinsans text-2xl font-semibold tracking-tight text-white md:text-[2rem]">
+                        More from Movmash
+                      </h2>
+                      <p className="mt-1 text-sm text-white/54">
+                        Other reads on rooms, shared watching, and smoother hosting.
+                      </p>
                     </div>
                   </div>
-                </div>
-              </div>
-            )}
-          </article>
 
-          {/* Suggested Articles Section */}
-          {relatedPosts.length > 0 && (
-            <section className="mt-24 pt-16 border-t border-white/5">
-              <div className="max-w-5xl mx-auto">
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500/20 to-pink-500/20 flex items-center justify-center">
-                    <BookOpen className="w-5 h-5 text-rose-400" />
+                  <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                    {relatedPosts.map((relatedPost: any) => (
+                      <BlogCard key={relatedPost._id} post={relatedPost} />
+                    ))}
                   </div>
-                  <div>
-                    <h2 className="text-2xl md:text-3xl font-bold font-display text-white">
-                      Suggested <span className="text-gradient">Articles</span>
-                    </h2>
-                    <p className="text-sm text-white/60 mt-1">
-                      More from {post.categories && post.categories.length > 0 ? post.categories[0].title : "this category"}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-                  {relatedPosts.map((relatedPost: any) => (
-                    <BlogCard key={relatedPost._id} post={relatedPost} />
-                  ))}
-                </div>
-              </div>
-            </section>
-          )}
-        </div>
-      </main>
-      <Footer />
-    </div>
+                </section>
+              ) : null}
+            </article>
+          </div>
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }

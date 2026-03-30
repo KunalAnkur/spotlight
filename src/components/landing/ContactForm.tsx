@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Send, Loader2, CheckCircle2 } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 const contactFormSchema = z.object({
@@ -21,6 +21,14 @@ type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const fieldClassName =
+    "h-12 rounded-[1rem] border-0 bg-white/[0.04] px-4 text-[15px] text-white/88 shadow-none outline-none placeholder:text-white/26 focus-visible:border-transparent focus-visible:ring-0 focus-visible:bg-white/[0.06]";
+  const errorFieldClassName =
+    "h-12 rounded-[1rem] border-0 bg-red-500/[0.07] px-4 text-[15px] text-white shadow-none placeholder:text-white/28 focus-visible:border-transparent focus-visible:ring-0 focus-visible:bg-red-500/[0.08]";
+  const messageFieldClassName =
+    "min-h-[180px] rounded-[1.15rem] border-0 bg-white/[0.04] px-4 py-3 text-[15px] text-white/88 shadow-none outline-none placeholder:text-white/26 focus-visible:border-transparent focus-visible:ring-0 focus-visible:bg-white/[0.06]";
+  const errorMessageFieldClassName =
+    "min-h-[180px] rounded-[1.15rem] border-0 bg-red-500/[0.07] px-4 py-3 text-[15px] text-white shadow-none placeholder:text-white/28 focus-visible:border-transparent focus-visible:ring-0 focus-visible:bg-red-500/[0.08]";
 
   const {
     register,
@@ -68,62 +76,66 @@ export function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Name Field */}
-      <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
-        <Input
-          id="name"
-          type="text"
-          placeholder="Your name"
-          {...register("name")}
-          disabled={isSubmitting}
-          className={errors.name ? "border-red-500/50 focus-visible:ring-red-500/50" : ""}
-        />
-        {errors.name && (
-          <p className="text-sm text-red-400">{errors.name.message}</p>
-        )}
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-7">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="name" className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/38">
+            Name
+          </Label>
+          <Input
+            id="name"
+            type="text"
+            placeholder="Your name"
+            {...register("name")}
+            disabled={isSubmitting}
+            className={errors.name ? errorFieldClassName : fieldClassName}
+          />
+          {errors.name && (
+            <p className="text-sm text-red-400">{errors.name.message}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/38">
+            Email
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="your.email@example.com"
+            {...register("email")}
+            disabled={isSubmitting}
+            className={errors.email ? errorFieldClassName : fieldClassName}
+          />
+          {errors.email && (
+            <p className="text-sm text-red-400">{errors.email.message}</p>
+          )}
+        </div>
       </div>
 
-      {/* Email Field */}
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="your.email@example.com"
-          {...register("email")}
-          disabled={isSubmitting}
-          className={errors.email ? "border-red-500/50 focus-visible:ring-red-500/50" : ""}
-        />
-        {errors.email && (
-          <p className="text-sm text-red-400">{errors.email.message}</p>
-        )}
-      </div>
-
-      {/* Message Field */}
-      <div className="space-y-2">
-        <Label htmlFor="message">Message</Label>
+        <Label htmlFor="message" className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/38">
+          Message
+        </Label>
         <Textarea
           id="message"
           placeholder="Tell us what's on your mind..."
           rows={6}
           {...register("message")}
           disabled={isSubmitting}
-          className={errors.message ? "border-red-500/50 focus-visible:ring-red-500/50" : ""}
+          className={errors.message ? errorMessageFieldClassName : messageFieldClassName}
         />
         {errors.message && (
           <p className="text-sm text-red-400">{errors.message.message}</p>
         )}
       </div>
 
-      {/* Submit Button */}
       <Button
         type="submit"
-        variant="hero"
+        variant="secondary"
         size="lg"
         disabled={isSubmitting}
-        className="w-full sm:w-auto"
+        className="w-full rounded-full bg-gradient-to-r from-rose-500 via-pink-500 to-fuchsia-500 text-white hover:from-rose-400 hover:via-pink-400 hover:to-fuchsia-400"
       >
         {isSubmitting ? (
           <>
@@ -140,4 +152,3 @@ export function ContactForm() {
     </form>
   );
 }
-

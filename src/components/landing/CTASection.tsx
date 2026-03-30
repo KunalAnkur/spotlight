@@ -2,36 +2,76 @@ import { Play, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
+const ctaEmojis = [
+  {
+    emoji: "✨",
+    className: "-left-10 top-10 xl:-left-14",
+    animationClass: "animate-float-subtle",
+    delay: "0.14s",
+    sizeClass: "text-[1.45rem]",
+  },
+  {
+    emoji: "🫶",
+    className: "right-2 top-0 xl:-right-8",
+    animationClass: "animate-float-gentle",
+    delay: "0.28s",
+    sizeClass: "text-[1.7rem]",
+  },
+  {
+    emoji: "🎬",
+    className: "left-6 bottom-20 xl:-left-4",
+    animationClass: "animate-float-delayed",
+    delay: "0.42s",
+    sizeClass: "text-[1.6rem]",
+  },
+  {
+    emoji: "💫",
+    className: "right-12 bottom-14 xl:right-0",
+    animationClass: "animate-float-subtle",
+    delay: "0.56s",
+    sizeClass: "text-[1.5rem]",
+  },
+];
+
 const CTASection = () => {
   return (
-    <section className="py-24 relative overflow-hidden bg-[#18181b]">
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#e11d48]/20 rounded-full blur-[128px] animate-pulse-glow" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#c026d3]/20 rounded-full blur-[128px] animate-pulse-glow" style={{ animationDelay: '1.5s' }} />
-      </div>
+    <section className="landing-section">
+      <div className="landing-shell relative z-10">
+        <div className="relative mx-auto max-w-4xl text-center">
+          <div className="pointer-events-none absolute inset-0 hidden xl:block">
+            {ctaEmojis.map((item) => (
+              <div
+                key={`${item.emoji}-${item.className}`}
+                aria-hidden="true"
+                className={`absolute opacity-80 drop-shadow-[0_10px_18px_rgba(0,0,0,0.22)] ${item.sizeClass} ${item.className} ${item.animationClass}`}
+                style={{
+                  animationDelay: item.delay,
+                }}
+              >
+                <span>{item.emoji}</span>
+              </div>
+            ))}
+          </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
           {/* Heading */}
-          <h2 className="text-4xl md:text-6xl font-bold font-display mb-6 text-white">
+          <h2 className="mb-6 font-parkinsans text-4xl font-semibold leading-tight tracking-tight text-white md:text-6xl">
             Ready for Your Next{" "}
             <span className="text-gradient">Watch Party?</span>
           </h2>
           
-          <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto">
-            Join thousands of friends, families, and communities watching together every day.
+          <p className="mx-auto mb-10 max-w-2xl text-xl leading-8 text-white/68">
+            Start a room in seconds and bring everyone into the same watch experience.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="hero" size="xl" asChild>
+            <Button variant="hero" size="xl" asChild className="font-parkinsans">
               <a href="https://app.movmash.com" target="_blank" rel="noopener noreferrer">
                 <Play className="w-5 h-5" />
                 Start Free Watch Party
               </a>
             </Button>
-            <Button variant="outline" size="xl" asChild>
+            <Button variant="outline" size="xl" asChild className="font-parkinsans">
               <a href="#features">
                 Explore Features
                 <ArrowRight className="w-5 h-5" />
@@ -40,7 +80,7 @@ const CTASection = () => {
           </div>
 
           {/* Trust badges */}
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-white/50">
+          <div className="landing-meta-line mt-12">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-green-500" />
               Free forever
@@ -55,22 +95,6 @@ const CTASection = () => {
             </div>
           </div>
 
-          {/* Quick Links for SEO - Helps Google understand site structure for sitelinks */}
-          <nav className="mt-16 pt-8 border-t border-white/10" aria-label="Quick links">
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-              <Link href="/about" className="text-white/60 hover:text-rose-400 transition-colors">
-                About Us
-              </Link>
-              <span className="text-white/30">•</span>
-              <Link href="/blog" className="text-white/60 hover:text-rose-400 transition-colors">
-                Blog
-              </Link>
-              <span className="text-white/30">•</span>
-              <Link href="/contact" className="text-white/60 hover:text-rose-400 transition-colors">
-                Contact
-              </Link>
-            </div>
-          </nav>
         </div>
       </div>
     </section>
@@ -78,4 +102,3 @@ const CTASection = () => {
 };
 
 export default CTASection;
-

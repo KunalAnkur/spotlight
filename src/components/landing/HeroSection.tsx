@@ -1,90 +1,101 @@
 import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import DemoVideoPreview from "@/components/landing/DemoVideoPreview";
+
+const demoVideoEmojis = [
+  {
+    emoji: "🎬",
+    className: "-left-8 top-10 xl:-left-12 xl:top-12",
+    animationClass: "animate-float-gentle",
+    delay: "0.12s",
+    sizeClass: "text-[1.85rem]",
+  },
+  {
+    emoji: "🍿",
+    className: "-right-8 top-8 xl:-right-12 xl:top-10",
+    animationClass: "animate-float-delayed",
+    delay: "0.28s",
+    sizeClass: "text-[1.95rem]",
+  },
+  {
+    emoji: "🎥",
+    className: "-left-10 top-1/2 -translate-y-1/2 xl:-left-14",
+    animationClass: "animate-float-subtle",
+    delay: "0.44s",
+    sizeClass: "text-[1.55rem]",
+  },
+  {
+    emoji: "💬",
+    className: "-right-10 top-[46%] -translate-y-1/2 xl:-right-14",
+    animationClass: "animate-float-gentle",
+    delay: "0.58s",
+    sizeClass: "text-[1.55rem]",
+  },
+  {
+    emoji: "✨",
+    className: "left-16 -top-6 xl:left-24",
+    animationClass: "animate-float-delayed",
+    delay: "0.38s",
+    sizeClass: "text-[1.8rem]",
+  },
+  {
+    emoji: "🎉",
+    className: "right-16 -bottom-6 xl:right-24",
+    animationClass: "animate-float-subtle",
+    delay: "0.66s",
+    sizeClass: "text-[1.75rem]",
+  },
+];
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#18181b]">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0">
-        <Image 
-          src="/assets/hero-bg.jpg" 
-          alt="Watch party background" 
-          fill
-          className="object-cover opacity-30"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#18181b]/80 via-[#18181b]/60 to-[#18181b]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(225,29,72,0.12)_0%,_transparent_70%)]" />
-      </div>
+    <section className="landing-section overflow-visible pb-16 pt-32 md:pb-20 md:pt-56">
+      <div className="landing-shell relative z-10">
+        <div className="absolute left-1/2 top-8 -z-10 h-56 w-56 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(225,29,72,0.16)_0%,transparent_72%)] blur-3xl" />
 
-      {/* Floating Emojis */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <span className="absolute top-1/4 left-[10%] text-4xl animate-float opacity-60">🎬</span>
-        <span className="absolute top-1/3 right-[15%] text-3xl animate-float-delayed opacity-50">🍿</span>
-        <span className="absolute bottom-1/3 left-[20%] text-5xl animate-float opacity-40">😍</span>
-        <span className="absolute top-1/2 right-[10%] text-4xl animate-float-delayed opacity-50">🎉</span>
-        <span className="absolute bottom-1/4 right-[25%] text-3xl animate-float opacity-60">❤️</span>
-      </div>
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center">
+            <h1 className="animate-slide-up font-parkinsans text-3xl font-semibold leading-[1.04] tracking-[-0.03em] text-white sm:text-4xl lg:text-5xl">
+              Watch together, <span className="text-gradient">feel closer.</span>
+            </h1>
 
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 py-20 text-center">
-        <div className="max-w-4xl mx-auto">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 animate-slide-up">
-            <span className="w-2 h-2 rounded-full bg-gradient-to-r from-[#e11d48] via-[#db2777] to-[#c026d3]" />
-            <span className="text-sm font-medium text-white/70">Watch together, anywhere</span>
+            <p className="mx-auto mt-3 max-w-3xl animate-slide-up text-sm font-medium leading-6 text-white/58 md:text-base">
+              Private room links, synced playback, and zero setup friction.
+            </p>
+
+            <div className="mt-7 flex flex-col items-center justify-center gap-4 animate-slide-up stagger-3 sm:flex-row">
+              <Button variant="hero" size="xl" asChild className="font-parkinsans">
+                <a href="https://app.movmash.com" target="_blank" rel="noopener noreferrer">
+                  <Play className="h-5 w-5" />
+                  Start Watching
+                </a>
+              </Button>
+              <Button variant="outline" size="xl" asChild className="font-parkinsans">
+                <a href="#features">
+                  Explore Features
+                </a>
+              </Button>
+            </div>
           </div>
 
-          {/* Main Headline */}
-          <h1 className="text-5xl md:text-7xl font-bold font-display mb-6 animate-slide-up stagger-1 text-white">
-            Movie Night,{" "}
-            <span className="text-gradient">Reimagined</span>
-          </h1>
-
-          {/* Subheadline */}
-          <p className="text-xl md:text-2xl text-white/70 mb-10 max-w-2xl mx-auto animate-slide-up stagger-2">
-            Watch videos together with friends in perfect sync. 
-            Chat, react, and share the moment — no matter the distance.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up stagger-3">
-            <Button variant="hero" size="xl" asChild>
-              <a href="https://app.movmash.com" target="_blank" rel="noopener noreferrer">
-                <Play className="w-5 h-5" />
-                Start Watching Free
-              </a>
-            </Button>
-            <Button variant="glass" size="xl" asChild>
-              <a href="#how-it-works">
-                See How It Works
-              </a>
-            </Button>
+          <div id="demo-video" className="relative mt-10 md:mt-12">
+            <div className="pointer-events-none absolute inset-0 z-10 hidden lg:block">
+              {demoVideoEmojis.map((item) => (
+                <div
+                  key={`${item.emoji}-${item.className}`}
+                  aria-hidden="true"
+                  className={`absolute opacity-80 drop-shadow-[0_10px_18px_rgba(0,0,0,0.22)] ${item.sizeClass} ${item.className} ${item.animationClass}`}
+                  style={{
+                    animationDelay: item.delay,
+                  }}
+                >
+                  <span>{item.emoji}</span>
+                </div>
+              ))}
+            </div>
+            <div className="absolute inset-x-10 top-10 -z-10 h-28 bg-gradient-to-r from-[#e11d48]/16 via-[#db2777]/10 to-[#c026d3]/16 blur-3xl" />
+            <DemoVideoPreview />
           </div>
-
-          {/* Stats */}
-          {/* <div className="grid grid-cols-3 gap-8 max-w-lg mx-auto animate-slide-up stagger-4">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gradient font-display">10K+</div>
-              <div className="text-sm text-white/50">Active Users</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gradient font-display">50K+</div>
-              <div className="text-sm text-white/50">Watch Parties</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gradient font-display">99.9%</div>
-              <div className="text-sm text-white/50">Uptime</div>
-            </div>
-          </div> */}
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-2">
-          <div className="w-1 h-2 rounded-full bg-gradient-to-b from-[#e11d48] via-[#db2777] to-[#c026d3] animate-pulse" />
         </div>
       </div>
     </section>
@@ -92,4 +103,3 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
-

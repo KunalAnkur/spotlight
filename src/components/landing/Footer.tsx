@@ -1,8 +1,10 @@
 "use client";
 
-import { Twitter, Instagram, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import MovmashSocialLinks from "@/components/shared/MovmashSocialLinks";
 
 const footerLinks = {
   product: [
@@ -16,16 +18,11 @@ const footerLinks = {
     { label: "Blog", href: "/blog" },
   ],
   legal: [
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
-    { label: "Cookie Policy", href: "/cookies" },
+    { label: "Privacy Policy", href: "/legal?tab=privacy" },
+    { label: "Terms of Service", href: "/legal?tab=terms" },
+    { label: "Cookie Policy", href: "/legal?tab=cookies" },
   ],
 };
-
-const socialLinks = [
-  { icon: Twitter, href: "https://twitter.com/movmash", label: "Twitter" },
-  { icon: Instagram, href: "https://instagram.com/movmash", label: "Instagram" }
-];
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -53,49 +50,43 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#18181b] border-t border-white/10">
-      <div className="container mx-auto px-4 py-12">
+    <footer className="landing-open-divider">
+      <div className="landing-shell py-8 md:py-9">
         {/* Main Footer Content */}
-        <div className="flex flex-col lg:flex-row items-start justify-between gap-12 mb-12">
+        <div className="mb-8 flex flex-col items-start justify-between gap-8 lg:flex-row lg:gap-10">
           {/* Brand Section */}
           <div className="flex-1 max-w-md">
-            <div className="mb-4">
-              <Link href="/" className="inline-block">
-                <span className="text-3xl md:text-4xl font-bold font-display text-gradient">Movmash</span>
+            <div className="mb-3">
+              <Link href="/" className="inline-flex items-center gap-2.5">
+                <Image
+                  src="/android-chrome-512x512.png"
+                  alt="Movmash Logo"
+                  width={28}
+                  height={28}
+                  className="h-7 w-7"
+                />
+                <span className="font-parkinsans text-2xl font-semibold tracking-tight text-white">Movmash</span>
               </Link>
             </div>
-            <p className="text-base text-white/60 mb-6 leading-relaxed">
+            <p className="mb-4 max-w-sm text-sm leading-7 text-white/60 md:text-[15px]">
               Watch videos together, no matter where you are. Real-time sync, live chat, and fun reactions.
             </p>
             {/* Social Links */}
-            <div className="flex items-center gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-gradient-to-br from-rose-500/20 to-pink-500/20 flex items-center justify-center text-white/60 hover:text-rose-400 hover:from-rose-500/30 hover:to-pink-500/30 transition-all duration-300 hover:scale-110 border border-white/5"
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-5 h-5" />
-                </a>
-              ))}
-            </div>
+            <MovmashSocialLinks />
           </div>
 
           {/* Links Grid */}
-          <div className="flex flex-wrap gap-8 lg:gap-12">
+          <div className="flex flex-wrap gap-7 md:gap-9 lg:gap-10">
             {/* Product Links */}
             <div className="flex flex-col">
-              <h4 className="font-bold font-display mb-4 text-white text-lg">Product</h4>
-              <ul className="space-y-2.5">
+              <h4 className="mb-3 font-parkinsans text-base font-semibold tracking-tight text-white">Product</h4>
+              <ul className="space-y-2">
                 {footerLinks.product.map((link) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
                       onClick={(e) => handleProductLinkClick(e, link.hash)}
-                      className="text-white/60 hover:text-rose-400 transition-colors text-base inline-block"
+                      className="inline-block text-sm text-white/60 transition-colors hover:text-white md:text-[15px]"
                     >
                       {link.label}
                     </a>
@@ -106,13 +97,13 @@ const Footer = () => {
 
             {/* Company Links */}
             <div className="flex flex-col">
-              <h4 className="font-bold font-display mb-4 text-white text-lg">Company</h4>
-              <ul className="space-y-2.5">
+              <h4 className="mb-3 font-parkinsans text-base font-semibold tracking-tight text-white">Company</h4>
+              <ul className="space-y-2">
                 {footerLinks.company.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-white/60 hover:text-rose-400 transition-colors text-base inline-block"
+                      className="inline-block text-sm text-white/60 transition-colors hover:text-white md:text-[15px]"
                     >
                       {link.label}
                     </Link>
@@ -123,13 +114,13 @@ const Footer = () => {
 
             {/* Legal Links */}
             <div className="flex flex-col">
-              <h4 className="font-bold font-display mb-4 text-white text-lg">Legal</h4>
-              <ul className="space-y-2.5">
+              <h4 className="mb-3 font-parkinsans text-base font-semibold tracking-tight text-white">Legal</h4>
+              <ul className="space-y-2">
                 {footerLinks.legal.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-white/60 hover:text-rose-400 transition-colors text-base inline-block"
+                      className="inline-block text-sm text-white/60 transition-colors hover:text-white md:text-[15px]"
                     >
                       {link.label}
                     </Link>
@@ -141,13 +132,13 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="landing-open-divider flex flex-col items-center justify-between gap-3 pt-6 sm:flex-row">
           <p className="text-sm text-white/50">
-            © {currentYear} Movmash. Made with <span className="text-rose-400">❤️</span> for movie lovers.
+            © {currentYear} Movmash. Made with ❤️ for movie lovers.
           </p>
           <a 
             href="mailto:support@movmash.com" 
-            className="flex items-center gap-2 text-sm text-white/50 hover:text-rose-400 transition-colors"
+            className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
           >
             <Mail className="w-4 h-4" />
             <span>support@movmash.com</span>
@@ -159,4 +150,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
