@@ -4,9 +4,16 @@ import { groq } from 'next-sanity'
 export const postsQuery = groq`*[_type == "post"] | order(publishedAt desc) {
   _id,
   title,
+  seoTitle,
+  seoDescription,
+  excerpt,
+  primaryKeyword,
+  relatedLandingPage,
   slug,
   mainImage,
   publishedAt,
+  updatedAt,
+  _updatedAt,
   "author": author->{
     name,
     image
@@ -20,9 +27,18 @@ export const postsQuery = groq`*[_type == "post"] | order(publishedAt desc) {
 export const postQuery = groq`*[_type == "post" && slug.current == $slug][0] {
   _id,
   title,
+  seoTitle,
+  seoDescription,
+  excerpt,
+  primaryKeyword,
+  relatedLandingPage,
+  featuredSnippetAnswer,
   slug,
   mainImage,
   publishedAt,
+  updatedAt,
+  _updatedAt,
+  faq,
   body,
   "author": author->{
     name,
@@ -39,13 +55,18 @@ export const postQuery = groq`*[_type == "post" && slug.current == $slug][0] {
 
 // Query to get all post slugs for static generation
 export const postSlugsQuery = groq`*[_type == "post"] {
-  "slug": slug.current
+  "slug": slug.current,
+  "updatedAt": updatedAt,
+  "_updatedAt": _updatedAt,
+  "publishedAt": publishedAt
 }`
 
 // Query to get related posts from the same category (excluding current post)
 export const relatedPostsQuery = groq`*[_type == "post" && _id != $currentPostId && count(categories[@._ref in $categoryRefs]) > 0] | order(publishedAt desc) [0...4] {
   _id,
   title,
+  seoTitle,
+  excerpt,
   slug,
   mainImage,
   publishedAt,
@@ -57,4 +78,3 @@ export const relatedPostsQuery = groq`*[_type == "post" && _id != $currentPostId
     title
   }
 }`
-

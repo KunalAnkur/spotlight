@@ -80,7 +80,7 @@ export interface IntentLandingPageData {
 
 export const watchTogetherPageData: IntentLandingPageData = {
   slug: "watch-together",
-  metadataTitle: "Watch Together Online | Free Watch Party App",
+  metadataTitle: "Watch Together Online | Watch Party App",
   metadataDescription:
     "Watch together online with synced playback, private room links, live chat, reactions, and screen sharing. Movmash makes movie nights and watch parties easy to start.",
   metadataKeywords: [
@@ -203,7 +203,7 @@ export const watchTogetherPageData: IntentLandingPageData = {
   finalTitle: "Open a room and watch together tonight.",
   finalCopy:
     "Movmash keeps shared watching simple, clear, and easy to start from the first click.",
-  finalSignals: ["Free to start", "No downloads required", "Works in the browser"],
+  finalSignals: ["Private room links", "No downloads required", "Works in the browser"],
 };
 
 export const longDistanceDateNightPageData: IntentLandingPageData = {

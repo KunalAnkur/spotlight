@@ -18,11 +18,13 @@ export default function OrganizationSchema() {
       width: 512,
       height: 512,
     },
-    description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
+    description:
+      "Movmash is a watch party app for watching together online with synced playback, private room links, chat, reactions, and screen sharing.",
     sameAs: [
-      // Add your social media links here when available
-      // "https://twitter.com/movmash",
-      // "https://facebook.com/movmash",
+      "https://twitter.com/movmash",
+      "https://instagram.com/movmash",
+      "https://www.tiktok.com/@movmash",
+      "https://www.linkedin.com/company/movmash",
     ],
     contactPoint: {
       "@type": "ContactPoint",
@@ -38,5 +40,3 @@ export default function OrganizationSchema() {
     />
   );
 }
-
-

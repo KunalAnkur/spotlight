@@ -123,8 +123,8 @@ export default function AboutPage() {
             <div className="relative mx-auto mt-10 w-full max-w-5xl overflow-hidden rounded-[2.1rem] bg-white/[0.03] shadow-[0_32px_90px_rgba(0,0,0,0.32)] ring-1 ring-white/6">
               <div className="pointer-events-none absolute inset-x-20 top-5 h-24 bg-gradient-to-r from-[#f59e0b]/12 via-[#f43f5e]/10 to-[#a855f7]/12 blur-3xl" />
               <Image
-                src="/assets/app-showcase.png"
-                alt="Movmash room interface with synced video, chat, and reactions"
+                src="/assets/realroomrection.png"
+                alt="Movmash room interface with video, chat, and reactions"
                 width={1280}
                 height={720}
                 className="relative z-10 h-auto w-full"

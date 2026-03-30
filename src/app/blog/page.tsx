@@ -13,11 +13,11 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://movmash.com";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Insights, tips, and stories to help you get the most out of Movmash. Learn about watch parties, video synchronization, and how to make the most of your shared viewing experience.",
+    "Watch party guides, watch-together tips, and practical ideas for smoother movie nights with Movmash.",
   keywords: blogKeywords.join(", "),
   openGraph: {
     title: "Movmash Blog",
-    description: "Insights, tips, and stories to help you get the most out of Movmash.",
+    description: "Watch party guides, watch-together tips, and practical ideas for smoother movie nights with Movmash.",
     url: `${baseUrl}/blog`,
     type: "website",
     images: [
@@ -49,15 +49,16 @@ async function getPosts() {
 export default async function BlogPage() {
   const posts = await getPosts();
   const blogPosts = posts.slice(0, 10).map((post: any) => ({
-    title: post.title,
+    title: post.seoTitle?.trim() || post.title,
     url: post.slug?.current ? `${baseUrl}/blog/${post.slug.current}` : "",
+    datePublished: post.publishedAt,
   }));
 
   return (
     <>
       <BlogListingSchema
         title="Movmash Blog"
-        description="Insights, tips, and stories to help you get the most out of Movmash."
+        description="Watch party guides, watch-together tips, and practical ideas for smoother movie nights with Movmash."
         url={`${baseUrl}/blog`}
         posts={blogPosts}
       />

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, BookOpen, Calendar, User } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Calendar, Link2, User } from "lucide-react";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import BlogContent from "@/components/blog/BlogContent";
@@ -41,15 +41,64 @@ function getArticleExcerpt(body: any, fallbackTitle?: string) {
   return fallbackTitle;
 }
 
-function getArticleIntro(body: any, title: string) {
-  const excerpt = getArticleExcerpt(body)?.trim();
+function getArticleDescription(post: any) {
+  const explicitDescription = post.seoDescription?.trim();
+  if (explicitDescription) {
+    return explicitDescription;
+  }
+
+  const explicitExcerpt = post.excerpt?.trim();
+  if (explicitExcerpt) {
+    return explicitExcerpt;
+  }
+
+  const snippetAnswer = post.featuredSnippetAnswer?.trim();
+  if (snippetAnswer) {
+    return snippetAnswer;
+  }
+
+  return (
+    getArticleExcerpt(post.body, `Read ${post.title} on Movmash blog`) ||
+    `Read ${post.title} on Movmash blog`
+  );
+}
+
+function getArticleIntro(post: any, title: string) {
+  const featuredAnswer = post.featuredSnippetAnswer?.trim();
+
+  if (featuredAnswer) {
+    return featuredAnswer;
+  }
+
+  const excerpt = post.excerpt?.trim() || getArticleExcerpt(post.body)?.trim();
 
   if (excerpt && excerpt !== `Read ${title} on Movmash blog`) {
     return excerpt;
   }
 
-  return "A Movmash note on making watch parties smoother, clearer, and easier to enjoy together.";
+  return "A Movmash guide to making watch parties smoother, clearer, and easier to enjoy together.";
 }
+
+const relatedLandingPageMeta: Record<
+  string,
+  { title: string; description: string; href: string }
+> = {
+  "/": {
+    title: "Watch party homepage",
+    description: "See the main Movmash overview for starting a watch party.",
+    href: "/",
+  },
+  "/watch-together": {
+    title: "Watch together guide",
+    description: "See the main Movmash setup for watching together online.",
+    href: "/watch-together",
+  },
+  "/long-distance-date-night": {
+    title: "Long-distance date night",
+    description: "See the softer two-person version of the Movmash room flow.",
+    href: "/long-distance-date-night",
+  },
+};
 
 async function getPost(slug: string) {
   try {
@@ -78,20 +127,20 @@ export async function generateMetadata({
     ? urlFor(post.mainImage).width(1200).height(630).url()
     : `${baseUrl}/assets/logo-square.png`;
 
-  const description =
-    getArticleExcerpt(post.body, `Read ${post.title} on Movmash blog`) ||
-    `Read ${post.title} on Movmash blog`;
+  const description = getArticleDescription(post);
+  const metadataTitle = post.seoTitle?.trim() || post.title;
 
   const categoryKeywords = post.categories?.map((cat: any) => cat.title) || [];
-  const keywords = [...blogPostKeywords, ...categoryKeywords];
+  const primaryKeyword = post.primaryKeyword?.trim();
+  const keywords = [...blogPostKeywords, ...categoryKeywords, ...(primaryKeyword ? [primaryKeyword] : [])];
 
   return {
-    title: post.title,
+    title: metadataTitle,
     description,
     keywords: keywords.join(", "),
     authors: post.author?.name ? [{ name: post.author.name }] : undefined,
     openGraph: {
-      title: post.title,
+      title: metadataTitle,
       description,
       url: `${baseUrl}/blog/${params.slug}`,
       type: "article",
@@ -109,7 +158,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
+      title: metadataTitle,
       description,
       images: [imageUrl],
     },
@@ -160,7 +209,7 @@ export default async function BlogPostPage({
   const relatedPosts = await getRelatedPosts(post._id, categoryRefs);
 
   const imageUrl = post.mainImage?.asset?._ref
-    ? urlFor(post.mainImage).width(1400).height(800).url()
+    ? urlFor(post.mainImage).width(1600).fit("max").auto("format").url()
     : null;
 
   const publishedDate = post.publishedAt
@@ -172,17 +221,19 @@ export default async function BlogPostPage({
     : "";
 
   const articleImageUrl = imageUrl || `${baseUrl}/assets/logo-square.png`;
-  const articleDescription =
-    getArticleExcerpt(post.body, `Read ${post.title} on Movmash blog`) ||
-    `Read ${post.title} on Movmash blog`;
-  const articleIntro = getArticleIntro(post.body, post.title);
+  const articleDescription = getArticleDescription(post);
+  const articleIntro = getArticleIntro(post, post.title);
 
   const authorImageUrl = post.author?.image?.asset?._ref
     ? urlFor(post.author.image).width(200).height(200).url()
     : undefined;
 
   const publishedDateISO = post.publishedAt || new Date().toISOString();
+  const modifiedDateISO = post.updatedAt || post._updatedAt || post.publishedAt || new Date().toISOString();
   const categoryLabel = post.categories?.[0]?.title || "Movmash";
+  const primaryKeyword = post.primaryKeyword?.trim();
+  const schemaKeywords = [...(post.categories?.map((cat: any) => cat.title) || []), ...(primaryKeyword ? [primaryKeyword] : [])];
+  const relatedLandingPage = relatedLandingPageMeta[post.relatedLandingPage || ""];
 
   return (
     <>
@@ -192,11 +243,12 @@ export default async function BlogPostPage({
         url={`${baseUrl}/blog/${params.slug}`}
         image={articleImageUrl}
         datePublished={publishedDateISO}
-        dateModified={publishedDateISO}
+        dateModified={modifiedDateISO}
         authorName={post.author?.name || "Movmash"}
         authorImage={authorImageUrl}
         publisherName="Movmash"
         categories={post.categories?.map((cat: any) => cat.title) || []}
+        keywords={schemaKeywords}
       />
 
       <BreadcrumbSchema
@@ -252,15 +304,15 @@ export default async function BlogPostPage({
 
               {imageUrl ? (
                 <div className="mx-auto mt-5 max-w-6xl md:mt-6">
-                  <div className="relative aspect-[16/9] overflow-hidden rounded-[2rem] bg-white/[0.03] ring-1 ring-white/[0.05] shadow-[0_34px_90px_rgba(0,0,0,0.26)]">
-                    <Image
-                      src={imageUrl}
-                      alt={post.title}
-                      fill
-                      className="object-cover"
-                      priority
-                    />
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,9,12,0.02)_0%,rgba(9,9,12,0.16)_100%)]" />
+                  <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[2rem] ring-1 ring-white/10 shadow-[0_34px_90px_rgba(0,0,0,0.26)]">
+                      <Image
+                        src={imageUrl}
+                        alt={post.title}
+                        fill
+                        sizes="(min-width: 1280px) 1152px, (min-width: 768px) calc(100vw - 64px), calc(100vw - 32px)"
+                        className="object-cover object-center"
+                        priority
+                      />
                   </div>
                 </div>
               ) : null}
@@ -268,6 +320,62 @@ export default async function BlogPostPage({
               <div className="mt-16 w-full max-w-5xl">
                 <BlogContent body={post.body} />
               </div>
+
+              {relatedLandingPage ? (
+                <section className="mt-14 w-full max-w-5xl border-t border-white/6 pt-8">
+                  <div className="rounded-[1.35rem] bg-white/[0.022] px-5 py-5 sm:px-6">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/34">
+                      Related page
+                    </p>
+                    <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                      <div>
+                        <h2 className="font-parkinsans text-[1.05rem] font-semibold tracking-tight text-white">
+                          {relatedLandingPage.title}
+                        </h2>
+                        <p className="mt-1.5 max-w-2xl text-sm leading-7 text-white/60">
+                          {relatedLandingPage.description}
+                        </p>
+                      </div>
+                      <Link
+                        href={relatedLandingPage.href}
+                        className="inline-flex items-center gap-2 text-sm text-white/72 transition-colors hover:text-white"
+                      >
+                        <Link2 className="h-4 w-4" />
+                        Open page
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </section>
+              ) : null}
+
+              {Array.isArray(post.faq) && post.faq.length > 0 ? (
+                <section className="mt-16 w-full max-w-5xl border-t border-white/6 pt-10">
+                  <div className="space-y-5">
+                    <div>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/34">
+                        Quick answers
+                      </p>
+                      <h2 className="mt-2 font-parkinsans text-[1.4rem] font-semibold tracking-tight text-white md:text-[1.7rem]">
+                        Common questions about this topic
+                      </h2>
+                    </div>
+
+                    <div className="space-y-4">
+                      {post.faq.map((item: any) => (
+                        <article key={item.question} className="rounded-[1.2rem] bg-white/[0.02] px-5 py-5">
+                          <h3 className="font-parkinsans text-[1rem] font-semibold tracking-tight text-white">
+                            {item.question}
+                          </h3>
+                          <p className="mt-2 text-sm leading-7 text-white/62">
+                            {item.answer}
+                          </p>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              ) : null}
 
               {post.author?.bio ? (
                 <section className="mt-16 w-full max-w-5xl border-t border-white/6 pt-10">

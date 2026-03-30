@@ -13,6 +13,7 @@ import FAQPageSchema from "@/components/SEO/FAQPageSchema";
 import WebPageSchema from "@/components/SEO/WebPageSchema";
 import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
 import SiteNavigationSchema from "@/components/SEO/SiteNavigationSchema";
+import SoftwareApplicationSchema from "@/components/SEO/SoftwareApplicationSchema";
 import { homePageKeywords } from "@/constants/seo-keywords";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
@@ -20,8 +21,8 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
 // FAQ data for schema (matching FAQSection component)
 const faqs = [
   {
-    question: "Is Movmash free to use?",
-    answer: "Yes! Movmash is completely free to use. Create rooms, invite friends, and watch together without any subscription or payment required.",
+    question: "Do guests need to download anything?",
+    answer: "No. Guests can join from the browser with the room link, so the room can start without an extra install step.",
   },
   {
     question: "Do my friends need to create an account?",
@@ -54,12 +55,14 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Movmash - Watch Together, Anywhere",
-  description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance. Perfect for movie nights, TV shows, and shared experiences. Free to use, no account required for guests.",
+  title: "Watch Party App | Watch Together Online | Movmash",
+  description:
+    "Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions, screen sharing, and local file streaming.",
   keywords: homePageKeywords.join(", "),
   openGraph: {
-    title: "Movmash - Watch Together, Anywhere",
-    description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
+    title: "Watch Party App | Watch Together Online | Movmash",
+    description:
+      "Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions, screen sharing, and local file streaming.",
     url: baseUrl,
     type: "website",
     siteName: "Movmash",
@@ -68,14 +71,15 @@ export const metadata: Metadata = {
         url: `${baseUrl}/assets/logo-square.png`,
         width: 1200,
         height: 630,
-        alt: "Movmash - Watch Together, Anywhere",
+        alt: "Movmash watch party app for watching together online",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Movmash - Watch Together, Anywhere",
-    description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
+    title: "Watch Party App | Watch Together Online | Movmash",
+    description:
+      "Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions, screen sharing, and local file streaming.",
     creator: "@movmash",
     images: [`${baseUrl}/assets/logo-square.png`],
   },
@@ -95,9 +99,22 @@ export default function Home() {
       
       {/* WebPage Schema for home page */}
       <WebPageSchema
-        title="Movmash - Watch Together, Anywhere"
-        description="Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance."
+        title="Watch Party App | Watch Together Online | Movmash"
+        description="Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions, screen sharing, and local file streaming."
         url={baseUrl}
+      />
+
+      <SoftwareApplicationSchema
+        url={baseUrl}
+        description="Watch party app for watching together online with synced playback, private room links, live chat, reactions, screen sharing, and local file streaming."
+        features={[
+          "Watch party rooms",
+          "Synced playback",
+          "Private room links",
+          "Live chat and reactions",
+          "Screen sharing",
+          "Local file streaming",
+        ]}
       />
       
       {/* Breadcrumb Schema for home page */}

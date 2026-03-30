@@ -14,10 +14,11 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Movmash - Watch Together, Anywhere",
+    default: "Watch Party App | Watch Together Online | Movmash",
     template: "%s | Movmash",
   },
-  description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
+  description:
+    "Movmash is a watch party app for watching together online with synced playback, private room links, chat, reactions, and screen sharing.",
   keywords: baseKeywords.join(", "),
   authors: [{ name: "Movmash" }],
   creator: "Movmash",
@@ -32,21 +33,23 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: baseUrl,
     siteName: "Movmash",
-    title: "Movmash - Watch Together, Anywhere",
-    description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
+    title: "Watch Party App | Watch Together Online | Movmash",
+    description:
+      "Movmash is a watch party app for watching together online with synced playback, private room links, chat, reactions, and screen sharing.",
     images: [
       {
         url: `${baseUrl}/assets/logo-square.png`,
         width: 1200,
         height: 630,
-        alt: "Movmash - Watch Together, Anywhere",
+        alt: "Movmash watch party app for watching together online",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Movmash - Watch Together, Anywhere",
-    description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
+    title: "Watch Party App | Watch Together Online | Movmash",
+    description:
+      "Movmash is a watch party app for watching together online with synced playback, private room links, chat, reactions, and screen sharing.",
     creator: "@movmash",
     images: [`${baseUrl}/assets/logo-square.png`],
   },
@@ -75,9 +78,7 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   verification: {
-    // Add your verification codes here when available
-    // google: "your-google-verification-code",
-    // yandex: "your-yandex-verification-code",
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
   },
   // Hilltop ad service
   other: {
