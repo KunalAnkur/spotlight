@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
 import FeaturesSection from "@/components/landing/FeaturesSection";
@@ -15,8 +14,7 @@ import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
 import SiteNavigationSchema from "@/components/SEO/SiteNavigationSchema";
 import SoftwareApplicationSchema from "@/components/SEO/SoftwareApplicationSchema";
 import { homePageKeywords } from "@/constants/seo-keywords";
-
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
+import { baseUrl, createPageMetadata } from "@/lib/metadata";
 
 // FAQ data for schema (matching FAQSection component)
 const faqs = [
@@ -54,39 +52,12 @@ const faqs = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Watch Party App | Watch Together Online | Movmash",
   description:
     "Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions, screen sharing, and local file streaming.",
-  keywords: homePageKeywords.join(", "),
-  openGraph: {
-    title: "Watch Party App | Watch Together Online | Movmash",
-    description:
-      "Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions, screen sharing, and local file streaming.",
-    url: baseUrl,
-    type: "website",
-    siteName: "Movmash",
-    images: [
-      {
-        url: `${baseUrl}/assets/logo-square.png`,
-        width: 1200,
-        height: 630,
-        alt: "Movmash watch party app for watching together online",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Watch Party App | Watch Together Online | Movmash",
-    description:
-      "Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions, screen sharing, and local file streaming.",
-    creator: "@movmash",
-    images: [`${baseUrl}/assets/logo-square.png`],
-  },
-  alternates: {
-    canonical: baseUrl,
-  },
-};
+  keywords: homePageKeywords,
+});
 
 export default function Home() {
   return (

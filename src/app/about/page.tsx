@@ -1,35 +1,21 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import { Clapperboard, MessageCircleHeart, Shield, Sparkles, type LucideIcon } from "lucide-react";
 import SecondaryPageLayout from "@/components/layout/SecondaryPageLayout";
 import { aboutKeywords } from "@/constants/seo-keywords";
+import { createPageMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://movmash.com";
-
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "About Movmash",
   description:
     "Learn about Movmash - our mission to bring people together through shared experiences. Discover our values, what we do, and our commitment to privacy and security.",
-  keywords: aboutKeywords.join(", "),
+  path: "/about",
+  keywords: aboutKeywords,
   openGraph: {
-    title: "About Movmash",
     description:
       "Learn about Movmash - our mission to bring people together through shared experiences.",
-    url: `${baseUrl}/about`,
-    images: [
-      {
-        url: `${baseUrl}/assets/logo-square.png`,
-        width: 1200,
-        height: 630,
-        alt: "About Movmash",
-      },
-    ],
   },
-  alternates: {
-    canonical: `${baseUrl}/about`,
-  },
-};
+});
 
 interface AboutPoint {
   icon: LucideIcon;
