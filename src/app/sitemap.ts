@@ -32,6 +32,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/watch-together`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/long-distance-date-night`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/privacy`,
       lastModified: new Date(),
       changeFrequency: 'yearly',
@@ -70,4 +82,3 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [...staticPages, ...blogPosts]
 }
-
