@@ -1,35 +1,22 @@
-import type { Metadata } from "next";
 import { Mail } from "lucide-react";
 import SecondaryPageLayout from "@/components/layout/SecondaryPageLayout";
 import { ContactForm } from "@/components/landing/ContactForm";
 import { movmashSocialLinks } from "@/components/shared/MovmashSocialLinks";
 import { contactKeywords } from "@/constants/seo-keywords";
+import { createPageMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://movmash.com";
-
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Contact Us",
   description:
     "Get in touch with Movmash. Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
-  keywords: contactKeywords.join(", "),
+  path: "/contact",
+  keywords: contactKeywords,
   openGraph: {
     title: "Contact Movmash",
     description: "Get in touch with Movmash. Have questions? We'd love to hear from you.",
-    url: `${baseUrl}/contact`,
-    images: [
-      {
-        url: `${baseUrl}/assets/logo-square.png`,
-        width: 1200,
-        height: 630,
-        alt: "Contact Movmash",
-      },
-    ],
   },
-  alternates: {
-    canonical: `${baseUrl}/contact`,
-  },
-};
+});
 
 export default function ContactPage() {
   return (

@@ -1,35 +1,21 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import { Clapperboard, MessageCircleHeart, Shield, Sparkles, type LucideIcon } from "lucide-react";
 import SecondaryPageLayout from "@/components/layout/SecondaryPageLayout";
 import { aboutKeywords } from "@/constants/seo-keywords";
+import { createPageMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://movmash.com";
-
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "About Movmash",
   description:
     "Learn about Movmash - our mission to bring people together through shared experiences. Discover our values, what we do, and our commitment to privacy and security.",
-  keywords: aboutKeywords.join(", "),
+  path: "/about",
+  keywords: aboutKeywords,
   openGraph: {
-    title: "About Movmash",
     description:
       "Learn about Movmash - our mission to bring people together through shared experiences.",
-    url: `${baseUrl}/about`,
-    images: [
-      {
-        url: `${baseUrl}/assets/logo-square.png`,
-        width: 1200,
-        height: 630,
-        alt: "About Movmash",
-      },
-    ],
   },
-  alternates: {
-    canonical: `${baseUrl}/about`,
-  },
-};
+});
 
 interface AboutPoint {
   icon: LucideIcon;
@@ -123,8 +109,8 @@ export default function AboutPage() {
             <div className="relative mx-auto mt-10 w-full max-w-5xl overflow-hidden rounded-[2.1rem] bg-white/[0.03] shadow-[0_32px_90px_rgba(0,0,0,0.32)] ring-1 ring-white/6">
               <div className="pointer-events-none absolute inset-x-20 top-5 h-24 bg-gradient-to-r from-[#f59e0b]/12 via-[#f43f5e]/10 to-[#a855f7]/12 blur-3xl" />
               <Image
-                src="/assets/app-showcase.png"
-                alt="Movmash room interface with synced video, chat, and reactions"
+                src="/assets/realroomrection.png"
+                alt="Movmash room interface with video, chat, and reactions"
                 width={1280}
                 height={720}
                 className="relative z-10 h-auto w-full"

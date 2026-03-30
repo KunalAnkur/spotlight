@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { PortableTextComponents } from "@portabletext/react";
-import { urlFor } from "@/sanity/lib/image";
+import { getSanityImageDimensions, urlFor } from "@/sanity/lib/image";
 
 // Custom components for rendering Portable Text (Sanity's rich text format)
 export const portableTextComponents: PortableTextComponents = {
@@ -12,15 +12,28 @@ export const portableTextComponents: PortableTextComponents = {
       if (!value?.asset?._ref) {
         return null;
       }
+
+      const dimensions = getSanityImageDimensions(value);
+      const isPortrait = dimensions?.isPortrait;
+      const imageUrl = urlFor(value).width(1600).fit("max").auto("format").url();
+
       return (
         <div className="my-10 w-full">
-          <Image
-            src={urlFor(value).width(1200).height(600).url()}
-            alt={value.alt || "Blog post image"}
-            width={1200}
-            height={600}
-            className="w-full rounded-[1.4rem] object-cover"
-          />
+          <div className="rounded-[1.6rem] bg-white/[0.025] p-2 ring-1 ring-white/10 shadow-[0_24px_70px_rgba(0,0,0,0.18)]">
+            <div className="flex justify-center overflow-hidden rounded-[1.2rem]">
+              <Image
+                src={imageUrl}
+                alt={value.alt || "Blog post image"}
+                width={dimensions?.width || 1600}
+                height={dimensions?.height || 900}
+                className={
+                  isPortrait
+                    ? "h-auto max-h-[76vh] w-auto max-w-full object-contain"
+                    : "h-auto w-full object-contain"
+                }
+              />
+            </div>
+          </div>
           {value.caption && (
             <p className="mt-3 text-center text-xs text-white/46">
               {value.caption}

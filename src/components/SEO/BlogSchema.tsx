@@ -40,6 +40,12 @@ export default function BlogSchema({
       position: index + 1,
       name: post.title,
       url: post.url,
+      item: {
+        "@type": "BlogPosting",
+        headline: post.title,
+        url: post.url,
+        ...(post.datePublished ? {datePublished: post.datePublished} : {}),
+      },
     }));
   }
 
@@ -50,4 +56,3 @@ export default function BlogSchema({
     />
   );
 }
-

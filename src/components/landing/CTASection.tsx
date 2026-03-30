@@ -68,7 +68,7 @@ const CTASection = () => {
             <Button variant="hero" size="xl" asChild className="font-parkinsans">
               <a href="https://app.movmash.com" target="_blank" rel="noopener noreferrer">
                 <Play className="w-5 h-5" />
-                Start Free Watch Party
+                Start Watch Party
               </a>
             </Button>
             <Button variant="outline" size="xl" asChild className="font-parkinsans">
@@ -83,7 +83,7 @@ const CTASection = () => {
           <div className="landing-meta-line mt-12">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-green-500" />
-              Free forever
+              Private room links
             </div>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-green-500" />

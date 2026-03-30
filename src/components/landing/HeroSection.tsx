@@ -1,6 +1,7 @@
 import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DemoVideoPreview from "@/components/landing/DemoVideoPreview";
+import Link from "next/link";
 
 const demoVideoEmojis = [
   {
@@ -55,27 +56,45 @@ const HeroSection = () => {
 
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
+            <p className="animate-slide-up text-[11px] font-semibold uppercase tracking-[0.3em] text-white/42">
+              Watch Party App
+            </p>
+
             <h1 className="animate-slide-up font-parkinsans text-3xl font-semibold leading-[1.04] tracking-[-0.03em] text-white sm:text-4xl lg:text-5xl">
-              Watch together, <span className="text-gradient">feel closer.</span>
+              Online movie nights are easy!{" "}
+              <span className="text-gradient">Watch together with Movmash.</span>
             </h1>
 
             <p className="mx-auto mt-3 max-w-3xl animate-slide-up text-sm font-medium leading-6 text-white/58 md:text-base">
-              Private room links, synced playback, and zero setup friction.
+              Start a watch party in seconds with synced playback, private room links, chat, reactions, and screen sharing.
             </p>
 
             <div className="mt-7 flex flex-col items-center justify-center gap-4 animate-slide-up stagger-3 sm:flex-row">
               <Button variant="hero" size="xl" asChild className="font-parkinsans">
                 <a href="https://app.movmash.com" target="_blank" rel="noopener noreferrer">
                   <Play className="h-5 w-5" />
-                  Start Watching
+                  Start Watch Party
                 </a>
               </Button>
               <Button variant="outline" size="xl" asChild className="font-parkinsans">
-                <a href="#features">
-                  Explore Features
-                </a>
+                <a href="#how-it-works">See How It Works</a>
               </Button>
             </div>
+
+            <p className="mx-auto mt-5 max-w-3xl animate-slide-up text-xs leading-6 text-white/48 md:text-sm">
+              Also exploring?{" "}
+              <Link href="/watch-together" className="text-white/72 transition-colors hover:text-white">
+                Watch together online
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/long-distance-date-night"
+                className="text-white/72 transition-colors hover:text-white"
+              >
+                long-distance date night
+              </Link>
+              .
+            </p>
           </div>
 
           <div id="demo-video" className="relative mt-10 md:mt-12">

@@ -7,18 +7,23 @@ import OrganizationSchema from "@/components/SEO/OrganizationSchema";
 import WebsiteSchema from "@/components/SEO/WebsiteSchema";
 import MovmashBackdrop from "@/components/layout/MovmashBackdrop";
 import { baseKeywords } from "@/constants/seo-keywords";
+import { baseUrl, createPageMetadata } from "@/lib/metadata";
 import "./globals.css";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com';
+const rootMetadata = createPageMetadata({
+  title: "Watch Party App | Watch Together Online | Movmash",
+  description:
+    "Movmash is a watch party app for watching together online with synced playback, private room links, chat, reactions, and screen sharing.",
+  keywords: baseKeywords,
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
+  ...rootMetadata,
   title: {
-    default: "Movmash - Watch Together, Anywhere",
+    default: "Watch Party App | Watch Together Online | Movmash",
     template: "%s | Movmash",
   },
-  description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
-  keywords: baseKeywords.join(", "),
   authors: [{ name: "Movmash" }],
   creator: "Movmash",
   publisher: "Movmash",
@@ -26,29 +31,6 @@ export const metadata: Metadata = {
     email: false,
     address: false,
     telephone: false,
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: baseUrl,
-    siteName: "Movmash",
-    title: "Movmash - Watch Together, Anywhere",
-    description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
-    images: [
-      {
-        url: `${baseUrl}/assets/logo-square.png`,
-        width: 1200,
-        height: 630,
-        alt: "Movmash - Watch Together, Anywhere",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Movmash - Watch Together, Anywhere",
-    description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
-    creator: "@movmash",
-    images: [`${baseUrl}/assets/logo-square.png`],
   },
   robots: {
     index: true,
@@ -61,9 +43,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: {
-    canonical: baseUrl,
-  },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
@@ -75,9 +54,7 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   verification: {
-    // Add your verification codes here when available
-    // google: "your-google-verification-code",
-    // yandex: "your-yandex-verification-code",
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
   },
   // Hilltop ad service
   other: {

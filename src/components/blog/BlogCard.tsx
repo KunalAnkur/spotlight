@@ -7,6 +7,8 @@ interface BlogCardProps {
   post: {
     _id: string;
     title: string;
+    seoTitle?: string;
+    excerpt?: string;
     slug?: { current: string } | null;
     mainImage?: any;
     publishedAt?: string;
@@ -35,6 +37,8 @@ export default function BlogCard({ post }: BlogCardProps) {
         day: "numeric",
       })
     : "";
+  const visibleTitle = post.seoTitle?.trim() || post.title || "Untitled Post";
+  const excerpt = post.excerpt?.trim();
 
   return (
     <Link
@@ -95,8 +99,14 @@ export default function BlogCard({ post }: BlogCardProps) {
         </div>
 
         <h3 className="mt-3 line-clamp-2 font-parkinsans text-lg font-semibold leading-tight tracking-tight text-white transition-colors group-hover:text-white/88">
-          {post.title || "Untitled Post"}
+          {visibleTitle}
         </h3>
+
+        {excerpt ? (
+          <p className="mt-2 line-clamp-3 text-sm leading-6 text-white/60">
+            {excerpt}
+          </p>
+        ) : null}
 
         {post.author ? (
           <div className="mt-auto flex items-center gap-2.5 pt-5 text-xs text-white/56">

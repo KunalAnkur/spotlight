@@ -8,11 +8,11 @@ const ShowcaseSection = () => {
       <div className="landing-shell relative z-10">
         <div className="landing-section-heading mb-10 md:mb-12">
           <h2 className="landing-section-title mb-3 md:mb-4">
-            A Room Layout That Feels{" "}
+            A Watch Party Room That Feels{" "}
             <span className="text-gradient">Clear Right Away</span>
           </h2>
           <p className="landing-section-copy">
-            The room keeps the video prominent while chat, reactions, and controls stay easy to understand.
+            Movmash keeps the video prominent while chat, reactions, and controls stay easy to understand for first-time guests.
           </p>
         </div>
 

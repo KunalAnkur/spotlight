@@ -33,7 +33,10 @@ export const extendedKeywords = [
 
 export const homePageKeywords = [
   ...baseKeywords,
+  "watch party app",
+  "watch together online",
   "watch movies together",
+  "watch videos together",
   "synchronized video",
   "long distance relationships",
   "screen sharing",
@@ -41,7 +44,6 @@ export const homePageKeywords = [
   "streaming party",
   "premium watch party",
   "streaming together",
-  "free watch party",
   "no account required",
   "movie night with friends",
 ];

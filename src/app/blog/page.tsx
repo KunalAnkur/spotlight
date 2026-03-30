@@ -1,38 +1,23 @@
-import type { Metadata } from "next";
 import { BookOpenText } from "lucide-react";
 import BlogCard from "@/components/blog/BlogCard";
 import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
 import BlogListingSchema from "@/components/SEO/BlogSchema";
 import SecondaryPageLayout from "@/components/layout/SecondaryPageLayout";
 import { blogKeywords } from "@/constants/seo-keywords";
+import { baseUrl, createPageMetadata } from "@/lib/metadata";
 import { client } from "@/sanity/lib/client";
 import { postsQuery } from "@/sanity/lib/queries";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://movmash.com";
-
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Blog",
   description:
-    "Insights, tips, and stories to help you get the most out of Movmash. Learn about watch parties, video synchronization, and how to make the most of your shared viewing experience.",
-  keywords: blogKeywords.join(", "),
+    "Watch party guides, watch-together tips, and practical ideas for smoother movie nights with Movmash.",
+  path: "/blog",
+  keywords: blogKeywords,
   openGraph: {
     title: "Movmash Blog",
-    description: "Insights, tips, and stories to help you get the most out of Movmash.",
-    url: `${baseUrl}/blog`,
-    type: "website",
-    images: [
-      {
-        url: `${baseUrl}/assets/logo-square.png`,
-        width: 1200,
-        height: 630,
-        alt: "Movmash Blog",
-      },
-    ],
   },
-  alternates: {
-    canonical: `${baseUrl}/blog`,
-  },
-};
+});
 
 export const revalidate = 60;
 
@@ -49,15 +34,16 @@ async function getPosts() {
 export default async function BlogPage() {
   const posts = await getPosts();
   const blogPosts = posts.slice(0, 10).map((post: any) => ({
-    title: post.title,
+    title: post.seoTitle?.trim() || post.title,
     url: post.slug?.current ? `${baseUrl}/blog/${post.slug.current}` : "",
+    datePublished: post.publishedAt,
   }));
 
   return (
     <>
       <BlogListingSchema
         title="Movmash Blog"
-        description="Insights, tips, and stories to help you get the most out of Movmash."
+        description="Watch party guides, watch-together tips, and practical ideas for smoother movie nights with Movmash."
         url={`${baseUrl}/blog`}
         posts={blogPosts}
       />

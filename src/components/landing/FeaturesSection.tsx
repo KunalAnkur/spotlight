@@ -58,11 +58,11 @@ const FeaturesSection = () => {
         {/* Section Header */}
         <div className="landing-section-heading">
           <h2 className="landing-section-title mb-3 md:mb-4">
-            Everything You Need to{" "}
-            <span className="text-gradient">Watch Together</span>
+            Everything You Need for a{" "}
+            <span className="text-gradient">Smooth Watch Party</span>
           </h2>
           <p className="landing-section-copy">
-            Two powerful modes, endless possibilities. Whether you&apos;re syncing YouTube or streaming premium content, we&apos;ve got you covered.
+            Start a watch party with synced links, screen sharing, local files, and live chat that keeps everyone in the same moment.
           </p>
         </div>
 

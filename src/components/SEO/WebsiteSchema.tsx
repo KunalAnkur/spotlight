@@ -7,19 +7,12 @@ export default function WebsiteSchema() {
     "@id": `${baseUrl}/#website`,
     name: "Movmash",
     url: baseUrl,
-    description: "Watch videos together with friends in perfect sync. Chat, react, and share the moment — no matter the distance.",
+    description:
+      "Movmash is a watch party app for watching together online with synced playback, private room links, chat, reactions, and screen sharing.",
     publisher: {
       "@type": "Organization",
       name: "Movmash",
       url: baseUrl,
-    },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${baseUrl}/blog?search={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
     },
     // Help Google understand main navigation for sitelinks
     mainEntity: {
@@ -54,5 +47,3 @@ export default function WebsiteSchema() {
     />
   );
 }
-
-
