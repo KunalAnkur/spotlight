@@ -11,6 +11,7 @@ import Image from "next/image";
 const navLinks = [
   { label: "Features", href: "/#features", hash: "features" },
   { label: "How It Works", href: "/#how-it-works", hash: "how-it-works" },
+  { label: "Shop", href: "/watch-party-shop", hash: "" },
   { label: "FAQ", href: "/#faq", hash: "faq" },
   { label: "Blog", href: "/blog", hash: "" },
 ];

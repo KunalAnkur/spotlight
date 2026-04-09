@@ -123,7 +123,7 @@ export async function generateMetadata({
   }
 
   const imageUrl = post.mainImage?.asset?._ref
-    ? urlFor(post.mainImage).width(1200).height(630).url()
+    ? urlFor(post.mainImage).width(1200).height(630).fit("crop").format("jpg").url()
     : createSocialImage().url;
 
   const description = getArticleDescription(post);

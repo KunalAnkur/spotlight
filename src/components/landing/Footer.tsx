@@ -16,6 +16,7 @@ const footerLinks = {
   product: [
     { label: "Features", href: "/#features", hash: "features" },
     { label: "How It Works", href: "/#how-it-works", hash: "how-it-works" },
+    { label: "Watch Party Shop", href: "/watch-party-shop" },
     { label: "Watch Together", href: "/watch-together" },
     { label: "Date Night", href: "/long-distance-date-night" },
     { label: "FAQ", href: "/#faq", hash: "faq" },

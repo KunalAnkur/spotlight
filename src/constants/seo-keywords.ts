@@ -68,6 +68,16 @@ export const longDistanceDateNightKeywords = [
   "date night ideas online",
 ];
 
+export const watchPartyShopKeywords = [
+  ...baseKeywords,
+  "watch party shop",
+  "movie night finds",
+  "date night gifts",
+  "watch party gift ideas",
+  "movie night accessories",
+  "affiliate product recommendations",
+];
+
 export const blogKeywords = [
   ...baseKeywords,
   "blog",
