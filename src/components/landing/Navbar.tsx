@@ -11,6 +11,7 @@ import Image from "next/image";
 const navLinks = [
   { label: "Features", href: "/#features", hash: "features" },
   { label: "How It Works", href: "/#how-it-works", hash: "how-it-works" },
+  { label: "Pricing", href: "/#pricing", hash: "pricing" },
   { label: "Shop", href: "/watch-party-shop", hash: "" },
   { label: "FAQ", href: "/#faq", hash: "faq" },
   { label: "Blog", href: "/blog", hash: "" },
@@ -81,7 +82,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation - Centered */}
-          <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 lg:flex">
+          <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 lg:flex">
             {navLinks.map((link) => (
               <a
                 key={link.label}

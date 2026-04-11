@@ -32,24 +32,30 @@ export default function SiteNavigationSchema() {
         {
           "@type": "ListItem",
           position: 3,
+          name: "Pricing",
+          url: `${baseUrl}/pricing`,
+        },
+        {
+          "@type": "ListItem",
+          position: 4,
           name: "Blog",
           url: `${baseUrl}/blog`,
         },
         {
           "@type": "ListItem",
-          position: 4,
+          position: 5,
           name: "Contact",
           url: `${baseUrl}/contact`,
         },
         {
           "@type": "ListItem",
-          position: 5,
+          position: 6,
           name: "Watch Together",
           url: `${baseUrl}/watch-together`,
         },
         {
           "@type": "ListItem",
-          position: 6,
+          position: 7,
           name: "Long Distance Date Night",
           url: `${baseUrl}/long-distance-date-night`,
         },

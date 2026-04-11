@@ -123,6 +123,18 @@ export const contactKeywords = [
   "questions",
 ];
 
+export const pricingKeywords = [
+  ...baseKeywords,
+  "pricing",
+  "plans",
+  "free plan",
+  "premium plan",
+  "watch party pricing",
+  "watch together pricing",
+  "group watch plans",
+  "premium watch rooms",
+];
+
 export const privacyKeywords = [
   ...baseKeywords,
   "privacy policy",

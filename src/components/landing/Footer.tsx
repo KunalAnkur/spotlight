@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import MovmashSocialLinks from "@/components/shared/MovmashSocialLinks";
+import { Button } from "@/components/ui/button";
 
 interface FooterLinkItem {
   label: string;
@@ -16,6 +17,7 @@ const footerLinks = {
   product: [
     { label: "Features", href: "/#features", hash: "features" },
     { label: "How It Works", href: "/#how-it-works", hash: "how-it-works" },
+    { label: "Pricing", href: "/pricing" },
     { label: "Watch Party Shop", href: "/watch-party-shop" },
     { label: "Watch Together", href: "/watch-together" },
     { label: "Date Night", href: "/long-distance-date-night" },
@@ -85,6 +87,11 @@ const Footer = () => {
             </p>
             {/* Social Links */}
             <MovmashSocialLinks />
+            <div className="mt-5">
+              <Button variant="outline" asChild className="font-parkinsans">
+                <Link href="/pricing">Pricing</Link>
+              </Button>
+            </div>
           </div>
 
           {/* Links Grid */}
