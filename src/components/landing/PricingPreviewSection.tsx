@@ -3,6 +3,7 @@ import PricingPlansGrid from "@/components/pricing/PricingPlansGrid";
 import { Button } from "@/components/ui/button";
 
 const PricingPreviewSection = () => {
+  const movmashAppURL = "https://localhost:3000/pricing";
   return (
     <section id="pricing" className="landing-section">
       <div className="landing-shell relative z-10">
@@ -19,7 +20,7 @@ const PricingPreviewSection = () => {
           </p>
           <div className="mt-6 flex items-center justify-center">
             <Button variant="outline" size="lg" asChild className="font-parkinsans">
-              <Link href="/pricing">See details</Link>
+              <Link href={movmashAppURL}>See details</Link>
             </Button>
           </div>
         </div>
@@ -31,7 +32,7 @@ const PricingPreviewSection = () => {
 
         <p className="mx-auto mt-6 max-w-2xl text-center text-sm leading-7 text-white/54 md:text-[15px]">
           Need the full breakdown too?{" "}
-          <Link href="/pricing" className="secondary-inline-link">
+          <Link href={movmashAppURL} className="secondary-inline-link">
             Open the pricing page
           </Link>
           .

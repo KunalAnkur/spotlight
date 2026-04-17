@@ -34,7 +34,7 @@ export const pricingPlans: PricingPlan[] = [
     cardClassName:
       "bg-white/[0.024] ring-1 ring-white/8 shadow-[0_22px_54px_rgba(0,0,0,0.18)]",
     ctaLabel: "Start free",
-    ctaHref: "https://app.movmash.com",
+    ctaHref: "http://localhost:3000",
     ctaVariant: "outline",
     external: true,
     features: [
@@ -47,8 +47,8 @@ export const pricingPlans: PricingPlan[] = [
   {
     name: "Premium",
     eyebrow: "Large rooms",
-    value: "Custom",
-    valueMeta: "Talk to us",
+    value: "$9.99",
+    valueMeta: "per month",
     description: "Best for groups, longer sessions, and calls.",
     icon: Crown,
     iconClassName:
@@ -56,9 +56,10 @@ export const pricingPlans: PricingPlan[] = [
     badgeClassName: "bg-rose-500/12 text-rose-100",
     cardClassName:
       "bg-[linear-gradient(180deg,rgba(244,63,94,0.07)_0%,rgba(255,255,255,0.03)_24%,rgba(255,255,255,0.022)_100%)] ring-1 ring-rose-400/20 shadow-[0_26px_64px_rgba(0,0,0,0.24)]",
-    ctaLabel: "Contact for premium",
-    ctaHref: "/contact",
+    ctaLabel: "View premium plan",
+    ctaHref: "http://localhost:3000/pricing",
     ctaVariant: "hero",
+    external: true,
     features: [
       "50+ people per room",
       "Unlimited time",
