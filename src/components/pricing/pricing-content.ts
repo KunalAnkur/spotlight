@@ -49,7 +49,7 @@ export const pricingPlans: PricingPlan[] = [
   {
     name: "Premium",
     eyebrow: "Large rooms",
-    value: "$9.99",
+    value: "$3.99",
     valueMeta: "per month",
     description: "Best for groups, longer sessions, and calls.",
     icon: Crown,
