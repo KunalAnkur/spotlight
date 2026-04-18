@@ -85,12 +85,17 @@ export default function PricingPlansGrid({ className }: PricingPlansGridProps) {
                 size="lg"
                 className={cn("w-full", pricingCtaClassName)}
               >
-                {plan.external ? (
+                {/* <a href={plan.ctaHref} rel="noopener noreferrer">
+                  {plan.ctaLabel}
+                </a> */}
+                {plan.plan === 'free' ? (
                   <a href={plan.ctaHref} rel="noopener noreferrer">
                     {plan.ctaLabel}
+                  </a> 
+                ): (
+                  <a rel="noopener noreferrer">
+                    Coming Soon
                   </a>
-                ) : (
-                  <Link href={plan.ctaHref}>{plan.ctaLabel}</Link>
                 )}
               </Button>
             </div>

@@ -18,6 +18,7 @@ export interface PricingPlan {
   ctaHref: string;
   ctaVariant: "hero" | "outline";
   external?: boolean;
+  plan?: 'free' | 'premium';
   features: string[];
 }
 
@@ -37,6 +38,7 @@ export const pricingPlans: PricingPlan[] = [
     ctaHref: "http://localhost:3000",
     ctaVariant: "outline",
     external: true,
+    plan: 'free',
     features: [
       "2 people per room",
       "2-hour sessions",
@@ -60,6 +62,7 @@ export const pricingPlans: PricingPlan[] = [
     ctaHref: "http://localhost:3000/pricing",
     ctaVariant: "hero",
     external: true,
+    plan: 'premium',
     features: [
       "50+ people per room",
       "Unlimited time",
