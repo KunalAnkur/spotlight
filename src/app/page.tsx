@@ -2,6 +2,7 @@ import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
 import FeaturesSection from "@/components/landing/FeaturesSection";
 import ShowcaseSection from "@/components/landing/ShowcaseSection";
+import PricingPreviewSection from "@/components/landing/PricingPreviewSection";
 import UseCasesSection from "@/components/landing/UseCasesSection";
 import HowItWorksSection from "@/components/landing/HowItWorksSection";
 import PlatformsSection from "@/components/landing/PlatformsSection";
@@ -40,7 +41,7 @@ const faqs = [
   },
   {
     question: "Is there a limit on room participants?",
-    answer: "Currently, Movmash supports multiple participants in each room. For the best experience, we recommend keeping rooms under 50 participants.",
+    answer: "Free rooms support up to 2 participants. Premium is built for larger rooms with more than 50 participants.",
   },
   {
     question: "What browsers are supported?",
@@ -101,6 +102,7 @@ export default function Home() {
           <HeroSection />
           <FeaturesSection />
           <ShowcaseSection />
+          <PricingPreviewSection />
           <UseCasesSection />
           <HowItWorksSection />
           <PlatformsSection />

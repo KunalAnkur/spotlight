@@ -44,6 +44,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${baseUrl}/pricing`,
+      lastModified: getFileLastModified('src/app/pricing/page.tsx'),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/watch-together`,
       lastModified: getFileLastModified('src/app/watch-together/page.tsx'),
       changeFrequency: 'weekly',
@@ -52,6 +58,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${baseUrl}/long-distance-date-night`,
       lastModified: getFileLastModified('src/app/long-distance-date-night/page.tsx'),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/watch-party-shop`,
+      lastModified: getFileLastModified('src/app/watch-party-shop/page.tsx'),
       changeFrequency: 'weekly',
       priority: 0.8,
     },

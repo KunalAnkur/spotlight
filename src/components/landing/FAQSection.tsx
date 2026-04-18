@@ -36,7 +36,7 @@ const faqs = [
   },
   {
     question: "Is there a limit on room participants?",
-    answer: "Currently, Movmash supports multiple participants in each room. For the best experience, we recommend keeping rooms under 50 participants.",
+    answer: "Free rooms support up to 2 participants. Premium is built for larger rooms with more than 50 participants.",
     icon: Users,
     gradient: "from-fuchsia-500 via-purple-500 to-indigo-500",
   },

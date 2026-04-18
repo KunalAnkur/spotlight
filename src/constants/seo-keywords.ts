@@ -68,6 +68,16 @@ export const longDistanceDateNightKeywords = [
   "date night ideas online",
 ];
 
+export const watchPartyShopKeywords = [
+  ...baseKeywords,
+  "watch party shop",
+  "movie night finds",
+  "date night gifts",
+  "watch party gift ideas",
+  "movie night accessories",
+  "affiliate product recommendations",
+];
+
 export const blogKeywords = [
   ...baseKeywords,
   "blog",
@@ -111,6 +121,18 @@ export const contactKeywords = [
   "customer service",
   "feedback",
   "questions",
+];
+
+export const pricingKeywords = [
+  ...baseKeywords,
+  "pricing",
+  "plans",
+  "free plan",
+  "premium plan",
+  "watch party pricing",
+  "watch together pricing",
+  "group watch plans",
+  "premium watch rooms",
 ];
 
 export const privacyKeywords = [
