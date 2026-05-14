@@ -3,7 +3,7 @@ import PricingPlansGrid from "@/components/pricing/PricingPlansGrid";
 import { Button } from "@/components/ui/button";
 
 const PricingPreviewSection = () => {
-  const movmashAppURL = "https://localhost:3000/pricing";
+  const movmashAppURL = "https://app.movmash.com/pricing";
   return (
     <section id="pricing" className="landing-section">
       <div className="landing-shell relative z-10">

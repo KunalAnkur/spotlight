@@ -35,7 +35,7 @@ export const pricingPlans: PricingPlan[] = [
     cardClassName:
       "bg-white/[0.024] ring-1 ring-white/8 shadow-[0_22px_54px_rgba(0,0,0,0.18)]",
     ctaLabel: "Start free",
-    ctaHref: "http://localhost:3000",
+    ctaHref: "https://app.movmash.com",
     ctaVariant: "outline",
     external: true,
     plan: 'free',
@@ -51,7 +51,7 @@ export const pricingPlans: PricingPlan[] = [
     eyebrow: "Large rooms",
     value: "$3.99",
     valueMeta: "per month",
-    description: "Best for groups, longer sessions, and calls.",
+    description: "Best for groups, longer sessions",
     icon: Crown,
     iconClassName:
       "bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500 text-white shadow-[0_18px_36px_rgba(244,63,94,0.2)]",
@@ -59,14 +59,14 @@ export const pricingPlans: PricingPlan[] = [
     cardClassName:
       "bg-[linear-gradient(180deg,rgba(244,63,94,0.07)_0%,rgba(255,255,255,0.03)_24%,rgba(255,255,255,0.022)_100%)] ring-1 ring-rose-400/20 shadow-[0_26px_64px_rgba(0,0,0,0.24)]",
     ctaLabel: "View premium plan",
-    ctaHref: "http://localhost:3000/pricing",
+    ctaHref: "https://app.movmash.com/pricing",
     ctaVariant: "hero",
     external: true,
     plan: 'premium',
     features: [
       "50+ people per room",
       "Unlimited time",
-      "Audio and video calls",
+      // "Audio and video calls",
       "Better room UI",
     ],
   },
