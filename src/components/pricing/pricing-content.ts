@@ -1,14 +1,13 @@
-import {
-  Crown,
-  Sparkles,
-  type LucideIcon,
-} from "lucide-react";
+import { Crown, Heart, Sparkles, type LucideIcon } from "lucide-react";
+import type {
+  SubscriptionPlanData,
+  SubscriptionPlanFeatures,
+  SubscriptionPlanTier,
+} from "@/lib/subscription-plans";
 
-export interface PricingPlan {
+export interface PricingDisplayMeta {
   name: string;
   eyebrow: string;
-  value: string;
-  valueMeta: string;
   description: string;
   icon: LucideIcon;
   iconClassName: string;
@@ -18,17 +17,19 @@ export interface PricingPlan {
   ctaHref: string;
   ctaVariant: "hero" | "outline";
   external?: boolean;
-  plan?: 'free' | 'premium';
-  features: string[];
 }
 
-export const pricingPlans: PricingPlan[] = [
-  {
+const paidCardClassName =
+  "bg-[linear-gradient(180deg,rgba(244,63,94,0.07)_0%,rgba(255,255,255,0.03)_24%,rgba(255,255,255,0.022)_100%)] ring-1 ring-rose-400/20 shadow-[0_26px_64px_rgba(0,0,0,0.24)]";
+const paidIconClassName =
+  "bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500 text-white shadow-[0_18px_36px_rgba(244,63,94,0.2)]";
+const paidBadgeClassName = "bg-rose-500/12 text-rose-100";
+
+export const PRICING_DISPLAY: Record<SubscriptionPlanTier, PricingDisplayMeta> = {
+  free: {
     name: "Free",
-    eyebrow: "Small rooms",
-    value: "$0",
-    valueMeta: "Start anytime",
-    description: "Best for quick private watch sessions.",
+    eyebrow: "For a quick watch",
+    description: "Best for a quick watch party or trying Movmash out.",
     icon: Sparkles,
     iconClassName: "bg-white/[0.06] text-white/78",
     badgeClassName: "bg-white/[0.05] text-white/72",
@@ -38,36 +39,81 @@ export const pricingPlans: PricingPlan[] = [
     ctaHref: "https://app.movmash.com",
     ctaVariant: "outline",
     external: true,
-    plan: 'free',
-    features: [
-      "2 people per room",
-      "2-hour sessions",
-      "Basic room UI",
-      // "No audio or video calls",
-    ],
   },
-  {
-    name: "Premium",
-    eyebrow: "Large rooms",
-    value: "$2.99",
-    valueMeta: "per month",
-    description: "Best for groups, longer sessions",
-    icon: Crown,
-    iconClassName:
-      "bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500 text-white shadow-[0_18px_36px_rgba(244,63,94,0.2)]",
-    badgeClassName: "bg-rose-500/12 text-rose-100",
-    cardClassName:
-      "bg-[linear-gradient(180deg,rgba(244,63,94,0.07)_0%,rgba(255,255,255,0.03)_24%,rgba(255,255,255,0.022)_100%)] ring-1 ring-rose-400/20 shadow-[0_26px_64px_rgba(0,0,0,0.24)]",
-    ctaLabel: "View premium plan",
+  couple: {
+    name: "Couple Plan",
+    eyebrow: "For couples & close friends",
+    description: "Best for couples and close friends who watch together often.",
+    icon: Heart,
+    iconClassName: paidIconClassName,
+    badgeClassName: paidBadgeClassName,
+    cardClassName: paidCardClassName,
+    ctaLabel: "Upgrade to Couple",
     ctaHref: "https://app.movmash.com/pricing",
     ctaVariant: "hero",
     external: true,
-    plan: 'premium',
-    features: [
-      "50+ people per room",
-      "Unlimited time",
-      // "Audio and video calls",
-      "Better room UI",
-    ],
   },
-];
+  crowd: {
+    name: "Crowd Plan",
+    eyebrow: "For bigger watch parties",
+    description: "Best for friend groups, fandoms, and bigger watch parties.",
+    icon: Crown,
+    iconClassName: paidIconClassName,
+    badgeClassName: paidBadgeClassName,
+    cardClassName: `${paidCardClassName} ring-2`,
+    ctaLabel: "Upgrade to Crowd",
+    ctaHref: "https://app.movmash.com/pricing",
+    ctaVariant: "hero",
+    external: true,
+  },
+};
+
+export function formatUsd(amount: number): string {
+  return `$${amount.toFixed(2)}`;
+}
+
+export function buildFeatureBullets(
+  tier: SubscriptionPlanTier,
+  features: SubscriptionPlanFeatures,
+): string[] {
+  const participants =
+    tier === "crowd"
+      ? `Up to ${features.max_room_participants} people per room`
+      : `${features.max_room_participants} people per room`;
+
+  if (tier === "free") {
+    return [
+      participants,
+      `${features.max_watch_minutes_per_day} minutes of watch time per day`,
+      `${features.screen_share_quality} screen sharing`,
+    ];
+  }
+
+  const watchTime =
+    features.max_watch_minutes_per_day === -1
+      ? "Unlimited watch time"
+      : `${features.max_watch_minutes_per_day} minutes of watch time per day`;
+
+  return [
+    "Video + voice call while you watch",
+    participants,
+    watchTime,
+    `${features.screen_share_quality} screen sharing`,
+    ...(features.ad_free_experience ? ["Ad-free"] : []),
+  ];
+}
+
+export function buildDisplayPlan(tier: SubscriptionPlanTier, plan: SubscriptionPlanData) {
+  const display = PRICING_DISPLAY[tier];
+
+  return {
+    ...display,
+    tier,
+    value: formatUsd(plan.price),
+    valueMeta:
+      tier === "free"
+        ? "Free forever"
+        : `per ${plan.billing_cycle === "yearly" ? "year" : "month"}`,
+    features: buildFeatureBullets(tier, plan.features),
+  };
+}
