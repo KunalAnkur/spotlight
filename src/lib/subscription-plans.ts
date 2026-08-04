@@ -15,6 +15,16 @@ export interface SubscriptionPlanData {
   currency: string;
   billing_cycle: "monthly" | "yearly";
   features: SubscriptionPlanFeatures;
+  is_popular?: boolean;
+  /**
+   * Display figures computed by guardian (`getPublicPlanCatalog`). Deliberately not derived
+   * here: costume renders the same numbers, and two apps doing the arithmetic separately is
+   * how the old hardcoded "Save up to 30%" ended up contradicting the real discount.
+   */
+  monthly_equivalent_price?: number;
+  compare_at_monthly_price?: number | null;
+  savings_percent?: number | null;
+  billed_amount?: number;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -39,7 +49,22 @@ export async function getSubscriptionPlans(): Promise<SubscriptionPlanData[]> {
 
     return rawPlans
       .filter((item): item is Record<string, unknown> => isRecord(item))
-      .map((item) => ({ ...item, price: Number(item.price) })) as SubscriptionPlanData[];
+      .map((item) => ({
+        ...item,
+        // Postgres DECIMAL arrives as a string over JSON; the derived figures come back as
+        // numbers but are coerced too so nothing downstream has to guess.
+        price: Number(item.price),
+        monthly_equivalent_price:
+          item.monthly_equivalent_price != null
+            ? Number(item.monthly_equivalent_price)
+            : undefined,
+        compare_at_monthly_price:
+          item.compare_at_monthly_price != null
+            ? Number(item.compare_at_monthly_price)
+            : null,
+        savings_percent: item.savings_percent != null ? Number(item.savings_percent) : null,
+        billed_amount: item.billed_amount != null ? Number(item.billed_amount) : undefined,
+      })) as SubscriptionPlanData[];
   } catch {
     return [];
   }

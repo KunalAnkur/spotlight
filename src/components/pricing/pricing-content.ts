@@ -94,26 +94,37 @@ export function buildFeatureBullets(
       ? "Unlimited watch time"
       : `${features.max_watch_minutes_per_day} minutes of watch time per day`;
 
+  // No "Ad-free" bullet: Movmash shows no ads on any plan, Free included, so listing it as a
+  // paid perk would imply Free is ad-supported. The flag stays on the plan in case that changes.
   return [
     "Video + voice call while you watch",
     participants,
     watchTime,
     `${features.screen_share_quality} screen sharing`,
-    ...(features.ad_free_experience ? ["Ad-free"] : []),
   ];
 }
 
 export function buildDisplayPlan(tier: SubscriptionPlanTier, plan: SubscriptionPlanData) {
   const display = PRICING_DISPLAY[tier];
 
+  const isFree = tier === "free";
+
   return {
     ...display,
     tier,
-    value: formatUsd(plan.price),
-    valueMeta:
-      tier === "free"
-        ? "Free forever"
-        : `per ${plan.billing_cycle === "yearly" ? "year" : "month"}`,
+    // Paid plans always show a per-month figure so tiers compare like for like; the yearly
+    // one strikes through the monthly rate it undercuts. Every value comes from guardian.
+    value: formatUsd(isFree ? plan.price : plan.monthly_equivalent_price ?? plan.price),
+    valueMeta: isFree ? "Free forever" : "per month",
+    compareAtValue:
+      !isFree && plan.compare_at_monthly_price != null
+        ? formatUsd(plan.compare_at_monthly_price)
+        : null,
+    billedNote:
+      !isFree && plan.billing_cycle === "yearly"
+        ? `${formatUsd(plan.billed_amount ?? plan.price)} billed yearly`
+        : null,
+    isPopular: !isFree && plan.is_popular === true,
     features: buildFeatureBullets(tier, plan.features),
   };
 }
