@@ -15,8 +15,8 @@ const PricingPreviewSection = () => {
             Pick the room that fits the night.
           </h2>
           <p className="landing-section-copy max-w-2xl">
-            Start free for smaller private rooms, or move to Premium when you
-            need bigger sessions, unlimited time, and audio or video calls.
+            Start free for a quick watch, or move to Couple or Crowd for
+            unlimited time, video calls, and better quality.
           </p>
         </div>
 
