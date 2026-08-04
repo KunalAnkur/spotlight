@@ -68,8 +68,23 @@ export const PRICING_DISPLAY: Record<SubscriptionPlanTier, PricingDisplayMeta> =
   },
 };
 
-export function formatUsd(amount: number): string {
-  return `$${amount.toFixed(2)}`;
+/**
+ * Mirrors costume's formatPlanPrice so the same plan reads identically on both surfaces:
+ * whole amounts drop the decimals ($0, not $0.00) and the plan's own currency is honoured
+ * rather than a hardcoded dollar sign.
+ */
+export function formatPlanPrice(amount: number, currency?: string | null): string {
+  if (typeof amount !== "number" || Number.isNaN(amount)) return "";
+
+  try {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: (currency || "USD").toUpperCase(),
+      maximumFractionDigits: amount % 1 === 0 ? 0 : 2,
+    }).format(amount);
+  } catch {
+    return `$${amount.toFixed(2)}`;
+  }
 }
 
 export function buildFeatureBullets(
@@ -114,15 +129,18 @@ export function buildDisplayPlan(tier: SubscriptionPlanTier, plan: SubscriptionP
     tier,
     // Paid plans always show a per-month figure so tiers compare like for like; the yearly
     // one strikes through the monthly rate it undercuts. Every value comes from guardian.
-    value: formatUsd(isFree ? plan.price : plan.monthly_equivalent_price ?? plan.price),
+    value: formatPlanPrice(
+      isFree ? plan.price : plan.monthly_equivalent_price ?? plan.price,
+      plan.currency,
+    ),
     valueMeta: isFree ? "Free forever" : "per month",
     compareAtValue:
       !isFree && plan.compare_at_monthly_price != null
-        ? formatUsd(plan.compare_at_monthly_price)
+        ? formatPlanPrice(plan.compare_at_monthly_price, plan.currency)
         : null,
     billedNote:
       !isFree && plan.billing_cycle === "yearly"
-        ? `${formatUsd(plan.billed_amount ?? plan.price)} billed yearly`
+        ? `${formatPlanPrice(plan.billed_amount ?? plan.price, plan.currency)} billed yearly`
         : null,
     isPopular: !isFree && plan.is_popular === true,
     features: buildFeatureBullets(tier, plan.features),
