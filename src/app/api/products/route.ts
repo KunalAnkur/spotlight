@@ -2,6 +2,12 @@ import { NextResponse } from "next/server";
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
+// This route proxies live Guardian data, so it can never be prerendered. Declaring that
+// up front stops `next build` from attempting static generation — without it, Next signals
+// the bail-out by throwing DynamicServerError, the catch below swallows it, and every build
+// logs a "Failed to fetch products" that never happened.
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const response = await fetch(
