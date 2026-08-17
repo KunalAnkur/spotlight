@@ -101,6 +101,9 @@ export function buildFeatureBullets(
       participants,
       `${features.max_watch_minutes_per_day} minutes of watch time per day`,
       `${features.screen_share_quality} screen sharing`,
+      // Static, not from the plan: games are on every tier, and saying so on Free is the
+      // point — the paid cards must not imply games are something you upgrade for.
+      "Every game included",
     ];
   }
 

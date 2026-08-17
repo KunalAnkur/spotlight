@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Parkinsans:wght@300..800&display=swap");
 
 @tailwind base;
@@ -130,13 +130,25 @@
     display: none;
   }
 
+  /* Anchor targets sit under the 60px fixed navbar; without this the heading you
+     jumped to comes to rest behind the bar. */
+  section[id],
+  article[id] {
+    scroll-margin-top: 84px;
+  }
+
+  /* One display face for every heading. The mockup drops Space Grotesk entirely so the
+     landing and the app read as the same product. */
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    font-family: "Space Grotesk", sans-serif;
+    font-family: "Parkinsans", sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
   }
 }
 
@@ -200,21 +212,32 @@
     @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
   }
 
+  /* 76px / 52px block padding, matching the mockup's `section` rule (its breakpoint is
+     760px, tailwind's md is 768px — the same notch either side of a phone). */
   .landing-section {
-    @apply relative overflow-hidden py-20 md:py-24;
+    @apply relative overflow-hidden py-[52px] md:py-[76px];
   }
 
   .landing-section-heading {
-    @apply mx-auto mb-8 max-w-5xl text-center md:mb-12;
+    @apply mx-auto mb-11 max-w-[680px] text-center;
   }
 
   .landing-section-title {
-    @apply font-parkinsans text-3xl font-semibold leading-tight tracking-tight text-white md:text-4xl lg:text-5xl;
+    @apply font-parkinsans font-semibold tracking-[-0.025em] text-white;
+    font-size: clamp(1.6rem, 3.6vw, 2.5rem);
+    line-height: 1.12;
   }
 
   .landing-section-copy {
-    @apply mx-auto max-w-3xl text-base leading-7 md:text-lg md:leading-8;
+    @apply mx-auto mt-3.5 max-w-[620px] text-base;
+    line-height: 1.75;
     color: rgb(255 255 255 / 0.68);
+  }
+
+  /* The rose eyebrow above a section title. */
+  .landing-kicker {
+    @apply mb-3.5 font-parkinsans text-[11px] font-semibold uppercase tracking-[0.28em];
+    color: rgb(251 113 133 / 0.8);
   }
 
   .landing-subtle-surface {
@@ -229,26 +252,86 @@
   }
 
   .landing-card-surface:hover {
-    background-color: rgb(255 255 255 / 0.05);
+    background-color: rgb(255 255 255 / 0.055);
   }
 
   .landing-icon-block {
-    @apply flex items-center justify-center rounded-2xl text-white;
-    width: 3.25rem;
-    height: 3.25rem;
+    @apply flex shrink-0 items-center justify-center rounded-[14px] text-white;
+    width: 46px;
+    height: 46px;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
   }
 
   .landing-icon-block-lg {
-    @apply flex items-center justify-center rounded-2xl text-white;
-    width: 4rem;
-    height: 4rem;
+    @apply flex shrink-0 items-center justify-center rounded-2xl text-white;
+    width: 54px;
+    height: 54px;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
   }
 
   .landing-meta-line {
-    @apply flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm;
+    @apply flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[13.5px];
     color: rgb(255 255 255 / 0.46);
+  }
+
+  /* ── Game cards ────────────────────────────────────────────────────────────
+     Each card carries its game's accent as `--acc`: a hairline along the top
+     edge, a tinted glyph, and a glow that only wakes up on hover. */
+  .game-card {
+    @apply relative flex flex-col overflow-hidden rounded-3xl;
+    background-color: rgb(255 255 255 / 0.035);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.16);
+    transition: background-color 0.25s;
+  }
+
+  .game-card::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 3px;
+    z-index: 3;
+    opacity: 0.9;
+    background: linear-gradient(to right, transparent, var(--acc), transparent);
+  }
+
+  .game-card::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -70px;
+    width: 280px;
+    height: 170px;
+    translate: -50% 0;
+    border-radius: 50%;
+    background: var(--acc);
+    opacity: 0;
+    filter: blur(70px);
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .game-card:hover {
+    background-color: rgb(255 255 255 / 0.055);
+  }
+
+  .game-card:hover::after {
+    opacity: 0.22;
+  }
+
+  .game-glyph {
+    @apply grid shrink-0 place-items-center rounded-[11px];
+    width: 34px;
+    height: 34px;
+    color: var(--acc);
+    background: color-mix(in srgb, var(--acc) 16%, transparent);
+  }
+
+  .game-shot {
+    @apply relative w-full overflow-hidden;
+    aspect-ratio: 5 / 4;
+    background-color: rgb(255 255 255 / 0.02);
   }
 
   .landing-open-divider {

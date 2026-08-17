@@ -1,32 +1,32 @@
-import { Play, ArrowRight } from "lucide-react";
+import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const ctaEmojis = [
   {
     emoji: "✨",
-    className: "-left-10 top-10 xl:-left-14",
+    className: "-left-[56px] top-9",
     animationClass: "animate-float-subtle",
     delay: "0.14s",
     sizeClass: "text-[1.45rem]",
   },
   {
     emoji: "🫶",
-    className: "right-2 top-0 xl:-right-8",
+    className: "-right-10 top-0",
     animationClass: "animate-float-gentle",
     delay: "0.28s",
     sizeClass: "text-[1.7rem]",
   },
   {
     emoji: "🎬",
-    className: "left-6 bottom-20 xl:-left-4",
-    animationClass: "animate-float-delayed",
+    className: "-left-5 bottom-[60px]",
+    animationClass: "animate-float",
     delay: "0.42s",
     sizeClass: "text-[1.6rem]",
   },
   {
     emoji: "💫",
-    className: "right-12 bottom-14 xl:right-0",
+    className: "right-0 bottom-11",
     animationClass: "animate-float-subtle",
     delay: "0.56s",
     sizeClass: "text-[1.5rem]",
@@ -35,66 +35,56 @@ const ctaEmojis = [
 
 const CTASection = () => {
   return (
-    <section className="landing-section">
+    <section className="landing-section text-center">
       <div className="landing-shell relative z-10">
-        <div className="relative mx-auto max-w-4xl text-center">
+        <div className="relative mx-auto max-w-[820px]">
           <div className="pointer-events-none absolute inset-0 hidden xl:block">
             {ctaEmojis.map((item) => (
               <div
                 key={`${item.emoji}-${item.className}`}
                 aria-hidden="true"
-                className={`absolute opacity-80 drop-shadow-[0_10px_18px_rgba(0,0,0,0.22)] ${item.sizeClass} ${item.className} ${item.animationClass}`}
-                style={{
-                  animationDelay: item.delay,
-                }}
+                className={`absolute leading-none opacity-80 drop-shadow-[0_10px_18px_rgba(0,0,0,0.22)] ${item.sizeClass} ${item.className} ${item.animationClass}`}
+                style={{ animationDelay: item.delay }}
               >
                 <span>{item.emoji}</span>
               </div>
             ))}
           </div>
 
-          {/* Heading */}
-          <h2 className="mb-6 font-parkinsans text-4xl font-semibold leading-tight tracking-tight text-white md:text-6xl">
-            Ready for Your Next{" "}
-            <span className="text-gradient">Watch Party?</span>
+          <h2 className="landing-section-title mb-3.5">
+            Ready for Your Next <span className="text-gradient">Watch Party?</span>
           </h2>
-          
-          <p className="mx-auto mb-10 max-w-2xl text-xl leading-8 text-white/68">
+
+          <p className="mx-auto mb-[26px] max-w-[520px] text-base text-white/68">
             Start a room in seconds and bring everyone into the same watch experience.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="hero" size="xl" asChild className="font-parkinsans">
+          <div className="flex flex-col items-center justify-center gap-3.5 sm:flex-row">
+            <Button variant="hero" asChild className="font-parkinsans">
               <a href="https://app.movmash.com" target="_blank" rel="noopener noreferrer">
-                <Play className="w-5 h-5" />
+                <Play className="fill-current" strokeWidth={0} />
                 Start Watch Party
               </a>
             </Button>
-            <Button variant="outline" size="xl" asChild className="font-parkinsans">
-              <a href="#features">
-                Explore Features
-                <ArrowRight className="w-5 h-5" />
-              </a>
+            <Button variant="outline" asChild className="font-parkinsans">
+              <Link href="/games">Browse the games</Link>
             </Button>
           </div>
 
-          {/* Trust badges */}
-          <div className="landing-meta-line mt-12">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500" />
+          <div className="landing-meta-line mt-6">
+            <span className="inline-flex items-center gap-[9px]">
+              <b className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-[#e11d48] from-[30%] via-[#db2777] via-[50%] to-[#c026d3]" />
               Private room links
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500" />
+            </span>
+            <span className="inline-flex items-center gap-[9px]">
+              <b className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-[#e11d48] from-[30%] via-[#db2777] via-[50%] to-[#c026d3]" />
               No downloads required
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500" />
+            </span>
+            <span className="inline-flex items-center gap-[9px]">
+              <b className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-[#e11d48] from-[30%] via-[#db2777] via-[50%] to-[#c026d3]" />
               Works on all devices
-            </div>
+            </span>
           </div>
-
         </div>
       </div>
     </section>

@@ -13,11 +13,16 @@ interface FooterLinkItem {
   hash?: string;
 }
 
+// Pricing lives in the app, not on spotlight — /pricing is not a route here, so pointing at
+// it was a 404 from the footer.
+const appPricingUrl = "https://app.movmash.com/pricing";
+
 const footerLinks = {
   product: [
     { label: "Features", href: "/#features", hash: "features" },
+    { label: "Games", href: "/games" },
     { label: "How It Works", href: "/#how-it-works", hash: "how-it-works" },
-    { label: "Pricing", href: "/pricing" },
+    { label: "Pricing", href: appPricingUrl },
     { label: "Watch Party Shop", href: "/watch-party-shop" },
     { label: "Watch Together", href: "/watch-together" },
     { label: "Date Night", href: "/long-distance-date-night" },
@@ -34,6 +39,9 @@ const footerLinks = {
     { label: "Cookie Policy", href: "/legal?tab=cookies" },
   ] satisfies FooterLinkItem[],
 };
+
+const footerLinkClassName =
+  "inline-block text-sm text-white/60 transition-colors hover:text-white";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -64,48 +72,58 @@ const Footer = () => {
   };
 
   return (
-    <footer className="landing-open-divider">
-      <div className="landing-shell py-8 md:py-9">
+    <footer className="landing-open-divider relative z-10 mt-[30px] pb-[30px] pt-[42px]">
+      <div className="landing-shell">
         {/* Main Footer Content */}
-        <div className="mb-8 flex flex-col items-start justify-between gap-8 lg:flex-row lg:gap-10">
+        <div className="flex flex-wrap justify-between gap-9">
           {/* Brand Section */}
-          <div className="flex-1 max-w-md">
-            <div className="mb-3">
-              <Link href="/" className="inline-flex items-center gap-2.5">
-                <Image
-                  src="/android-chrome-512x512.png"
-                  alt="Movmash Logo"
-                  width={28}
-                  height={28}
-                  className="h-7 w-7"
-                />
-                <span className="font-parkinsans text-2xl font-semibold tracking-tight text-white">Movmash</span>
-              </Link>
-            </div>
-            <p className="mb-4 max-w-sm text-sm leading-7 text-white/60 md:text-[15px]">
-              Watch videos together, no matter where you are. Real-time sync, live chat, and fun reactions.
+          <div className="max-w-[400px] flex-1 basis-[320px]">
+            <Link
+              href="/"
+              className="mb-3 inline-flex items-center gap-2.5 font-parkinsans text-[22px] font-semibold tracking-[-0.02em] text-white transition-opacity hover:opacity-80"
+            >
+              <Image
+                src="/android-chrome-512x512.png"
+                alt="Movmash Logo"
+                width={32}
+                height={32}
+                className="h-8 w-8 shrink-0 rounded-full"
+              />
+              Movmash
+            </Link>
+            <p className="mb-3.5 max-w-[340px] text-sm leading-[1.75] text-white/60">
+              Watch videos together, no matter where you are. Real-time sync, live chat, fun
+              reactions, and games in the same room.
             </p>
+
             {/* Social Links */}
-            <MovmashSocialLinks />
-            <div className="mt-5">
-              <Button variant="outline" asChild className="font-parkinsans">
-                <Link href="/pricing">Pricing</Link>
-              </Button>
-            </div>
+            <MovmashSocialLinks
+              className="mb-[18px] gap-0.5"
+              linkClassName="h-[38px] w-[38px] rounded-[10px] hover:bg-white/[0.05] hover:text-white"
+              iconClassName="h-[19px] w-[19px]"
+            />
+
+            <Button variant="outline" size="sm" asChild className="font-parkinsans">
+              <a href={appPricingUrl} rel="noopener noreferrer">
+                Pricing
+              </a>
+            </Button>
           </div>
 
           {/* Links Grid */}
-          <div className="flex flex-wrap gap-7 md:gap-9 lg:gap-10">
+          <div className="flex flex-wrap gap-x-[46px] gap-y-8">
             {/* Product Links */}
             <div className="flex flex-col">
-              <h4 className="mb-3 font-parkinsans text-base font-semibold tracking-tight text-white">Product</h4>
-              <ul className="space-y-2">
+              <h4 className="mb-[13px] font-parkinsans text-[15px] font-semibold tracking-[-0.01em] text-white">
+                Product
+              </h4>
+              <ul className="flex flex-col gap-[9px]">
                 {footerLinks.product.map((link) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
                       onClick={(e) => handleProductLinkClick(e, link.hash)}
-                      className="inline-block text-sm text-white/60 transition-colors hover:text-white md:text-[15px]"
+                      className={footerLinkClassName}
                     >
                       {link.label}
                     </a>
@@ -116,14 +134,13 @@ const Footer = () => {
 
             {/* Company Links */}
             <div className="flex flex-col">
-              <h4 className="mb-3 font-parkinsans text-base font-semibold tracking-tight text-white">Company</h4>
-              <ul className="space-y-2">
+              <h4 className="mb-[13px] font-parkinsans text-[15px] font-semibold tracking-[-0.01em] text-white">
+                Company
+              </h4>
+              <ul className="flex flex-col gap-[9px]">
                 {footerLinks.company.map((link) => (
                   <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="inline-block text-sm text-white/60 transition-colors hover:text-white md:text-[15px]"
-                    >
+                    <Link href={link.href} className={footerLinkClassName}>
                       {link.label}
                     </Link>
                   </li>
@@ -133,14 +150,13 @@ const Footer = () => {
 
             {/* Legal Links */}
             <div className="flex flex-col">
-              <h4 className="mb-3 font-parkinsans text-base font-semibold tracking-tight text-white">Legal</h4>
-              <ul className="space-y-2">
+              <h4 className="mb-[13px] font-parkinsans text-[15px] font-semibold tracking-[-0.01em] text-white">
+                Legal
+              </h4>
+              <ul className="flex flex-col gap-[9px]">
                 {footerLinks.legal.map((link) => (
                   <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="inline-block text-sm text-white/60 transition-colors hover:text-white md:text-[15px]"
-                    >
+                    <Link href={link.href} className={footerLinkClassName}>
                       {link.label}
                     </Link>
                   </li>
@@ -151,15 +167,13 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="landing-open-divider flex flex-col items-center justify-between gap-3 pt-6 sm:flex-row">
-          <p className="text-sm text-white/50">
-            © {currentYear} Movmash. Made with ❤️ for movie lovers.
-          </p>
-          <a 
-            href="mailto:support@movmash.com" 
-            className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
+        <div className="landing-open-divider mt-[34px] flex flex-wrap items-center justify-between gap-4 pt-[22px] text-[13.5px] text-white/50">
+          <p>© {currentYear} Movmash. Made with ❤️ for movie lovers.</p>
+          <a
+            href="mailto:support@movmash.com"
+            className="inline-flex items-center gap-[9px] transition-colors hover:text-white"
           >
-            <Mail className="w-4 h-4" />
+            <Mail className="h-4 w-4 shrink-0" />
             <span>support@movmash.com</span>
           </a>
         </div>

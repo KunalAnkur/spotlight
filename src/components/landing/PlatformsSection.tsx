@@ -47,49 +47,43 @@ const platforms = [
 
 const PlatformsSection = () => {
   return (
-    <section className="landing-section">
+    <section id="platforms" className="landing-section">
       <div className="landing-shell relative z-10">
-        <div className="pointer-events-none absolute left-1/2 top-20 -z-10 h-40 w-[34rem] -translate-x-1/2 bg-[radial-gradient(circle,rgba(225,29,72,0.10)_0%,transparent_72%)] blur-3xl" />
+        <div className="landing-section-heading">
+          <h2 className="landing-section-title">
+            Works with the{" "}
+            <span className="text-gradient">sources you already use</span>
+          </h2>
+          <p className="landing-section-copy">
+            Bring in a supported link, share a tab, or stream a local file without changing how you host.
+          </p>
+        </div>
 
-        <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="font-parkinsans text-3xl font-semibold leading-tight tracking-tight text-white md:text-4xl lg:text-[3rem]">
-              Works with the{" "}
-              <span className="text-gradient">sources you already use</span>
-            </h2>
-            <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-white/66 md:text-lg md:leading-8">
-              Bring in a supported link, share a tab, or stream a local file without changing how you host.
-            </p>
-          </div>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
+          {platforms.map((platform, index) => (
+            <div
+              key={platform.name}
+              className="animate-slide-up"
+              style={{ animationDelay: `${index * 0.06}s` }}
+            >
+              <div className="flex h-full flex-col items-center justify-center gap-[11px] rounded-[20px] bg-white/[0.022] px-2.5 py-4 text-center">
+                <div className={`flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-[14px] ${platform.surfaceClass}`}>
+                  <platform.icon className={`h-[19px] w-[19px] ${platform.iconClass}`} strokeWidth={2.1} />
+                </div>
 
-          <div className="mx-auto mt-12 max-w-6xl">
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
-              {platforms.map((platform, index) => (
-                <div
-                  key={platform.name}
-                  className="animate-slide-up"
-                  style={{ animationDelay: `${index * 0.06}s` }}
-                >
-                  <div className="flex h-full flex-col items-center justify-center gap-3 rounded-[1.25rem] bg-white/[0.02] px-3 py-4 text-center">
-                    <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${platform.surfaceClass}`}>
-                      <platform.icon className={`h-5 w-5 ${platform.iconClass}`} strokeWidth={2.2} />
-                    </div>
-
-                    <div className="min-w-0">
-                      <div className="font-parkinsans text-[13px] font-semibold tracking-tight whitespace-nowrap text-white md:text-sm">
-                        {platform.name}
-                      </div>
-                    </div>
+                <div className="min-w-0">
+                  <div className="whitespace-nowrap font-parkinsans text-[13px] font-semibold tracking-tight text-white">
+                    {platform.name}
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
-
-            <p className="mt-6 text-center text-sm leading-6 text-white/50 md:text-[15px]">
-              Also works with Dailymotion and other direct video links when you just need a room and a URL.
-            </p>
-          </div>
+          ))}
         </div>
+
+        <p className="mt-[22px] text-center text-sm leading-[1.6] text-white/50">
+          Also works with Dailymotion and other direct video links when you just need a room and a URL.
+        </p>
       </div>
     </section>
   );

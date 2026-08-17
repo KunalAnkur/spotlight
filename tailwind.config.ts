@@ -71,6 +71,15 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
+      // Tailwind's colour opacity modifier only accepts values that exist in `theme.opacity`,
+      // and the default scale jumps 5 → 10 → 20. Everything off that scale — `text-white/68`,
+      // `bg-white/8`, `ring-white/8` and 60-odd others already written across this codebase —
+      // silently compiled to nothing, so that text rendered at full white and `ring-1` fell
+      // back to Tailwind's default blue. Opening the scale to every integer makes the classes
+      // mean what they say instead of rewriting each one as `/[0.68]`.
+      opacity: Object.fromEntries(
+        Array.from({ length: 101 }, (_, value) => [value, `${value / 100}`]),
+      ),
       fontFamily: {
         sans: ['Plus Jakarta Sans', 'sans-serif'],
         display: ['Space Grotesk', 'sans-serif'],

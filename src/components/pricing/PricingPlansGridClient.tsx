@@ -21,34 +21,34 @@ const pricingGridClassName = "grid gap-4 lg:grid-cols-3";
 // flex column so the CTA can be pinned to the bottom: Free lists fewer features than the paid
 // plans, and without this its button stops mid-card while the others sit at the base.
 const pricingCardClassName =
-  "relative flex flex-col overflow-hidden rounded-[2rem] px-5 py-5 sm:px-6 sm:py-6";
+  "relative flex flex-col overflow-hidden rounded-[28px] p-[22px]";
 const pricingBadgeClassName =
   "inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em]";
-const pricingEyebrowClassName = "mt-3 text-[13px] font-medium text-white/42";
+const pricingEyebrowClassName = "mt-[11px] text-[12.5px] font-medium text-white/42";
 const pricingIconWrapClassName =
-  "flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[1.1rem]";
-const pricingValueRowClassName = "mt-6 flex items-end gap-2.5";
+  "flex h-[42px] w-[42px] flex-shrink-0 items-center justify-center rounded-[15px]";
+const pricingValueRowClassName = "mt-[22px] flex items-end gap-2.5";
 const pricingValueClassName =
-  "font-parkinsans text-[2.35rem] font-semibold leading-none tracking-[-0.05em] text-white md:text-[2.7rem]";
-const pricingValueMetaClassName = "pb-1 text-[13px] text-white/42";
+  "font-parkinsans text-[34px] font-semibold leading-none tracking-[-0.05em] text-white";
+const pricingValueMetaClassName = "pb-[3px] text-[12.5px] text-white/42";
 const pricingCompareAtClassName =
-  "pb-1 font-parkinsans text-[1.6rem] font-semibold leading-none tracking-[-0.04em] text-white/28 line-through md:text-[1.85rem]";
+  "pb-[3px] font-parkinsans text-[22px] font-semibold leading-none tracking-[-0.04em] text-white/28 line-through";
 const pricingBilledNoteClassName = "mt-1.5 text-[12px] leading-tight text-white/38";
 const pricingPopularBadgeClassName =
   "inline-flex items-center rounded-full bg-gradient-to-r from-rose-500/20 via-pink-500/20 to-fuchsia-500/20 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-pink-200 ring-1 ring-pink-400/25";
 const pricingDescriptionClassName =
-  "mt-3 max-w-[30rem] text-[13px] leading-6 text-white/60 md:text-sm md:leading-6";
-const pricingFeaturesClassName = "mt-6 space-y-2.5";
+  "mt-3 max-w-[30rem] text-[13px] leading-[1.6] text-white/60";
+const pricingFeaturesClassName = "mt-5 space-y-2.5";
 const pricingFeatureItemClassName =
-  "flex items-start gap-3 text-[13px] leading-5 text-white/72 md:text-sm md:leading-6";
+  "flex items-start gap-[11px] text-[13px] leading-[1.5] text-white/72";
 const pricingFeatureIconClassName =
-  "mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-white/[0.05] text-white/78";
-const pricingCtaClassName = "h-10 px-5 text-sm font-parkinsans";
+  "mt-px flex h-[17px] w-[17px] flex-shrink-0 items-center justify-center rounded-full bg-white/[0.05] text-white/78";
+const pricingCtaClassName = "h-[38px] px-[18px] text-sm font-parkinsans";
 
 const billingToggleShellClassName =
-  "mx-auto mb-6 inline-flex items-center gap-1 rounded-full bg-white/[0.04] p-1";
+  "mx-auto mb-[26px] inline-flex items-center gap-1 rounded-full bg-white/[0.04] p-1";
 const billingToggleButtonClassName =
-  "rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors duration-200";
+  "rounded-full px-[18px] py-[7px] text-[13px] font-medium transition-colors duration-200";
 const billingToggleActiveClassName =
   "bg-gradient-to-r from-rose-600 via-pink-600 to-fuchsia-600 text-white";
 const billingToggleInactiveClassName = "text-white/56 hover:text-white/80";
@@ -136,7 +136,7 @@ export default function PricingPlansGridClient({
                 <span
                   className={cn(pricingIconWrapClassName, plan.iconClassName)}
                 >
-                  <Icon className="h-[18px] w-[18px]" />
+                  <Icon className="h-[17px] w-[17px]" />
                 </span>
               </div>
 
@@ -162,7 +162,7 @@ export default function PricingPlansGridClient({
                 {plan.features.map((feature) => (
                   <li key={feature} className={pricingFeatureItemClassName}>
                     <span className={pricingFeatureIconClassName}>
-                      <Check className="h-3 w-3" />
+                      <Check className="h-2.5 w-2.5" strokeWidth={3} />
                     </span>
                     <span>{feature}</span>
                   </li>
@@ -170,7 +170,7 @@ export default function PricingPlansGridClient({
               </ul>
 
               {/* mt-auto pins the CTA to the card bottom whatever the feature count. */}
-              <div className="mt-auto pt-6">
+              <div className="mt-auto pt-[22px]">
                 <Button
                   asChild
                   variant={plan.ctaVariant}

@@ -4,7 +4,7 @@ import { BookOpen, Gamepad2, GraduationCap, Heart, House, Users } from "lucide-r
 const sectionEmojis = [
   {
     emoji: "🫶",
-    className: "-left-8 top-24 xl:-left-10",
+    className: "-left-9 top-24",
     animationClass: "animate-float-gentle",
     delay: "0.18s",
     sizeClass: "text-[1.7rem]",
@@ -24,138 +24,134 @@ const useCases = [
     icon: Heart,
     title: "Date nights",
     description: "Stay in sync and react to every scene together.",
+    accent: "#fda4af",
     iconClass: "from-rose-500 via-pink-500 to-fuchsia-500",
-    numberClass: "text-rose-300/80",
-    lineClass: "from-rose-400/55 via-pink-400/20 to-transparent",
   },
   {
     number: "02",
     icon: GraduationCap,
     title: "Study groups",
     description: "Review lectures and explain clips side by side.",
-    iconClass: "from-pink-500 via-fuchsia-500 to-rose-500",
-    numberClass: "text-pink-300/80",
-    lineClass: "from-pink-400/55 via-fuchsia-400/22 to-transparent",
+    accent: "#f9a8d4",
+    iconClass: "from-pink-500 via-fuchsia-500 to-purple-500",
   },
   {
     number: "03",
     icon: Users,
     title: "Friend hangs",
     description: "Start a room fast for premieres, rewatches, or casual nights in.",
-    iconClass: "from-fuchsia-500 via-pink-500 to-rose-500",
-    numberClass: "text-fuchsia-300/80",
-    lineClass: "from-fuchsia-400/55 via-pink-400/22 to-transparent",
+    accent: "#f0abfc",
+    iconClass: "from-fuchsia-500 via-purple-500 to-indigo-500",
   },
   {
+    // The games one. Same shape as its five neighbours, no special treatment.
     number: "04",
-    icon: House,
-    title: "Family time",
-    description: "Share cartoons, clips, and movie nights across homes.",
-    iconClass: "from-rose-500 via-fuchsia-500 to-pink-500",
-    numberClass: "text-rose-200/80",
-    lineClass: "from-rose-300/50 via-fuchsia-400/20 to-transparent",
+    icon: Gamepad2,
+    title: "Game breaks",
+    description: "Open Tic-Tac-Toe, Connect 4 or a shared jigsaw without leaving the room.",
+    accent: "#c4b5fd",
+    iconClass: "from-pink-500 via-fuchsia-500 to-purple-500",
   },
   {
     number: "05",
-    icon: BookOpen,
-    title: "Club sessions",
-    description: "Pause for discussion without losing the moment.",
-    iconClass: "from-pink-500 via-rose-500 to-fuchsia-500",
-    numberClass: "text-pink-200/80",
-    lineClass: "from-pink-300/50 via-rose-400/20 to-transparent",
+    icon: House,
+    title: "Family time",
+    description: "Share cartoons, clips, and movie nights across homes.",
+    accent: "#fecdd3",
+    iconClass: "from-rose-500 via-pink-500 to-fuchsia-500",
   },
   {
     number: "06",
-    icon: Gamepad2,
-    title: "Communities",
-    description: "Watch reveals, events, and walkthroughs in one room.",
-    iconClass: "from-fuchsia-500 via-rose-500 to-pink-500",
-    numberClass: "text-fuchsia-200/80",
-    lineClass: "from-fuchsia-300/50 via-rose-400/18 to-transparent",
+    icon: BookOpen,
+    title: "Club sessions",
+    description: "Pause for discussion without losing the moment.",
+    accent: "#f5d0fe",
+    iconClass: "from-fuchsia-500 via-purple-500 to-indigo-500",
   },
+];
+
+const pills = [
+  { label: "Watch together online", href: "/watch-together", dot: "rgba(253,164,175,0.8)" },
+  { label: "Long-distance date night", href: "/long-distance-date-night", dot: "rgba(240,171,252,0.8)" },
+  { label: "Online games with friends", href: "/games", dot: "rgba(196,181,253,0.85)" },
 ];
 
 const UseCasesSection = () => {
   return (
     <section id="use-cases" className="landing-section">
-      <div className="landing-shell relative z-10">
-        <div className="pointer-events-none absolute inset-0 hidden xl:block">
-          {sectionEmojis.map((item) => (
-            <div
-              key={`${item.emoji}-${item.className}`}
-              aria-hidden="true"
-              className={`absolute opacity-80 drop-shadow-[0_10px_18px_rgba(0,0,0,0.22)] ${item.sizeClass} ${item.className} ${item.animationClass}`}
-              style={{
-                animationDelay: item.delay,
-              }}
-            >
-              <span>{item.emoji}</span>
-            </div>
-          ))}
-        </div>
+      {/* Anchored to the section, not the 1152px shell — see GamesSection. */}
+      <div className="pointer-events-none absolute inset-0 z-[2] hidden xl:block">
+        {sectionEmojis.map((item) => (
+          <div
+            key={`${item.emoji}-${item.className}`}
+            aria-hidden="true"
+            className={`absolute leading-none opacity-80 drop-shadow-[0_10px_18px_rgba(0,0,0,0.22)] ${item.sizeClass} ${item.className} ${item.animationClass}`}
+            style={{ animationDelay: item.delay }}
+          >
+            <span>{item.emoji}</span>
+          </div>
+        ))}
+      </div>
 
-        <div className="mx-auto flex w-full justify-center">
-          <div className="max-w-3xl text-center">
-            <p className="mb-4 font-parkinsans text-xs font-semibold uppercase tracking-[0.28em] text-rose-400/80">
-              Use Cases
-            </p>
-            <h2 className="landing-section-title mb-4">
-              More than just{" "}
-              <span className="text-gradient">movie night</span>
-            </h2>
-            <p className="landing-section-copy max-w-2xl">
-              Built for private nights in, study sessions, club discussions, and shared community moments.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-sm text-white/56">
+      <div className="landing-shell relative z-10">
+        <div className="landing-section-heading mb-0">
+          <p className="landing-kicker">Use Cases</p>
+          <h2 className="landing-section-title">
+            More than just <span className="text-gradient">movie night</span>
+          </h2>
+          <p className="landing-section-copy">
+            Built for private nights in, study sessions, game breaks, club discussions and
+            shared community moments.
+          </p>
+
+          <div className="mt-[22px] flex flex-wrap items-center justify-center gap-3 text-[13.5px] text-white/56">
+            {pills.map((pill) => (
               <Link
-                href="/watch-together"
-                className="inline-flex items-center gap-2 rounded-full bg-white/[0.035] px-4 py-2 transition-colors hover:bg-white/[0.06] hover:text-white"
+                key={pill.label}
+                href={pill.href}
+                className="inline-flex items-center gap-[9px] rounded-full bg-white/[0.035] px-4 py-2 transition-colors hover:bg-white/[0.06] hover:text-white"
               >
-                <span className="h-1.5 w-1.5 rounded-full bg-rose-300/80" />
-                Watch together online
+                <span
+                  className="h-1.5 w-1.5 shrink-0 rounded-full"
+                  style={{ background: pill.dot }}
+                />
+                {pill.label}
               </Link>
-              <Link
-                href="/long-distance-date-night"
-                className="inline-flex items-center gap-2 rounded-full bg-white/[0.035] px-4 py-2 transition-colors hover:bg-white/[0.06] hover:text-white"
-              >
-                <span className="h-1.5 w-1.5 rounded-full bg-fuchsia-300/80" />
-                Long-distance date night
-              </Link>
-            </div>
+            ))}
           </div>
         </div>
 
-        <div className="mt-14 flex w-full flex-wrap justify-between gap-y-10 md:mt-16">
-          <div className="pointer-events-none absolute inset-x-0 top-24 -z-10 h-40 bg-[radial-gradient(circle_at_center,rgba(244,63,94,0.12),transparent_65%)] blur-3xl" />
-
+        <div className="mt-[52px] flex w-full flex-wrap justify-between gap-y-9">
           {useCases.map((useCase) => (
             <article
               key={useCase.title}
-              className="flex basis-full flex-col gap-4 md:basis-[calc((100%-2rem)/2)] lg:basis-[calc((100%-4rem)/3)]"
+              className="flex basis-full flex-col gap-3.5 md:basis-[calc((100%-2rem)/2)] lg:basis-[calc((100%-4rem)/3)]"
+              style={{ ["--acc" as string]: useCase.accent }}
             >
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3.5">
                 <span
-                  className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${useCase.iconClass} text-white shadow-[0_14px_30px_rgba(244,63,94,0.16)]`}
+                  className={`landing-icon-block bg-gradient-to-br ${useCase.iconClass}`}
                 >
-                  <useCase.icon className="h-5 w-5" />
+                  <useCase.icon className="h-[21px] w-[21px]" />
                 </span>
 
                 <div className="min-w-0 flex-1">
                   <div className="mb-2 flex items-center gap-3">
                     <span
-                      className={`font-parkinsans text-[11px] font-semibold uppercase tracking-[0.24em] ${useCase.numberClass}`}
+                      className="font-parkinsans text-[11px] font-semibold uppercase tracking-[0.24em]"
+                      style={{ color: useCase.accent }}
                     >
                       {useCase.number}
                     </span>
-                    <span className={`h-px flex-1 bg-gradient-to-r ${useCase.lineClass}`} />
+                    <span className="h-px flex-1 bg-[linear-gradient(to_right,color-mix(in_srgb,var(--acc)_55%,transparent),transparent)]" />
                   </div>
-                  <h3 className="font-parkinsans text-xl font-semibold tracking-tight text-white md:text-[1.35rem]">
+                  <h3 className="font-parkinsans text-[19px] font-semibold tracking-tight text-white">
                     {useCase.title}
                   </h3>
                 </div>
               </div>
 
-              <p className="pl-16 text-sm leading-7 text-white/68 md:text-[15px]">
+              <p className="pl-[60px] text-sm leading-[1.75] text-white/68">
                 {useCase.description}
               </p>
             </article>

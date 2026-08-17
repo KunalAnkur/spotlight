@@ -32,6 +32,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/games`,
+      lastModified: getFileLastModified('src/app/games/page.tsx'),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/about`,
       lastModified: getFileLastModified('src/app/about/page.tsx'),
       changeFrequency: 'monthly',

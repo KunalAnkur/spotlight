@@ -10,6 +10,7 @@ import Image from "next/image";
 
 const navLinks = [
   { label: "Features", href: "/#features", hash: "features" },
+  { label: "Games", href: "/games", hash: "" },
   { label: "How It Works", href: "/#how-it-works", hash: "how-it-works" },
   { label: "Pricing", href: "/#pricing", hash: "pricing" },
   { label: "Shop", href: "/watch-party-shop", hash: "" },
@@ -31,13 +32,13 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string, href: string) => {
+  const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
     // If it's a regular page link (not a hash link), let it navigate normally
     if (!hash) {
       setIsMobileMenuOpen(false);
       return;
     }
-    
+
     e.preventDefault();
     if (pathname !== "/") {
       router.push("/");
@@ -59,52 +60,62 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed inset-x-0 top-3 z-50 md:top-4">
-      <div className="landing-header-shell relative">
-        <nav
-          className={cn(
-            "relative flex h-14 w-full items-center justify-between bg-transparent transition-all duration-200",
-            isScrolled && "bg-[#09090c]/20 backdrop-blur-md"
-          )}
-        >
+    /* Pinned flush to the top edge, full-bleed. The bar used to float 16px down with
+       transparent gutters, so while scrolling you could see the page sliding through the gap
+       above and beside it. Nothing passes above this bar now: it is transparent at rest, and
+       on scroll an opaque wash and blur fade in edge to edge. */
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 transition-colors [transition-duration:250ms]",
+        isScrolled && "bg-[#09090c]/[0.88] backdrop-blur-[16px]"
+      )}
+    >
+      <div className="landing-header-shell">
+        <nav className="flex h-[60px] w-full items-center gap-[26px]">
           {/* Logo */}
-          <Link href="/" className="z-10 flex items-center gap-2.5 text-white/90 transition-opacity hover:opacity-80">
-            <Image 
-              src="/android-chrome-512x512.png" 
-              alt="Movmash Logo" 
-              width={28}
-              height={28}
-              className="h-7 w-7"
+          <Link
+            href="/"
+            className="mr-auto flex items-center gap-2.5 font-parkinsans text-lg font-semibold tracking-[-0.02em] text-white/90 transition-opacity hover:opacity-80"
+          >
+            <Image
+              src="/android-chrome-512x512.png"
+              alt="Movmash Logo"
+              width={26}
+              height={26}
+              className="h-[26px] w-[26px] shrink-0 rounded-full"
             />
-            <span className="font-parkinsans text-xl font-semibold leading-none tracking-tight text-white/90">
-              Movmash
-            </span>
+            Movmash
           </Link>
 
-          {/* Desktop Navigation - Centered */}
-          <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-6 lg:flex">
+          {/* Desktop Navigation — right-aligned next to the buttons rather than absolutely
+              centred, so it never collides with the brand on a narrow desktop window. */}
+          <div className="hidden items-center gap-[22px] font-parkinsans text-[13.5px] font-medium text-white/72 lg:flex">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                onClick={(e) => handleNavLinkClick(e, link.hash, link.href)}
-                className="font-parkinsans text-sm font-medium text-white/72 transition-colors duration-200 hover:text-white"
+                onClick={(e) => handleNavLinkClick(e, link.hash)}
+                className={cn(
+                  "whitespace-nowrap transition-colors duration-200 hover:text-white",
+                  link.href === pathname && "text-white"
+                )}
               >
                 {link.label}
               </a>
             ))}
           </div>
 
-          {/* CTA Buttons */}
-          <div className="z-10 hidden items-center gap-3 md:flex">
-            <Button variant="ghost" asChild className="h-10 px-1 font-parkinsans text-sm">
-              <a href="https://app.movmash.com/login" rel="noopener noreferrer">
-                Login
-              </a>
-            </Button>
-            <Button variant="hero" asChild className="font-parkinsans text-sm">
-              <a href="https://app.movmash.com" rel="noopener noreferrer" className="flex items-center gap-2">
-                <Play className="w-4 h-4" />
+          {/* One CTA, a notch smaller than the page button — a header control, not a CTA
+              block. Login lived here too, but it lands in the same place: app.movmash.com
+              sends you to sign-in when you are not already in. */}
+          <div className="hidden md:flex">
+            <Button
+              variant="hero"
+              asChild
+              className="h-[34px] rounded-[10px] px-3.5 font-parkinsans text-[13px] [&_svg]:size-3.5"
+            >
+              <a href="https://app.movmash.com" rel="noopener noreferrer">
+                <Play className="fill-current" strokeWidth={0} />
                 Start Party
               </a>
             </Button>
@@ -112,53 +123,52 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="z-10 flex h-10 w-10 items-center justify-center text-white/72 transition-colors hover:text-white md:hidden"
+            className="flex h-10 w-10 items-center justify-center text-white/72 transition-colors hover:text-white md:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
+            aria-expanded={isMobileMenuOpen}
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMobileMenuOpen ? <X className="h-[22px] w-[22px]" /> : <Menu className="h-[22px] w-[22px]" />}
           </button>
         </nav>
+      </div>
 
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="landing-subtle-surface mt-3 animate-slide-up rounded-2xl px-4 py-5 md:hidden">
-            <div className="flex flex-col gap-3">
+      {/* The hairline only exists once the bar has a body to sit under. */}
+      <div
+        aria-hidden="true"
+        className={cn(
+          "h-px w-full bg-gradient-to-r from-transparent via-white/[0.12] to-transparent transition-opacity [transition-duration:250ms]",
+          isScrolled ? "opacity-100" : "opacity-0"
+        )}
+      />
+
+      {/* Mobile Menu — hangs off the bar and is tinted, because it opens over the hero video. */}
+      {isMobileMenuOpen && (
+        <div className="animate-slide-up border-t border-white/[0.07] bg-[#0c0b0f]/[0.96] backdrop-blur-[16px] md:hidden">
+          <div className="landing-header-shell pb-[18px] pt-3">
+            <div className="flex flex-col">
               {navLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
-                  onClick={(e) => handleNavLinkClick(e, link.hash, link.href)}
-                  className="rounded-xl px-4 py-3 font-parkinsans text-base font-medium text-white/76 transition-colors duration-200 hover:bg-white/[0.04] hover:text-white"
+                  onClick={(e) => handleNavLinkClick(e, link.hash)}
+                  className="rounded-[10px] px-3 py-3 font-parkinsans text-[15px] font-medium text-white/76 transition-colors duration-200 hover:bg-white/[0.04] hover:text-white"
                 >
                   {link.label}
                 </a>
               ))}
-              <div className="landing-open-divider flex flex-col gap-3 pt-4">
-                <Button variant="ghost" asChild className="w-full font-parkinsans text-sm">
-                  <a href="https://app.movmash.com/login" rel="noopener noreferrer">
-                    Login
-                  </a>
-                </Button>
-                <Button variant="hero" asChild className="w-full font-parkinsans text-sm">
+              <div className="landing-open-divider mt-3 pt-3.5">
+                <Button variant="hero" size="sm" asChild className="w-full font-parkinsans">
                   <a href="https://app.movmash.com" rel="noopener noreferrer">
-                    <Play className="w-4 h-4" />
+                    <Play className="fill-current" strokeWidth={0} />
                     Start Party
                   </a>
                 </Button>
               </div>
             </div>
           </div>
-        )}
-
-        <div
-          aria-hidden="true"
-          className={cn(
-            "mx-auto h-px w-full max-w-6xl bg-gradient-to-r from-transparent via-white/[0.10] to-transparent transition-opacity duration-200",
-            isScrolled ? "opacity-100" : "opacity-75"
-          )}
-        />
-      </div>
+        </div>
+      )}
     </header>
   );
 };

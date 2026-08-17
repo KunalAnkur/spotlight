@@ -46,6 +46,24 @@ export const homePageKeywords = [
   "streaming together",
   "no account required",
   "movie night with friends",
+  "watch party games",
+  "online games with friends",
+];
+
+// "online games with friends" is a different search from "watch party", which is why the
+// games page carries its own route, H1 and keyword set rather than living under the home page.
+export const gamesPageKeywords = [
+  ...baseKeywords,
+  "online games with friends",
+  "games to play with friends online",
+  "watch party games",
+  "play tic tac toe online with friends",
+  "connect 4 online multiplayer",
+  "online jigsaw puzzle with friends",
+  "virtual date night games",
+  "party games for video call",
+  "no download browser games",
+  "free multiplayer browser games",
 ];
 
 export const watchTogetherKeywords = [

@@ -6,42 +6,42 @@ import Link from "next/link";
 const demoVideoEmojis = [
   {
     emoji: "🎬",
-    className: "-left-8 top-10 xl:-left-12 xl:top-12",
+    className: "-left-[46px] top-10",
     animationClass: "animate-float-gentle",
     delay: "0.12s",
     sizeClass: "text-[1.85rem]",
   },
   {
     emoji: "🍿",
-    className: "-right-8 top-8 xl:-right-12 xl:top-10",
-    animationClass: "animate-float-delayed",
+    className: "-right-[46px] top-8",
+    animationClass: "animate-float",
     delay: "0.28s",
     sizeClass: "text-[1.95rem]",
   },
   {
     emoji: "🎥",
-    className: "-left-10 top-1/2 -translate-y-1/2 xl:-left-14",
+    className: "-left-[56px] top-1/2",
     animationClass: "animate-float-subtle",
     delay: "0.44s",
     sizeClass: "text-[1.55rem]",
   },
   {
     emoji: "💬",
-    className: "-right-10 top-[46%] -translate-y-1/2 xl:-right-14",
+    className: "-right-[56px] top-[46%]",
     animationClass: "animate-float-gentle",
     delay: "0.58s",
     sizeClass: "text-[1.55rem]",
   },
   {
     emoji: "✨",
-    className: "left-16 -top-6 xl:left-24",
-    animationClass: "animate-float-delayed",
+    className: "left-16 -top-7",
+    animationClass: "animate-float",
     delay: "0.38s",
     sizeClass: "text-[1.8rem]",
   },
   {
     emoji: "🎉",
-    className: "right-16 -bottom-6 xl:right-24",
+    className: "right-16 -bottom-7",
     animationClass: "animate-float-subtle",
     delay: "0.66s",
     sizeClass: "text-[1.75rem]",
@@ -50,71 +50,65 @@ const demoVideoEmojis = [
 
 const HeroSection = () => {
   return (
-    <section className="landing-section overflow-visible pb-16 pt-32 md:pb-20 md:pt-56">
+    // pt-26 (104px) clears the 60px fixed header with room to breathe.
+    <section className="relative overflow-visible pb-[60px] pt-[104px] text-center">
       <div className="landing-shell relative z-10">
-        <div className="absolute left-1/2 top-8 -z-10 h-56 w-56 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(225,29,72,0.16)_0%,transparent_72%)] blur-3xl" />
+        <p className="landing-kicker animate-slide-up">Watch Party App</p>
 
-        <div className="mx-auto max-w-6xl">
-          <div className="text-center">
-            <p className="animate-slide-up text-[11px] font-semibold uppercase tracking-[0.3em] text-white/42">
-              Watch Party App
-            </p>
+        <h1 className="animate-slide-up font-parkinsans font-semibold leading-[1.08] tracking-[-0.03em] text-white [font-size:clamp(2rem,4.6vw,2.9rem)]">
+          Online movie nights are easy!
+          <br />
+          <span className="text-gradient">Watch together with Movmash.</span>
+        </h1>
 
-            <h1 className="animate-slide-up font-parkinsans text-3xl font-semibold leading-[1.04] tracking-[-0.03em] text-white sm:text-4xl lg:text-5xl">
-              Online movie nights are easy!{" "}
-              <span className="text-gradient">Watch together with Movmash.</span>
-            </h1>
+        <p className="mx-auto mt-4 max-w-[600px] animate-slide-up text-base leading-[1.75] text-white/68">
+          Start a watch party in seconds with synced playback, private room links, chat,
+          reactions and screen sharing. Plus games you can play in the same room.
+        </p>
 
-            <p className="mx-auto mt-3 max-w-3xl animate-slide-up text-sm font-medium leading-6 text-white/58 md:text-base">
-              Start a watch party in seconds with synced playback, private room links, chat, reactions, and screen sharing.
-            </p>
+        <div className="mt-7 flex flex-col items-center justify-center gap-3.5 animate-slide-up stagger-3 sm:flex-row">
+          <Button variant="hero" asChild className="font-parkinsans">
+            <a href="https://app.movmash.com" target="_blank" rel="noopener noreferrer">
+              <Play className="fill-current" strokeWidth={0} />
+              Start Watch Party
+            </a>
+          </Button>
+          <Button variant="outline" asChild className="font-parkinsans">
+            <Link href="/games">See the games</Link>
+          </Button>
+        </div>
 
-            <div className="mt-7 flex flex-col items-center justify-center gap-4 animate-slide-up stagger-3 sm:flex-row">
-              <Button variant="hero" size="xl" asChild className="font-parkinsans">
-                <a href="https://app.movmash.com" target="_blank" rel="noopener noreferrer">
-                  <Play className="h-5 w-5" />
-                  Start Watch Party
-                </a>
-              </Button>
-              <Button variant="outline" size="xl" asChild className="font-parkinsans">
-                <a href="#how-it-works">See How It Works</a>
-              </Button>
-            </div>
+        <p className="mt-[22px] animate-slide-up text-sm text-white/46">
+          Also exploring?{" "}
+          <Link href="/watch-together" className="text-white/72 transition-colors hover:text-white">
+            Watch together online
+          </Link>{" "}
+          and{" "}
+          <Link
+            href="/long-distance-date-night"
+            className="text-white/72 transition-colors hover:text-white"
+          >
+            long-distance date night
+          </Link>
+          .
+        </p>
 
-            <p className="mx-auto mt-5 max-w-3xl animate-slide-up text-xs leading-6 text-white/48 md:text-sm">
-              Also exploring?{" "}
-              <Link href="/watch-together" className="text-white/72 transition-colors hover:text-white">
-                Watch together online
-              </Link>{" "}
-              and{" "}
-              <Link
-                href="/long-distance-date-night"
-                className="text-white/72 transition-colors hover:text-white"
+        <div id="demo-video" className="relative mx-auto mt-11 max-w-[900px]">
+          <div className="pointer-events-none absolute inset-0 z-10 hidden xl:block">
+            {demoVideoEmojis.map((item) => (
+              <div
+                key={`${item.emoji}-${item.className}`}
+                aria-hidden="true"
+                className={`absolute leading-none opacity-80 drop-shadow-[0_10px_18px_rgba(0,0,0,0.22)] ${item.sizeClass} ${item.className} ${item.animationClass}`}
+                style={{
+                  animationDelay: item.delay,
+                }}
               >
-                long-distance date night
-              </Link>
-              .
-            </p>
+                <span>{item.emoji}</span>
+              </div>
+            ))}
           </div>
-
-          <div id="demo-video" className="relative mt-10 md:mt-12">
-            <div className="pointer-events-none absolute inset-0 z-10 hidden lg:block">
-              {demoVideoEmojis.map((item) => (
-                <div
-                  key={`${item.emoji}-${item.className}`}
-                  aria-hidden="true"
-                  className={`absolute opacity-80 drop-shadow-[0_10px_18px_rgba(0,0,0,0.22)] ${item.sizeClass} ${item.className} ${item.animationClass}`}
-                  style={{
-                    animationDelay: item.delay,
-                  }}
-                >
-                  <span>{item.emoji}</span>
-                </div>
-              ))}
-            </div>
-            <div className="absolute inset-x-10 top-10 -z-10 h-28 bg-gradient-to-r from-[#e11d48]/16 via-[#db2777]/10 to-[#c026d3]/16 blur-3xl" />
-            <DemoVideoPreview />
-          </div>
+          <DemoVideoPreview />
         </div>
       </div>
     </section>

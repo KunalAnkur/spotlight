@@ -1,7 +1,7 @@
 import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
 import FeaturesSection from "@/components/landing/FeaturesSection";
-import ShowcaseSection from "@/components/landing/ShowcaseSection";
+import GamesSection from "@/components/landing/GamesSection";
 import PricingPreviewSection from "@/components/landing/PricingPreviewSection";
 import UseCasesSection from "@/components/landing/UseCasesSection";
 import HowItWorksSection from "@/components/landing/HowItWorksSection";
@@ -14,49 +14,14 @@ import WebPageSchema from "@/components/SEO/WebPageSchema";
 import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
 import SiteNavigationSchema from "@/components/SEO/SiteNavigationSchema";
 import SoftwareApplicationSchema from "@/components/SEO/SoftwareApplicationSchema";
+import { homeFaqs } from "@/components/landing/faq-content";
 import { homePageKeywords } from "@/constants/seo-keywords";
 import { baseUrl, createPageMetadata } from "@/lib/metadata";
 
-// FAQ data for schema (matching FAQSection component)
-const faqs = [
-  {
-    question: "Do guests need to download anything?",
-    answer: "No. Guests can join from the browser with the room link, so the room can start without an extra install step.",
-  },
-  {
-    question: "Do my friends need to create an account?",
-    answer: "Friends can join and watch without creating an account. However, creating a room or being the host requires signing in with Google for a seamless experience.",
-  },
-  {
-    question: "What platforms can I watch together?",
-    answer: "Movmash supports YouTube, Vimeo, Twitch, Dailymotion, HLS streams, and more. You can also share your screen to watch premium streaming services or any other platform together.",
-  },
-  {
-    question: "How does screen sharing work?",
-    answer: "In Stream mode, you can share your browser tab, application window, or entire screen. For best audio quality, we recommend sharing a browser tab. Everyone in the room will see and hear exactly what you're sharing.",
-  },
-  {
-    question: "Can I watch local video files with friends?",
-    answer: "Absolutely! In Stream mode, you can upload video files from your computer and stream them to everyone in the room. Your files stay on your computer — we don't store them on our servers.",
-  },
-  {
-    question: "Is there a limit on room participants?",
-    answer: "Free rooms support up to 2 participants. Premium is built for larger rooms with more than 50 participants.",
-  },
-  {
-    question: "What browsers are supported?",
-    answer: "Movmash works best on modern browsers like Chrome, Firefox, Edge, and Safari. For screen sharing features, we recommend using Chrome or Edge for the best audio capture support.",
-  },
-  {
-    question: "Is my data private and secure?",
-    answer: "Yes, we take privacy seriously. Rooms are private by default — only people with the room link can join. We don't store your video files, and all communications are encrypted.",
-  },
-];
-
 export const metadata = createPageMetadata({
-  title: "Watch Party App | Watch Together Online | Movmash",
+  title: "Watch Party App with Online Games | Watch Together | Movmash",
   description:
-    "Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions, screen sharing, and local file streaming.",
+    "Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions and screen sharing — plus online games to play with friends in the same room.",
   keywords: homePageKeywords,
 });
 
@@ -67,25 +32,24 @@ export default function Home() {
       <SiteNavigationSchema />
       
       {/* FAQPage Schema - Google recognizes this as a rich result type */}
-      <FAQPageSchema faqs={faqs} />
-      
+      <FAQPageSchema faqs={homeFaqs} />
+
       {/* WebPage Schema for home page */}
       <WebPageSchema
-        title="Watch Party App | Watch Together Online | Movmash"
-        description="Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions, screen sharing, and local file streaming."
+        title="Watch Party App with Online Games | Watch Together | Movmash"
+        description="Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions and screen sharing — plus online games to play with friends in the same room."
         url={baseUrl}
       />
 
       <SoftwareApplicationSchema
         url={baseUrl}
-        description="Watch party app for watching together online with synced playback, private room links, live chat, reactions, screen sharing, and local file streaming."
+        description="Watch party app for watching videos together in sync and playing online games with friends in the same room."
         features={[
-          "Watch party rooms",
-          "Synced playback",
-          "Private room links",
-          "Live chat and reactions",
-          "Screen sharing",
-          "Local file streaming",
+          "Synced watch party rooms",
+          "Screen sharing and local file streaming",
+          "Live chat and animated reactions",
+          "Online games: Tic-Tac-Toe, Connect 4, Jigsaw",
+          "Private room links, no download required",
         ]}
       />
       
@@ -101,7 +65,7 @@ export default function Home() {
         <main>
           <HeroSection />
           <FeaturesSection />
-          <ShowcaseSection />
+          <GamesSection />
           <PricingPreviewSection />
           <UseCasesSection />
           <HowItWorksSection />
