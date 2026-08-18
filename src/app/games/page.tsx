@@ -108,9 +108,9 @@ export default function GamesPage() {
                   ))}
                 </div>
                 <DemoVideoPreview />
-                <p className="mt-3.5 text-center text-[13px] text-white/46">
+                {/* <p className="mt-3.5 text-center text-[13px] text-white/46">
                   Placeholder — the games video replaces this one.
-                </p>
+                </p> */}
               </div>
             </div>
           </section>
