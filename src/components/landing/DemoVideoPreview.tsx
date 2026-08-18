@@ -1,19 +1,41 @@
 "use client";
 
-const videoId = "QmiWGfZTHps";
-const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&rel=0&loop=1&playlist=${videoId}`;
+import { useEffect, useRef } from "react";
+
+const videoSrc =
+  "https://asset.movmash.com/platform/vid/spotlight-cover-video-v2.mp4";
 
 const DemoVideoPreview = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // React omits `muted` from the server-rendered HTML, so the browser can see
+    // an unmuted autoplaying video on first paint and block it. Setting the
+    // property directly on hydration guarantees autoplay is allowed.
+    video.muted = true;
+
+    // Autoplay can still be refused (battery saver, reduced-data mode). The
+    // rejection is expected, not an error worth surfacing.
+    void video.play().catch(() => {});
+  }, []);
+
   return (
     <div className="relative aspect-video overflow-hidden rounded-3xl bg-white/[0.03] shadow-[0_28px_70px_rgba(0,0,0,0.28)]">
-      <iframe
-        className="absolute inset-0 h-full w-full"
-        src={embedUrl}
-        title="Movmash demo video"
-        loading="eager"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerPolicy="strict-origin-when-cross-origin"
-        allowFullScreen
+      <video
+        ref={videoRef}
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+        src={videoSrc}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        disablePictureInPicture
+        aria-label="Movmash demo video"
+        tabIndex={-1}
       />
     </div>
   );
