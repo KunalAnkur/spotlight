@@ -8,11 +8,21 @@ import {
   normalizeAffiliateProducts,
 } from "@/lib/affiliate-products";
 
-export function useAffiliateProducts(limit?: number) {
-  const [items, setItems] = useState<AffiliateProduct[]>([]);
-  const [status, setStatus] = useState<AffiliateFeedStatus>(() =>
-    getAffiliateProductsEndpoint() ? "loading" : "missing_config",
+/**
+ * `initialItems` lets a server component hand over a feed it already fetched, so the markup
+ * ships with real products instead of a skeleton. The effect below still refreshes after
+ * mount — it just starts from "ready" rather than "loading" when seeded, which keeps the grid
+ * from flashing back to placeholders on hydration.
+ */
+export function useAffiliateProducts(limit?: number, initialItems?: AffiliateProduct[]) {
+  const seeded = initialItems && initialItems.length > 0;
+  const [items, setItems] = useState<AffiliateProduct[]>(() =>
+    seeded ? (typeof limit === "number" ? initialItems.slice(0, limit) : initialItems) : [],
   );
+  const [status, setStatus] = useState<AffiliateFeedStatus>(() => {
+    if (seeded) return "ready";
+    return getAffiliateProductsEndpoint() ? "loading" : "missing_config";
+  });
 
   useEffect(() => {
     const endpoint = getAffiliateProductsEndpoint();
@@ -26,9 +36,11 @@ export function useAffiliateProducts(limit?: number) {
     const controller = new AbortController();
     let isActive = true;
 
-    startTransition(() => {
-      setStatus("loading");
-    });
+    if (!seeded) {
+      startTransition(() => {
+        setStatus("loading");
+      });
+    }
 
     const loadProducts = async () => {
       try {
@@ -60,8 +72,14 @@ export function useAffiliateProducts(limit?: number) {
         }
 
         console.error("[affiliate-products] Failed to load product feed", error);
-        setItems([]);
-        setStatus("error");
+
+        // A failed refresh should not empty a grid the server already filled — the seeded
+        // products are stale at worst, whereas clearing them puts the page back to the blank
+        // state that got it flagged as a Soft 404.
+        if (!seeded) {
+          setItems([]);
+        }
+        setStatus(seeded ? "ready" : "error");
       }
     };
 
@@ -71,7 +89,7 @@ export function useAffiliateProducts(limit?: number) {
       isActive = false;
       controller.abort();
     };
-  }, [limit]);
+  }, [limit, seeded]);
 
   return {
     items,

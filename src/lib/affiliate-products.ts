@@ -145,3 +145,31 @@ export function normalizeAffiliateProducts(payload: unknown): AffiliateProduct[]
     }))
     .filter((item) => item.id && item.name && item.href);
 }
+
+/**
+ * Server-side product fetch, for pages that must ship real content in their HTML.
+ *
+ * useAffiliateProducts only fetches after mount, which left /watch-party-shop server-rendering
+ * nothing but a skeleton: Googlebot saw "Loading feed" where the catalogue should be and filed
+ * the URL as a Soft 404 for four months. Pages call this, render the result directly, and pass
+ * it to the hook as initial state so there is no skeleton flash on hydration either.
+ *
+ * Returns [] on any failure — a shop page with no grid is still a valid page, and the client
+ * hook retries after mount regardless.
+ */
+export async function fetchAffiliateProducts(): Promise<AffiliateProduct[]> {
+  if (!apiBaseUrl) return [];
+
+  try {
+    const response = await fetch(`${apiBaseUrl.replace(/\/$/, "")}/api/v1/products`, {
+      headers: { Accept: "application/json" },
+      next: { revalidate: 1800 },
+    });
+
+    if (!response.ok) return [];
+
+    return normalizeAffiliateProducts(await response.json());
+  } catch {
+    return [];
+  }
+}

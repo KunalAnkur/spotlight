@@ -218,7 +218,10 @@ export default function AffiliateProductCard({
           <a
             href={product.href}
             target="_blank"
-            rel="noopener noreferrer"
+            // Affiliate links are paid links: Google requires rel="sponsored" (nofollow as a
+            // belt-and-braces fallback for older parsers) or they count as an undisclosed
+            // link scheme.
+            rel="sponsored nofollow noopener noreferrer"
             onClick={() =>
               trackAffiliateProductClick({
                 product,

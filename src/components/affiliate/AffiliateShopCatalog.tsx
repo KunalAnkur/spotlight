@@ -4,6 +4,7 @@ import { ExternalLink, ShoppingBag } from "lucide-react";
 import AffiliateProductsGrid from "@/components/affiliate/AffiliateProductsGrid";
 import AffiliateProductsSkeleton from "@/components/affiliate/AffiliateProductsSkeleton";
 import { useAffiliateProducts } from "@/components/affiliate/useAffiliateProducts";
+import type { AffiliateProduct } from "@/lib/affiliate-products";
 
 const statusCopy = {
   loading: "Loading feed",
@@ -13,8 +14,13 @@ const statusCopy = {
   missing_config: "Feed not configured",
 };
 
-export default function AffiliateShopCatalog() {
-  const { items, status, isLoading } = useAffiliateProducts();
+interface AffiliateShopCatalogProps {
+  /** Feed already fetched on the server, so the grid ships in the HTML. */
+  initialProducts?: AffiliateProduct[];
+}
+
+export default function AffiliateShopCatalog({ initialProducts }: AffiliateShopCatalogProps) {
+  const { items, status, isLoading } = useAffiliateProducts(undefined, initialProducts);
   const categories = Array.from(
     new Set(items.map((item) => item.category).filter(Boolean)),
   ).slice(0, 8);
