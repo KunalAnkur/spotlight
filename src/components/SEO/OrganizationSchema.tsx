@@ -4,6 +4,7 @@ export default function OrganizationSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${baseUrl}/#organization`,
     name: "Movmash",
     url: baseUrl,
     logo: {

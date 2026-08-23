@@ -11,8 +11,6 @@ import CTASection from "@/components/landing/CTASection";
 import Footer from "@/components/landing/Footer";
 import FAQPageSchema from "@/components/SEO/FAQPageSchema";
 import WebPageSchema from "@/components/SEO/WebPageSchema";
-import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
-import SiteNavigationSchema from "@/components/SEO/SiteNavigationSchema";
 import SoftwareApplicationSchema from "@/components/SEO/SoftwareApplicationSchema";
 import { homeFaqs } from "@/components/landing/faq-content";
 import { homePageKeywords } from "@/constants/seo-keywords";
@@ -28,10 +26,8 @@ export const metadata = createPageMetadata({
 export default function Home() {
   return (
     <>
-      {/* Site Navigation Schema - Helps Google understand site structure for sitelinks */}
-      <SiteNavigationSchema />
-      
-      {/* FAQPage Schema - Google recognizes this as a rich result type */}
+      {/* Kept for answer engines and LLM extraction, not for a SERP rich result: Google
+          restricted FAQ rich results to authoritative government and health sites in 2023. */}
       <FAQPageSchema faqs={homeFaqs} />
 
       {/* WebPage Schema for home page */}
@@ -50,13 +46,6 @@ export default function Home() {
           "Live chat and animated reactions",
           "Online games: Tic-Tac-Toe, Connect 4, Jigsaw",
           "Private room links, no download required",
-        ]}
-      />
-      
-      {/* Breadcrumb Schema for home page */}
-      <BreadcrumbSchema
-        items={[
-          { name: "Home", url: baseUrl },
         ]}
       />
       

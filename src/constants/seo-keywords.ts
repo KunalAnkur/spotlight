@@ -141,44 +141,12 @@ export const contactKeywords = [
   "questions",
 ];
 
-export const pricingKeywords = [
-  ...baseKeywords,
-  "pricing",
-  "plans",
-  "free plan",
-  "premium plan",
-  "watch party pricing",
-  "watch together pricing",
-  "group watch plans",
-  "premium watch rooms",
-];
-
-export const privacyKeywords = [
+export const legalKeywords = [
   ...baseKeywords,
   "privacy policy",
-  "data protection",
-  "privacy",
-  "data security",
-  "user privacy",
-  "personal information",
-  "data collection",
-];
-
-export const termsKeywords = [
-  ...baseKeywords,
   "terms of service",
-  "terms",
-  "legal",
-  "user agreement",
-  "service terms",
-  "conditions",
-];
-
-export const cookiesKeywords = [
-  ...baseKeywords,
   "cookie policy",
-  "cookies",
-  "tracking",
-  "privacy settings",
-  "data cookies",
+  "data protection",
+  "user agreement",
+  "movmash legal",
 ];

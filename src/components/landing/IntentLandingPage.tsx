@@ -26,7 +26,7 @@ interface IntentLandingPageProps {
 
 export default function IntentLandingPage({ data }: IntentLandingPageProps) {
   const isDateNight = data.slug === "long-distance-date-night";
-  const visibleBenefits = data.benefits.slice(0, 3);
+  const visibleBenefits = data.benefits;
 
   const heroIcons: LucideIcon[] = isDateNight
     ? [Heart, LockKeyhole, Sparkles]
@@ -179,6 +179,24 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
           </div>
         </section>
 
+        {data.overview ? (
+          <section className="mx-auto max-w-3xl">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/36">
+              {data.overview.eyebrow}
+            </p>
+            <h2 className="mt-3 font-parkinsans text-[1.55rem] font-semibold leading-[1.08] tracking-[-0.04em] text-white md:text-[2rem]">
+              {data.overview.title}
+            </h2>
+            <div className="mt-5 space-y-4">
+              {data.overview.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 48)} className="text-sm leading-8 text-white/62 md:text-[15px]">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
         <section
           className={`grid gap-8 lg:items-center ${
             isDateNight ? "lg:grid-cols-[1.08fr_0.92fr]" : "lg:grid-cols-[0.84fr_1.16fr]"
@@ -257,6 +275,51 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
           </div>
         </section>
 
+        {data.modes && data.modes.length > 0 ? (
+          <section className="space-y-8">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/36">
+                {data.modesEyebrow}
+              </p>
+              <h2 className="mt-3 font-parkinsans text-[1.55rem] font-semibold leading-[1.08] tracking-[-0.04em] text-white md:text-[2rem]">
+                {data.modesTitle}
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/60 md:text-[15px]">
+                {data.modesCopy}
+              </p>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-3">
+              {data.modes.map((mode) => (
+                <article key={mode.name} className={`flex flex-col rounded-[1.5rem] px-5 py-5 ${theme.stepCard}`}>
+                  <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${theme.stepIcon}`}>
+                    <mode.icon className="h-4.5 w-4.5" />
+                  </span>
+                  <h3 className="mt-4 font-parkinsans text-lg font-semibold tracking-tight text-white">
+                    {mode.name}
+                  </h3>
+                  <p className="mt-2.5 text-sm leading-7 text-white/62">{mode.summary}</p>
+
+                  <dl className="mt-5 space-y-3 border-t border-white/6 pt-4 text-sm">
+                    {[
+                      { term: "Best for", detail: mode.bestFor },
+                      { term: "You need", detail: mode.needs },
+                      { term: "Worth knowing", detail: mode.limit },
+                    ].map((row) => (
+                      <div key={row.term}>
+                        <dt className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/34">
+                          {row.term}
+                        </dt>
+                        <dd className="mt-1 leading-6 text-white/60">{row.detail}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
         <section className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <div className="overflow-hidden rounded-[2rem] shadow-[0_26px_70px_rgba(0,0,0,0.18)]">
             <Image
@@ -332,6 +395,40 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
                   </article>
                 );
               })}
+            </div>
+          </section>
+        ) : null}
+
+        {data.platformGroups && data.platformGroups.length > 0 ? (
+          <section className="space-y-8">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/36">
+                {data.platformsEyebrow}
+              </p>
+              <h2 className="mt-3 font-parkinsans text-[1.55rem] font-semibold leading-[1.08] tracking-[-0.04em] text-white md:text-[2rem]">
+                {data.platformsTitle}
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/60 md:text-[15px]">
+                {data.platformsCopy}
+              </p>
+            </div>
+
+            <div className="grid gap-5 md:grid-cols-3">
+              {data.platformGroups.map((group) => (
+                <article key={group.label} className={`rounded-[1.5rem] px-5 py-5 ${theme.scenarioCard}`}>
+                  <h3 className="font-parkinsans text-base font-semibold tracking-tight text-white">
+                    {group.label}
+                  </h3>
+                  <ul className="mt-4 flex flex-wrap gap-2">
+                    {group.items.map((item) => (
+                      <li key={item} className={`inline-flex items-center rounded-full px-3 py-1.5 text-[12px] ${theme.chip}`}>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-4 text-sm leading-6 text-white/58">{group.note}</p>
+                </article>
+              ))}
             </div>
           </section>
         ) : null}

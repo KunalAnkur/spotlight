@@ -29,11 +29,12 @@ export default function WatchTogetherPage() {
         url={pageUrl}
         description={watchTogetherPageData.metadataDescription}
         features={[
-          "Synced playback",
-          "Private room links",
-          "Live chat and reactions",
-          "Screen sharing",
-          "Local file streaming",
+          "Synced playback across every viewer",
+          "Private room links, no guest account required",
+          "Live chat and reactions beside the video",
+          "Screen sharing for services that block embedding",
+          "Local file streaming from the host's computer",
+          "Runs in the browser on desktop and mobile",
         ]}
       />
       <BreadcrumbSchema

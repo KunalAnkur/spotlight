@@ -3,6 +3,11 @@ import { join } from 'path'
 import { MetadataRoute } from 'next'
 import { client } from '@/sanity/lib/client'
 import { postSlugsQuery } from '@/sanity/lib/queries'
+import retiredPosts from '@/content/retired-posts.json'
+
+// Retired posts are still documents in Sanity, but their URLs 308 to the article that
+// replaced them. A sitemap should list destinations, never redirects.
+const retiredSlugs = new Set(retiredPosts.map(({ from }) => from.replace('/blog/', '')))
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com'
 
@@ -50,12 +55,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/pricing`,
-      lastModified: getFileLastModified('src/app/pricing/page.tsx'),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/watch-together`,
       lastModified: getFileLastModified('src/app/watch-together/page.tsx'),
       changeFrequency: 'weekly',
@@ -74,20 +73,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/privacy`,
-      lastModified: getFileLastModified('src/app/privacy/page.tsx'),
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/terms`,
-      lastModified: getFileLastModified('src/app/terms/page.tsx'),
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/cookies`,
-      lastModified: getFileLastModified('src/app/cookies/page.tsx'),
+      url: `${baseUrl}/legal`,
+      lastModified: getFileLastModified('src/app/legal/page.tsx'),
       changeFrequency: 'yearly',
       priority: 0.3,
     },
@@ -98,7 +85,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const slugs = await client.fetch<{ slug: string; _updatedAt?: string; publishedAt?: string }[]>(postSlugsQuery)
     blogPosts = slugs
-      .filter((item) => item.slug) // Only include posts with valid slugs
+      .filter((item) => item.slug && !retiredSlugs.has(item.slug))
       .map((item) => ({
         url: `${baseUrl}/blog/${item.slug}`,
         lastModified: item._updatedAt || item.publishedAt || undefined,

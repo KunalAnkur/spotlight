@@ -56,9 +56,7 @@ export const metadata: Metadata = {
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
   },
-  // Hilltop ad service
   other: {
-    fd87cbf9bf3e75b83b4c217a0c8b87af091a3348: "fd87cbf9bf3e75b83b4c217a0c8b87af091a3348",
     referrer: "no-referrer-when-downgrade",
   },
 };

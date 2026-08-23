@@ -14,9 +14,24 @@ import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { postQuery, postSlugsQuery, relatedPostsQuery } from "@/sanity/lib/queries";
 import { blogPostKeywords } from "@/constants/seo-keywords";
+import retiredPosts from "@/content/retired-posts.json";
 import { baseUrl, createPageMetadata, createSocialImage } from "@/lib/metadata";
 
 export const revalidate = 60;
+
+// These slugs are served by a permanent redirect in next.config.mjs, so prerendering them
+// only produces pages nothing can ever reach.
+const retiredSlugs = new Set(retiredPosts.map(({ from }) => from.replace("/blog/", "")));
+
+/**
+ * Authors habitually type the brand into Sanity's SEO Title ("... | Movmash"), and the root
+ * layout's title template appends "| Movmash" again — which is how nine live posts ended up
+ * titled "... | Movmash | Movmash" in the SERP. Strip any trailing brand segment here so the
+ * template owns the suffix and the CMS field stays forgiving.
+ */
+function stripBrandSuffix(value: string) {
+  return value.replace(/(?:\s*[|\u2013\u2014-]\s*Movmash\s*)+$/i, "").trim();
+}
 
 function getArticleExcerpt(body: any, fallbackTitle?: string) {
   if (typeof body === "string") {
@@ -127,7 +142,7 @@ export async function generateMetadata({
     : createSocialImage().url;
 
   const description = getArticleDescription(post);
-  const metadataTitle = post.seoTitle?.trim() || post.title;
+  const metadataTitle = stripBrandSuffix(post.seoTitle?.trim() || post.title) || post.title;
 
   const categoryKeywords = post.categories?.map((cat: any) => cat.title) || [];
   const primaryKeyword = post.primaryKeyword?.trim();
@@ -158,9 +173,11 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   try {
     const slugs = await client.fetch<{ slug: string }[]>(postSlugsQuery);
-    return slugs.map((item) => ({
-      slug: item.slug,
-    }));
+    return slugs
+      .filter((item) => item.slug && !retiredSlugs.has(item.slug))
+      .map((item) => ({
+        slug: item.slug,
+      }));
   } catch (error) {
     console.error("Error generating static params:", error);
     return [];

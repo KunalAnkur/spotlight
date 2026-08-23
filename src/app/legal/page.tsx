@@ -1,6 +1,7 @@
 import LegalPoliciesTabs from "@/components/layout/LegalPoliciesTabs";
 import SecondaryPageLayout from "@/components/layout/SecondaryPageLayout";
 import { getLegalPolicy, legalPolicies, type LegalPolicyKey } from "@/content/legal-policies";
+import { legalKeywords } from "@/constants/seo-keywords";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata = createPageMetadata({
@@ -8,6 +9,7 @@ export const metadata = createPageMetadata({
   description:
     "Review Movmash's Privacy Policy, Terms of Service, and Cookie Policy in one place.",
   path: "/legal",
+  keywords: legalKeywords,
   openGraph: {
     title: "Movmash Legal Policies",
   },
