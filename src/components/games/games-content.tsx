@@ -55,6 +55,13 @@ export interface GameEntry {
   shortBlurb: string;
   players: string;
   mode: string;
+  /** Longer copy for the games page detail row. */
+  detail: string;
+  /** One concrete piece of play advice — the reason the row is worth reading. */
+  tip: string;
+  /** The blog guide that covers this game in full. The games page is the hub; these are
+   *  the spokes, and they were sitting in the sitemap with nothing linking to them. */
+  guideHref: string;
 }
 
 export const GAMES: GameEntry[] = [
@@ -70,6 +77,10 @@ export const GAMES: GameEntry[] = [
     shortBlurb: "Three in a row. About a minute a round.",
     players: "2 players",
     mode: "Turn-based",
+    detail:
+      "The one everybody already knows, which is exactly why it works as a warm-up. A round lasts about a minute, so it fills the gap while the last person is still finding the link, and it never needs explaining to anyone.",
+    tip: "Take the centre square if you go first. It sits on four of the eight winning lines, twice as many as any corner, and it is the single move that most often decides an otherwise drawn game.",
+    guideHref: "/blog/play-tic-tac-toe-online-with-friends",
   },
   {
     slug: "connect-4",
@@ -83,6 +94,10 @@ export const GAMES: GameEntry[] = [
     shortBlurb: "Drop discs, line up four. The longer match.",
     players: "2 players",
     mode: "Turn-based",
+    detail:
+      "The longer head-to-head game, and the one with actual depth. Matches run five to ten minutes, which makes it the better fit for a proper break between episodes rather than a gap-filler between them.",
+    tip: "Play the centre column early. Discs there contribute to more possible fours than any other column, and controlling it forces your opponent to react to you for the rest of the match.",
+    guideHref: "/blog/play-connect-4-online-with-friends",
   },
   {
     slug: "jigsaw",
@@ -96,5 +111,9 @@ export const GAMES: GameEntry[] = [
     shortBlurb: "One picture, up to eight people solving it.",
     players: "Up to 8",
     mode: "Co-op",
+    detail:
+      "The calm one, and the only game here that scales past two people. Up to eight can work the same board at once, with difficulty levels and a choice of picture, so it stretches to fill a long call instead of ending in a minute.",
+    tip: "Split the board rather than all digging through the same pile. One person on edges while everyone else claims a colour region is far faster than eight people racing for the same piece.",
+    guideHref: "/blog/online-jigsaw-puzzle-with-friends",
   },
 ];
