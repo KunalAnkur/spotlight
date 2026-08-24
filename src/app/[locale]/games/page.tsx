@@ -274,7 +274,7 @@ export default function GamesPage() {
                       {game.detail}
                     </p>
 
-                    <p className="mt-3 max-w-3xl border-l-2 border-white/10 pl-4 text-sm leading-7 text-white/56">
+                    <p className="mt-3 max-w-3xl border-l-2 border-white/10 ps-4 text-sm leading-7 text-white/56">
                       <b className="font-semibold text-white/74">Worth knowing:</b> {game.tip}
                     </p>
 

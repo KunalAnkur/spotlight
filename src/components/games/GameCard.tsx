@@ -5,16 +5,21 @@ interface GameCardProps {
   game: GameEntry;
   /** Landing page uses the longer blurb; the games page has surrounding copy already. */
   blurb: string;
+  /** Translated overrides. Omitted on /games, which stays English by design. */
+  name?: string;
+  players?: string;
+  mode?: string;
+  freeLabel?: string;
 }
 
 // A card is the game itself, so clicking one goes straight into the arcade in the app rather
 // than to more reading about it — the marketing copy is already on the card.
-const GameCard = ({ game, blurb }: GameCardProps) => (
+const GameCard = ({ game, blurb, name, players, mode, freeLabel }: GameCardProps) => (
   <a
     href={PLAY_URL}
     rel="noopener noreferrer"
     className="game-card"
-    aria-label={`Play ${game.name} on Movmash`}
+    aria-label={`Play ${name ?? game.name} on Movmash`}
     style={{ ["--acc" as string]: game.accent }}
   >
     <div className="game-shot">
@@ -32,7 +37,7 @@ const GameCard = ({ game, blurb }: GameCardProps) => (
       <div className="mb-[9px] flex items-center gap-[11px]">
         <span className="game-glyph">{game.glyph}</span>
         <h3 className="font-parkinsans text-[19px] font-semibold tracking-tight text-white">
-          {game.name}
+          {name ?? game.name}
         </h3>
       </div>
 
@@ -40,12 +45,12 @@ const GameCard = ({ game, blurb }: GameCardProps) => (
 
       <span className="mt-4 flex items-center gap-[9px] text-[12.5px] text-white/46">
         <b className="font-semibold" style={{ color: game.accent }}>
-          {game.players}
+          {players ?? game.players}
         </b>
         <i className="h-[3px] w-[3px] shrink-0 rounded-full bg-current opacity-50" />
-        {game.mode}
+        {mode ?? game.mode}
         <i className="h-[3px] w-[3px] shrink-0 rounded-full bg-current opacity-50" />
-        Free
+        {freeLabel ?? "Free"}
       </span>
     </div>
   </a>

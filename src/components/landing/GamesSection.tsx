@@ -1,4 +1,6 @@
 import { ArrowRight } from "lucide-react";
+import type { Locale } from "@/i18n/config";
+import { getTranslations } from "@/i18n/server";
 import GameCard from "@/components/games/GameCard";
 import { GAMES, PLAY_URL } from "@/components/games/games-content";
 
@@ -33,7 +35,8 @@ const sectionEmojis = [
   },
 ];
 
-const GamesSection = () => {
+const GamesSection = ({ locale }: { locale: Locale }) => {
+  const t = getTranslations(locale, "games");
   return (
     <section id="games" className="landing-section">
       {/* Anchored to the section, not the 1152px shell — these live in the outer gutters, and
@@ -53,16 +56,23 @@ const GamesSection = () => {
 
       <div className="landing-shell relative z-10">
         <div className="landing-section-heading">
-          <p className="landing-kicker">Games</p>
+          <p className="landing-kicker">{t("kicker")}</p>
           <h2 className="landing-section-title">
-            Online games to play with{" "}
-            <span className="text-gradient">friends in the room</span>
+            {t("title")}
           </h2>
         </div>
 
         <div className="relative z-[3] grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {GAMES.map((game) => (
-            <GameCard key={game.slug} game={game} blurb={game.blurb} />
+            <GameCard
+              key={game.slug}
+              game={game}
+              name={t(game.i18nKey)}
+              blurb={t(`${game.i18nKey}Copy`)}
+              players={t(game.players === "Up to 8" ? "playersUpTo8" : "players2")}
+              mode={t(game.mode === "Co-op" ? "coop" : "turnBased")}
+              freeLabel={t("free")}
+            />
           ))}
         </div>
 
@@ -75,7 +85,7 @@ const GamesSection = () => {
             rel="noopener noreferrer"
             className="group mt-6 inline-flex items-center gap-2 font-parkinsans text-sm font-medium text-white/68 transition-colors hover:text-white"
           >
-            And more
+            {t("more")}
             <ArrowRight className="h-[15px] w-[15px] transition-transform [transition-duration:250ms] group-hover:translate-x-[3px]" />
           </a>
         </div>

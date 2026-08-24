@@ -58,7 +58,7 @@ export default async function BlogPage() {
       <SecondaryPageLayout>
         {posts.length > 0 ? (
           <section className="mx-auto w-full max-w-6xl space-y-6">
-            <div className="flex flex-col items-center justify-between gap-3 text-center md:flex-row md:text-left">
+            <div className="flex flex-col items-center justify-between gap-3 text-center md:flex-row md:text-start">
               <p className="text-sm text-white/50">
                 Fresh notes on the product, shared watching, and better room experiences.
               </p>

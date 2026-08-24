@@ -44,6 +44,8 @@ const JigsawGlyph = () => (
 
 export interface GameEntry {
   slug: string;
+  /** Key into the "games" namespace, for the translated home-page card. */
+  i18nKey: string;
   name: string;
   accent: string;
   glyph: ReactNode;
@@ -67,6 +69,7 @@ export interface GameEntry {
 export const GAMES: GameEntry[] = [
   {
     slug: "tic-tac-toe",
+    i18nKey: "ticTacToe",
     name: "Tic-Tac-Toe",
     accent: "#dc685a",
     glyph: <TicTacToeGlyph />,
@@ -84,6 +87,7 @@ export const GAMES: GameEntry[] = [
   },
   {
     slug: "connect-4",
+    i18nKey: "connect4",
     name: "Connect 4",
     accent: "#3b82f6",
     glyph: <ConnectFourGlyph />,
@@ -101,6 +105,7 @@ export const GAMES: GameEntry[] = [
   },
   {
     slug: "jigsaw",
+    i18nKey: "jigsaw",
     name: "Jigsaw Puzzle",
     accent: "#8b5cf6",
     glyph: <JigsawGlyph />,

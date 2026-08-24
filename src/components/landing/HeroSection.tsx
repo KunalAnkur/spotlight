@@ -1,4 +1,6 @@
 import { Play } from "lucide-react";
+import type { Locale } from "@/i18n/config";
+import { getTranslations } from "@/i18n/server";
 import { Button } from "@/components/ui/button";
 import DemoVideoPreview from "@/components/landing/DemoVideoPreview";
 import Link from "next/link";
@@ -48,47 +50,48 @@ const demoVideoEmojis = [
   },
 ];
 
-const HeroSection = () => {
+const HeroSection = ({ locale }: { locale: Locale }) => {
+  const t = getTranslations(locale, "hero");
+
   return (
     // pt-26 (104px) clears the 60px fixed header with room to breathe.
     <section className="relative overflow-visible pb-[60px] pt-[104px] text-center">
       <div className="landing-shell relative z-10">
-        <p className="landing-kicker animate-slide-up">Watch Party App</p>
+        <p className="landing-kicker animate-slide-up">{t("kicker")}</p>
 
         <h1 className="animate-slide-up font-parkinsans font-semibold leading-[1.08] tracking-[-0.03em] text-white [font-size:clamp(2rem,4.6vw,2.9rem)]">
-          Online movie nights are easy!
+          {t("titleLine1")}
           <br />
-          <span className="text-gradient">Watch together with Movmash.</span>
+          <span className="text-gradient">{t("titleLine2")}</span>
         </h1>
 
         <p className="mx-auto mt-4 max-w-[600px] animate-slide-up text-base leading-[1.75] text-white/68">
-          Start a watch party in seconds with synced playback, private room links, chat,
-          reactions and screen sharing. Plus games you can play in the same room.
+          {t("subtitle")}
         </p>
 
         <div className="mt-7 flex flex-col items-center justify-center gap-3.5 animate-slide-up stagger-3 sm:flex-row">
           <Button variant="hero" asChild className="font-parkinsans">
             <a href="https://app.movmash.com" target="_blank" rel="noopener noreferrer">
               <Play className="fill-current" strokeWidth={0} />
-              Start Watch Party
+              {t("ctaPrimary")}
             </a>
           </Button>
           <Button variant="outline" asChild className="font-parkinsans">
-            <Link href="/games">See the games</Link>
+            <Link href="/games">{t("ctaSecondary")}</Link>
           </Button>
         </div>
 
         <p className="mt-[22px] animate-slide-up text-sm text-white/46">
-          Also exploring?{" "}
+          {t("alsoExploring")}{" "}
           <Link href="/watch-together" className="text-white/72 transition-colors hover:text-white">
-            Watch together online
+            {t("linkWatchTogether")}
           </Link>{" "}
-          and{" "}
+          {t("and")}{" "}
           <Link
             href="/long-distance-date-night"
             className="text-white/72 transition-colors hover:text-white"
           >
-            long-distance date night
+            {t("linkDateNight")}
           </Link>
           .
         </p>

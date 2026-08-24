@@ -7,18 +7,22 @@ import { cn } from "@/lib/utils";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import LanguageSwitcher from "@/components/i18n/LanguageSwitcher";
+import { useLocale, useT } from "@/i18n/LocaleProvider";
 
 const navLinks = [
-  { label: "Features", href: "/#features", hash: "features" },
-  { label: "Games", href: "/games", hash: "" },
-  { label: "How It Works", href: "/#how-it-works", hash: "how-it-works" },
-  { label: "Pricing", href: "/#pricing", hash: "pricing" },
-  { label: "Shop", href: "/watch-party-shop", hash: "" },
-  { label: "FAQ", href: "/#faq", hash: "faq" },
-  { label: "Blog", href: "/blog", hash: "" },
+  { key: "features", href: "/#features", hash: "features" },
+  { key: "games", href: "/games", hash: "" },
+  { key: "howItWorks", href: "/#how-it-works", hash: "how-it-works" },
+  { key: "pricing", href: "/#pricing", hash: "pricing" },
+  { key: "shop", href: "/watch-party-shop", hash: "" },
+  { key: "faq", href: "/#faq", hash: "faq" },
+  { key: "blog", href: "/blog", hash: "" },
 ];
 
 const Navbar = () => {
+  const t = useT("nav");
+  const locale = useLocale();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
@@ -75,7 +79,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link
             href="/"
-            className="mr-auto flex items-center gap-2.5 font-parkinsans text-lg font-semibold tracking-[-0.02em] text-white/90 transition-opacity hover:opacity-80"
+            className="me-auto flex items-center gap-2.5 font-parkinsans text-lg font-semibold tracking-[-0.02em] text-white/90 transition-opacity hover:opacity-80"
           >
             <Image
               src="/android-chrome-512x512.png"
@@ -92,7 +96,7 @@ const Navbar = () => {
           <div className="hidden items-center gap-[22px] font-parkinsans text-[13.5px] font-medium text-white/72 lg:flex">
             {navLinks.map((link) => (
               <a
-                key={link.label}
+                key={link.key}
                 href={link.href}
                 onClick={(e) => handleNavLinkClick(e, link.hash)}
                 className={cn(
@@ -100,7 +104,7 @@ const Navbar = () => {
                   link.href === pathname && "text-white"
                 )}
               >
-                {link.label}
+                {t(link.key)}
               </a>
             ))}
           </div>
@@ -108,7 +112,8 @@ const Navbar = () => {
           {/* One CTA, a notch smaller than the page button — a header control, not a CTA
               block. Login lived here too, but it lands in the same place: app.movmash.com
               sends you to sign-in when you are not already in. */}
-          <div className="hidden md:flex">
+          <div className="hidden items-center gap-1 md:flex">
+            <LanguageSwitcher locale={locale} label={t("language")} />
             <Button
               variant="hero"
               asChild
@@ -116,7 +121,7 @@ const Navbar = () => {
             >
               <a href="https://app.movmash.com" rel="noopener noreferrer">
                 <Play className="fill-current" strokeWidth={0} />
-                Start Party
+                {t("startParty")}
               </a>
             </Button>
           </div>
@@ -125,7 +130,7 @@ const Navbar = () => {
           <button
             className="flex h-10 w-10 items-center justify-center text-white/72 transition-colors hover:text-white md:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label={t("toggleMenu")}
             aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X className="h-[22px] w-[22px]" /> : <Menu className="h-[22px] w-[22px]" />}
@@ -149,19 +154,20 @@ const Navbar = () => {
             <div className="flex flex-col">
               {navLinks.map((link) => (
                 <a
-                  key={link.label}
+                  key={link.key}
                   href={link.href}
                   onClick={(e) => handleNavLinkClick(e, link.hash)}
                   className="rounded-[10px] px-3 py-3 font-parkinsans text-[15px] font-medium text-white/76 transition-colors duration-200 hover:bg-white/[0.04] hover:text-white"
                 >
-                  {link.label}
+                  {t(link.key)}
                 </a>
               ))}
-              <div className="landing-open-divider mt-3 pt-3.5">
-                <Button variant="hero" size="sm" asChild className="w-full font-parkinsans">
+              <div className="landing-open-divider mt-3 flex items-center justify-between gap-2 pt-3.5">
+                <LanguageSwitcher locale={locale} label={t("language")} />
+                <Button variant="hero" size="sm" asChild className="flex-1 font-parkinsans">
                   <a href="https://app.movmash.com" rel="noopener noreferrer">
                     <Play className="fill-current" strokeWidth={0} />
-                    Start Party
+                    {t("startParty")}
                   </a>
                 </Button>
               </div>

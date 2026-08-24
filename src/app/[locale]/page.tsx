@@ -15,6 +15,7 @@ import SoftwareApplicationSchema from "@/components/SEO/SoftwareApplicationSchem
 import { homeFaqs } from "@/components/landing/faq-content";
 import { homePageKeywords } from "@/constants/seo-keywords";
 import { baseUrl, createPageMetadata } from "@/lib/metadata";
+import { getTranslations, resolveLocale } from "@/i18n/server";
 
 export const metadata = createPageMetadata({
   title: "Watch Party App with Online Games | Watch Together | Movmash",
@@ -23,12 +24,19 @@ export const metadata = createPageMetadata({
   keywords: homePageKeywords,
 });
 
-export default function Home() {
+export default function Home({ params }: { params: { locale: string } }) {
+  const locale = resolveLocale(params.locale);
+  const tFaq = getTranslations(locale, "faqItems");
+  const faqs = homeFaqs.map(({ key }) => ({
+    question: tFaq(`${key}Q`),
+    answer: tFaq(`${key}A`),
+  }));
+
   return (
     <>
       {/* Kept for answer engines and LLM extraction, not for a SERP rich result: Google
           restricted FAQ rich results to authoritative government and health sites in 2023. */}
-      <FAQPageSchema faqs={homeFaqs} />
+      <FAQPageSchema faqs={faqs} />
 
       {/* WebPage Schema for home page */}
       <WebPageSchema
@@ -52,15 +60,15 @@ export default function Home() {
       <div className="min-h-screen">
         <Navbar />
         <main>
-          <HeroSection />
-          <FeaturesSection />
-          <GamesSection />
-          <PricingPreviewSection />
-          <UseCasesSection />
-          <HowItWorksSection />
-          <PlatformsSection />
+          <HeroSection locale={locale} />
+          <FeaturesSection locale={locale} />
+          <GamesSection locale={locale} />
+          <PricingPreviewSection locale={locale} />
+          <UseCasesSection locale={locale} />
+          <HowItWorksSection locale={locale} />
+          <PlatformsSection locale={locale} />
           <FAQSection />
-          <CTASection />
+          <CTASection locale={locale} />
         </main>
         <Footer />
       </div>

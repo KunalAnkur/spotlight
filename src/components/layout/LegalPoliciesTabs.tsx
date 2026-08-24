@@ -144,7 +144,7 @@ export default function LegalPoliciesTabs({
               type="button"
               onClick={() => handleTabChange(policy.key)}
               className={cn(
-                "inline-flex items-center gap-2 rounded-full px-4 py-2 text-left transition-all duration-200",
+                "inline-flex items-center gap-2 rounded-full px-4 py-2 text-start transition-all duration-200",
                 isActive
                   ? "bg-white/[0.06] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
                   : "bg-white/[0.02] text-white/56 hover:bg-white/[0.04] hover:text-white/82"

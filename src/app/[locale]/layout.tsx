@@ -8,7 +8,10 @@ import WebsiteSchema from "@/components/SEO/WebsiteSchema";
 import MovmashBackdrop from "@/components/layout/MovmashBackdrop";
 import { baseKeywords } from "@/constants/seo-keywords";
 import { baseUrl, createPageMetadata } from "@/lib/metadata";
-import "./globals.css";
+import { defaultLocale, dirFor, locales, type Locale } from "@/i18n/config";
+import { getMessages, resolveLocale } from "@/i18n/server";
+import { LocaleProvider } from "@/i18n/LocaleProvider";
+import "../globals.css";
 
 const rootMetadata = createPageMetadata({
   title: "Watch Party App | Watch Together Online | Movmash",
@@ -17,7 +20,11 @@ const rootMetadata = createPageMetadata({
   keywords: baseKeywords,
 });
 
-export const metadata: Metadata = {
+export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
+  const locale = resolveLocale(params.locale);
+  const isDefault = locale === defaultLocale;
+
+  return {
   metadataBase: new URL(baseUrl),
   ...rootMetadata,
   title: {
@@ -32,11 +39,15 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
+  // Translated variants render at the same clean URL through a middleware rewrite, and
+  // Googlebot never sends a locale cookie — so in practice the crawler only ever sees
+  // English. If a non-default variant is reached directly it must not compete with the
+  // English page it duplicates, which is what keeps SEO English-only as intended.
   robots: {
-    index: true,
+    index: isDefault,
     follow: true,
     googleBot: {
-      index: true,
+      index: isDefault,
       follow: true,
       "max-video-preview": -1,
       "max-image-preview": "large",
@@ -59,26 +70,37 @@ export const metadata: Metadata = {
   other: {
     referrer: "no-referrer-when-downgrade",
   },
-};
+  };
+}
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 export default function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
+  const locale: Locale = resolveLocale(params.locale);
+
   return (
-    <html lang="en">
+    <html lang={locale} dir={dirFor(locale)}>
       <body>
         <div className="relative min-h-screen text-white">
           <MovmashBackdrop />
           <div className="relative z-10">
             <OrganizationSchema />
             <WebsiteSchema />
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              {children}
-            </TooltipProvider>
+            <LocaleProvider locale={locale} messages={getMessages(locale)}>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                {children}
+              </TooltipProvider>
+            </LocaleProvider>
           </div>
         </div>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ''} />

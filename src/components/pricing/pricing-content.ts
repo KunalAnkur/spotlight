@@ -1,4 +1,5 @@
 import { Crown, Heart, Sparkles, type LucideIcon } from "lucide-react";
+import type { Translator } from "@/i18n/server";
 import type {
   SubscriptionPlanData,
   SubscriptionPlanFeatures,
@@ -6,14 +7,12 @@ import type {
 } from "@/lib/subscription-plans";
 
 export interface PricingDisplayMeta {
-  name: string;
-  eyebrow: string;
-  description: string;
+  /** Key prefix into the "pricing" namespace: <prefix>Name/Eyebrow/Description/Cta. */
+  copyKey: string;
   icon: LucideIcon;
   iconClassName: string;
   badgeClassName: string;
   cardClassName: string;
-  ctaLabel: string;
   ctaHref: string;
   ctaVariant: "hero" | "outline";
   external?: boolean;
@@ -27,41 +26,32 @@ const paidBadgeClassName = "bg-rose-500/12 text-rose-100";
 
 export const PRICING_DISPLAY: Record<SubscriptionPlanTier, PricingDisplayMeta> = {
   free: {
-    name: "Free",
-    eyebrow: "For a quick watch",
-    description: "Best for a quick watch party or trying Movmash out.",
+    copyKey: "free",
     icon: Sparkles,
     iconClassName: "bg-white/[0.06] text-white/78",
     badgeClassName: "bg-white/[0.05] text-white/72",
     cardClassName:
       "bg-white/[0.024] ring-1 ring-white/8 shadow-[0_22px_54px_rgba(0,0,0,0.18)]",
-    ctaLabel: "Start free",
     ctaHref: "https://app.movmash.com",
     ctaVariant: "outline",
     external: true,
   },
   couple: {
-    name: "Couple Plan",
-    eyebrow: "For couples & close friends",
-    description: "Best for couples and close friends who watch together often.",
+    copyKey: "couple",
     icon: Heart,
     iconClassName: paidIconClassName,
     badgeClassName: paidBadgeClassName,
     cardClassName: paidCardClassName,
-    ctaLabel: "Upgrade to Couple",
     ctaHref: "https://app.movmash.com/pricing",
     ctaVariant: "hero",
     external: true,
   },
   crowd: {
-    name: "Crowd Plan",
-    eyebrow: "For bigger watch parties",
-    description: "Best for friend groups, fandoms, and bigger watch parties.",
+    copyKey: "crowd",
     icon: Crown,
     iconClassName: paidIconClassName,
     badgeClassName: paidBadgeClassName,
     cardClassName: `${paidCardClassName} ring-2`,
-    ctaLabel: "Upgrade to Crowd",
     ctaHref: "https://app.movmash.com/pricing",
     ctaVariant: "hero",
     external: true,
@@ -90,39 +80,44 @@ export function formatPlanPrice(amount: number, currency?: string | null): strin
 export function buildFeatureBullets(
   tier: SubscriptionPlanTier,
   features: SubscriptionPlanFeatures,
+  t: Translator,
 ): string[] {
-  const participants =
-    tier === "crowd"
-      ? `Up to ${features.max_room_participants} people per room`
-      : `${features.max_room_participants} people per room`;
+  const participants = t(
+    tier === "crowd" ? "participantsUpTo" : "participants",
+    { count: features.max_room_participants },
+  );
 
   if (tier === "free") {
     return [
       participants,
-      `${features.max_watch_minutes_per_day} minutes of watch time per day`,
-      `${features.screen_share_quality} screen sharing`,
+      t("watchMinutes", { minutes: features.max_watch_minutes_per_day }),
+      t("screenSharing", { quality: features.screen_share_quality }),
       // Static, not from the plan: games are on every tier, and saying so on Free is the
       // point — the paid cards must not imply games are something you upgrade for.
-      "Every game included",
+      t("everyGame"),
     ];
   }
 
   const watchTime =
     features.max_watch_minutes_per_day === -1
-      ? "Unlimited watch time"
-      : `${features.max_watch_minutes_per_day} minutes of watch time per day`;
+      ? t("watchUnlimited")
+      : t("watchMinutes", { minutes: features.max_watch_minutes_per_day });
 
   // No "Ad-free" bullet: Movmash shows no ads on any plan, Free included, so listing it as a
   // paid perk would imply Free is ad-supported. The flag stays on the plan in case that changes.
   return [
-    "Video + voice call while you watch",
+    t("videoCall"),
     participants,
     watchTime,
-    `${features.screen_share_quality} screen sharing`,
+    t("screenSharing", { quality: features.screen_share_quality }),
   ];
 }
 
-export function buildDisplayPlan(tier: SubscriptionPlanTier, plan: SubscriptionPlanData) {
+export function buildDisplayPlan(
+  tier: SubscriptionPlanTier,
+  plan: SubscriptionPlanData,
+  t: Translator,
+) {
   const display = PRICING_DISPLAY[tier];
 
   const isFree = tier === "free";
@@ -130,22 +125,26 @@ export function buildDisplayPlan(tier: SubscriptionPlanTier, plan: SubscriptionP
   return {
     ...display,
     tier,
+    name: t(`${display.copyKey}Name`),
+    eyebrow: t(`${display.copyKey}Eyebrow`),
+    description: t(`${display.copyKey}Description`),
+    ctaLabel: t(`${display.copyKey}Cta`),
     // Paid plans always show a per-month figure so tiers compare like for like; the yearly
     // one strikes through the monthly rate it undercuts. Every value comes from guardian.
     value: formatPlanPrice(
       isFree ? plan.price : plan.monthly_equivalent_price ?? plan.price,
       plan.currency,
     ),
-    valueMeta: isFree ? "Free forever" : "per month",
+    valueMeta: isFree ? t("freeForever") : t("perMonth"),
     compareAtValue:
       !isFree && plan.compare_at_monthly_price != null
         ? formatPlanPrice(plan.compare_at_monthly_price, plan.currency)
         : null,
     billedNote:
       !isFree && plan.billing_cycle === "yearly"
-        ? `${formatPlanPrice(plan.billed_amount ?? plan.price, plan.currency)} billed yearly`
+        ? t("billedYearly", { amount: formatPlanPrice(plan.billed_amount ?? plan.price, plan.currency) })
         : null,
     isPopular: !isFree && plan.is_popular === true,
-    features: buildFeatureBullets(tier, plan.features),
+    features: buildFeatureBullets(tier, plan.features, t),
   };
 }

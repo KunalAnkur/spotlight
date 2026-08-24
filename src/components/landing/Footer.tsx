@@ -6,9 +6,11 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import MovmashSocialLinks from "@/components/shared/MovmashSocialLinks";
 import { Button } from "@/components/ui/button";
+import { useT } from "@/i18n/LocaleProvider";
 
 interface FooterLinkItem {
-  label: string;
+  /** Key into the "footer" namespace; the label itself is translated at render time. */
+  key: string;
   href: string;
   hash?: string;
 }
@@ -19,24 +21,24 @@ const appPricingUrl = "https://app.movmash.com/pricing";
 
 const footerLinks = {
   product: [
-    { label: "Features", href: "/#features", hash: "features" },
-    { label: "Games", href: "/games" },
-    { label: "How It Works", href: "/#how-it-works", hash: "how-it-works" },
-    { label: "Pricing", href: appPricingUrl },
-    { label: "Watch Party Shop", href: "/watch-party-shop" },
-    { label: "Watch Together", href: "/watch-together" },
-    { label: "Date Night", href: "/long-distance-date-night" },
-    { label: "FAQ", href: "/#faq", hash: "faq" },
+    { key: "features", href: "/#features", hash: "features" },
+    { key: "games", href: "/games" },
+    { key: "howItWorks", href: "/#how-it-works", hash: "how-it-works" },
+    { key: "pricing", href: appPricingUrl },
+    { key: "watchPartyShop", href: "/watch-party-shop" },
+    { key: "watchTogether", href: "/watch-together" },
+    { key: "dateNight", href: "/long-distance-date-night" },
+    { key: "faq", href: "/#faq", hash: "faq" },
   ] satisfies FooterLinkItem[],
   company: [
-    { label: "About Us", href: "/about" },
-    { label: "Contact", href: "/contact" },
-    { label: "Blog", href: "/blog" },
+    { key: "aboutUs", href: "/about" },
+    { key: "contact", href: "/contact" },
+    { key: "blog", href: "/blog" },
   ] satisfies FooterLinkItem[],
   legal: [
-    { label: "Privacy Policy", href: "/legal?tab=privacy" },
-    { label: "Terms of Service", href: "/legal?tab=terms" },
-    { label: "Cookie Policy", href: "/legal?tab=cookies" },
+    { key: "privacyPolicy", href: "/legal?tab=privacy" },
+    { key: "termsOfService", href: "/legal?tab=terms" },
+    { key: "cookiePolicy", href: "/legal?tab=cookies" },
   ] satisfies FooterLinkItem[],
 };
 
@@ -44,6 +46,7 @@ const footerLinkClassName =
   "inline-block text-sm text-white/60 transition-colors hover:text-white";
 
 const Footer = () => {
+  const t = useT("footer");
   const currentYear = new Date().getFullYear();
   const router = useRouter();
   const pathname = usePathname();
@@ -92,8 +95,7 @@ const Footer = () => {
               Movmash
             </Link>
             <p className="mb-3.5 max-w-[340px] text-sm leading-[1.75] text-white/60">
-              Watch videos together, no matter where you are. Real-time sync, live chat, fun
-              reactions, and games in the same room.
+              {t("tagline")}
             </p>
 
             {/* Social Links */}
@@ -105,7 +107,7 @@ const Footer = () => {
 
             <Button variant="outline" size="sm" asChild className="font-parkinsans">
               <a href={appPricingUrl} rel="noopener noreferrer">
-                Pricing
+                {t("pricing")}
               </a>
             </Button>
           </div>
@@ -115,17 +117,17 @@ const Footer = () => {
             {/* Product Links */}
             <div className="flex flex-col">
               <h4 className="mb-[13px] font-parkinsans text-[15px] font-semibold tracking-[-0.01em] text-white">
-                Product
+                {t("product")}
               </h4>
               <ul className="flex flex-col gap-[9px]">
                 {footerLinks.product.map((link) => (
-                  <li key={link.label}>
+                  <li key={link.key}>
                     <a
                       href={link.href}
                       onClick={(e) => handleProductLinkClick(e, link.hash)}
                       className={footerLinkClassName}
                     >
-                      {link.label}
+                      {t(link.key)}
                     </a>
                   </li>
                 ))}
@@ -135,13 +137,13 @@ const Footer = () => {
             {/* Company Links */}
             <div className="flex flex-col">
               <h4 className="mb-[13px] font-parkinsans text-[15px] font-semibold tracking-[-0.01em] text-white">
-                Company
+                {t("company")}
               </h4>
               <ul className="flex flex-col gap-[9px]">
                 {footerLinks.company.map((link) => (
-                  <li key={link.label}>
+                  <li key={link.key}>
                     <Link href={link.href} className={footerLinkClassName}>
-                      {link.label}
+                      {t(link.key)}
                     </Link>
                   </li>
                 ))}
@@ -151,13 +153,13 @@ const Footer = () => {
             {/* Legal Links */}
             <div className="flex flex-col">
               <h4 className="mb-[13px] font-parkinsans text-[15px] font-semibold tracking-[-0.01em] text-white">
-                Legal
+                {t("legal")}
               </h4>
               <ul className="flex flex-col gap-[9px]">
                 {footerLinks.legal.map((link) => (
-                  <li key={link.label}>
+                  <li key={link.key}>
                     <Link href={link.href} className={footerLinkClassName}>
-                      {link.label}
+                      {t(link.key)}
                     </Link>
                   </li>
                 ))}
@@ -168,7 +170,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="landing-open-divider mt-[34px] flex flex-wrap items-center justify-between gap-4 pt-[22px] text-[13.5px] text-white/50">
-          <p>© {currentYear} Movmash. Made with ❤️ for movie lovers.</p>
+          <p>{t("copyright", { year: currentYear })}</p>
           <a
             href="mailto:support@movmash.com"
             className="inline-flex items-center gap-[9px] transition-colors hover:text-white"

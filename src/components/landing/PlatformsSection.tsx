@@ -1,6 +1,17 @@
 import { Globe, Monitor, Tv, Twitch, Video, Youtube, Film } from "lucide-react";
+import type { Locale } from "@/i18n/config";
+import { getTranslations } from "@/i18n/server";
 
-const platforms = [
+interface PlatformEntry {
+  name?: string;
+  /** Descriptive labels are translated; brand names above are not. */
+  nameKey?: string;
+  icon: typeof Globe;
+  surfaceClass: string;
+  iconClass: string;
+}
+
+const platforms: PlatformEntry[] = [
   {
     name: "YouTube",
     icon: Youtube,
@@ -20,49 +31,50 @@ const platforms = [
     iconClass: "text-violet-300",
   },
   {
-    name: "Screen share",
+    nameKey: "screenShare",
     icon: Monitor,
     surfaceClass: "bg-rose-500/10",
     iconClass: "text-rose-300",
   },
   {
-    name: "Local files",
+    nameKey: "localFiles",
     icon: Tv,
     surfaceClass: "bg-pink-500/10",
     iconClass: "text-pink-300",
   },
   {
-    name: "HLS streams",
+    nameKey: "hlsStreams",
     icon: Video,
     surfaceClass: "bg-fuchsia-500/10",
     iconClass: "text-fuchsia-300",
   },
   {
-    name: "Direct URLs",
+    nameKey: "directUrls",
     icon: Globe,
     surfaceClass: "bg-white/[0.04]",
     iconClass: "text-white/78",
   },
 ];
 
-const PlatformsSection = () => {
+const PlatformsSection = ({ locale }: { locale: Locale }) => {
+  const t = getTranslations(locale, "platforms");
+
   return (
     <section id="platforms" className="landing-section">
       <div className="landing-shell relative z-10">
         <div className="landing-section-heading">
           <h2 className="landing-section-title">
-            Works with the{" "}
-            <span className="text-gradient">sources you already use</span>
+            {t("title")}
           </h2>
           <p className="landing-section-copy">
-            Bring in a supported link, share a tab, or stream a local file without changing how you host.
+            {t("subtitle")}
           </p>
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7">
           {platforms.map((platform, index) => (
             <div
-              key={platform.name}
+              key={platform.name ?? platform.nameKey}
               className="animate-slide-up"
               style={{ animationDelay: `${index * 0.06}s` }}
             >
@@ -73,7 +85,7 @@ const PlatformsSection = () => {
 
                 <div className="min-w-0">
                   <div className="whitespace-nowrap font-parkinsans text-[13px] font-semibold tracking-tight text-white">
-                    {platform.name}
+                    {platform.name ?? (platform.nameKey ? t(platform.nameKey) : "")}
                   </div>
                 </div>
               </div>
@@ -82,7 +94,7 @@ const PlatformsSection = () => {
         </div>
 
         <p className="mt-[22px] text-center text-sm leading-[1.6] text-white/50">
-          Also works with Dailymotion and other direct video links when you just need a room and a URL.
+          {t("footnote")}
         </p>
       </div>
     </section>

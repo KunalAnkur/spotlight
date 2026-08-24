@@ -9,6 +9,7 @@ import {
   getPlanForTier,
   type SubscriptionPlanData,
 } from "@/lib/subscription-plans";
+import { useT } from "@/i18n/LocaleProvider";
 
 type BillingCycle = "monthly" | "yearly";
 
@@ -60,6 +61,7 @@ export default function PricingPlansGridClient({
   // Yearly first: it is the better value and the option we want chosen, so it is the state
   // people land on rather than one they have to discover.
   const [billingCycle, setBillingCycle] = useState<BillingCycle>("yearly");
+  const t = useT("pricing");
 
   const plans = useMemo(() => {
     const freePlan = getPlanForTier(catalogPlans, "free");
@@ -69,11 +71,11 @@ export default function PricingPlansGridClient({
     if (!freePlan || !couplePlan || !crowdPlan) return [];
 
     return [
-      buildDisplayPlan("free", freePlan),
-      buildDisplayPlan("couple", couplePlan),
-      buildDisplayPlan("crowd", crowdPlan),
+      buildDisplayPlan("free", freePlan, t),
+      buildDisplayPlan("couple", couplePlan, t),
+      buildDisplayPlan("crowd", crowdPlan, t),
     ];
-  }, [billingCycle, catalogPlans]);
+  }, [billingCycle, catalogPlans, t]);
 
   if (plans.length === 0) return null;
 
@@ -91,7 +93,7 @@ export default function PricingPlansGridClient({
                 : billingToggleInactiveClassName,
             )}
           >
-            Yearly
+            {t("yearly")}
           </button>
           <button
             type="button"
@@ -103,7 +105,7 @@ export default function PricingPlansGridClient({
                 : billingToggleInactiveClassName,
             )}
           >
-            Monthly
+            {t("monthly")}
           </button>
         </div>
       </div>
@@ -127,7 +129,7 @@ export default function PricingPlansGridClient({
                       {plan.name}
                     </span>
                     {plan.isPopular && (
-                      <span className={pricingPopularBadgeClassName}>Popular</span>
+                      <span className={pricingPopularBadgeClassName}>{t("popular")}</span>
                     )}
                   </div>
                   <p className={pricingEyebrowClassName}>{plan.eyebrow}</p>

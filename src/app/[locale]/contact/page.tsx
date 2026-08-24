@@ -23,7 +23,7 @@ export default function ContactPage() {
     <SecondaryPageLayout mainClassName="pb-16 pt-28 md:pb-20 md:pt-32">
       <section className="mx-auto max-w-6xl space-y-7">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:items-start lg:gap-6">
-          <div className="space-y-6 lg:pr-3">
+          <div className="space-y-6 lg:pe-3">
             <div>
               <h1 className="font-parkinsans text-[1.65rem] font-semibold tracking-tight text-white md:text-[2rem]">
                 Contact Us
@@ -33,7 +33,7 @@ export default function ContactPage() {
             <div className="space-y-4 border-t border-white/6 pt-5">
               <a
                 href="mailto:support@movmash.com"
-                className="group flex w-full items-center gap-4 py-1 text-left text-white/78 transition-colors duration-200 hover:text-white"
+                className="group flex w-full items-center gap-4 py-1 text-start text-white/78 transition-colors duration-200 hover:text-white"
               >
                 <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500 shadow-[0_12px_28px_rgba(244,63,94,0.16)]">
                   <Mail className="h-5 w-5 text-white" />
@@ -59,7 +59,7 @@ export default function ContactPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className="group flex w-full items-center gap-4 py-1 text-left text-white/72 transition-colors duration-200 hover:text-white"
+                    className="group flex w-full items-center gap-4 py-1 text-start text-white/72 transition-colors duration-200 hover:text-white"
                   >
                     <span
                       className={cn(

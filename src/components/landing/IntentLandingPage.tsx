@@ -110,8 +110,8 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
     <SecondaryPageLayout mainClassName="pb-20 pt-20 md:pb-24 md:pt-24">
       <div className="mx-auto w-full max-w-6xl space-y-16 md:space-y-20">
         <section className="grid gap-10 pt-6 md:gap-12 lg:grid-cols-[0.76fr_1.24fr] lg:items-center xl:grid-cols-[0.74fr_1.26fr]">
-          <div className="w-full text-center lg:max-w-[32rem] lg:text-left">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/40 lg:text-left">
+          <div className="w-full text-center lg:max-w-[32rem] lg:text-start">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/40 lg:text-start">
               {data.kicker}
             </p>
 
@@ -161,7 +161,7 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
             </div>
           </div>
 
-          <div className="relative w-full lg:pl-4 xl:pl-8">
+          <div className="relative w-full lg:ps-4 xl:ps-8">
             <div className={`pointer-events-none absolute inset-x-10 top-10 -z-10 h-28 bg-gradient-to-r blur-3xl ${theme.glow}`} />
             <div className="overflow-hidden rounded-[2rem] shadow-[0_28px_72px_rgba(0,0,0,0.22)]">
               <Image
@@ -173,7 +173,7 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
                 priority
               />
             </div>
-            <p className="mx-auto mt-4 max-w-2xl text-center text-[13px] leading-6 text-white/52 lg:mx-0 lg:text-left">
+            <p className="mx-auto mt-4 max-w-2xl text-center text-[13px] leading-6 text-white/52 lg:mx-0 lg:text-start">
               {pageMedia.heroCaption}
             </p>
           </div>
@@ -450,10 +450,10 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
                 value={`faq-${index}`}
                 className={`overflow-hidden rounded-[1.4rem] border-0 px-4 sm:px-5 ${theme.faqItem}`}
               >
-                <AccordionTrigger className="py-4 text-left font-parkinsans text-[0.98rem] font-semibold tracking-tight text-white hover:no-underline">
+                <AccordionTrigger className="py-4 text-start font-parkinsans text-[0.98rem] font-semibold tracking-tight text-white hover:no-underline">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="pr-4 text-sm leading-7 text-white/60 sm:pr-6">
+                <AccordionContent className="pe-4 text-sm leading-7 text-white/60 sm:pe-6">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>

@@ -1,4 +1,6 @@
 import { Play } from "lucide-react";
+import type { Locale } from "@/i18n/config";
+import { getTranslations } from "@/i18n/server";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -33,7 +35,9 @@ const ctaEmojis = [
   },
 ];
 
-const CTASection = () => {
+const CTASection = ({ locale }: { locale: Locale }) => {
+  const t = getTranslations(locale, "cta");
+
   return (
     <section className="landing-section text-center">
       <div className="landing-shell relative z-10">
@@ -52,37 +56,37 @@ const CTASection = () => {
           </div>
 
           <h2 className="landing-section-title mb-3.5">
-            Ready for Your Next <span className="text-gradient">Watch Party?</span>
+            {t("title")}
           </h2>
 
           <p className="mx-auto mb-[26px] max-w-[520px] text-base text-white/68">
-            Start a room in seconds and bring everyone into the same watch experience.
+            {t("subtitle")}
           </p>
 
           <div className="flex flex-col items-center justify-center gap-3.5 sm:flex-row">
             <Button variant="hero" asChild className="font-parkinsans">
               <a href="https://app.movmash.com" target="_blank" rel="noopener noreferrer">
                 <Play className="fill-current" strokeWidth={0} />
-                Start Watch Party
+                {t("ctaPrimary")}
               </a>
             </Button>
             <Button variant="outline" asChild className="font-parkinsans">
-              <Link href="/games">Browse the games</Link>
+              <Link href="/games">{t("ctaSecondary")}</Link>
             </Button>
           </div>
 
           <div className="landing-meta-line mt-6">
             <span className="inline-flex items-center gap-[9px]">
               <b className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-[#e11d48] from-[30%] via-[#db2777] via-[50%] to-[#c026d3]" />
-              Private room links
+              {t("signalPrivate")}
             </span>
             <span className="inline-flex items-center gap-[9px]">
               <b className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-[#e11d48] from-[30%] via-[#db2777] via-[50%] to-[#c026d3]" />
-              No downloads required
+              {t("signalNoDownload")}
             </span>
             <span className="inline-flex items-center gap-[9px]">
               <b className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-[#e11d48] from-[30%] via-[#db2777] via-[50%] to-[#c026d3]" />
-              Works on all devices
+              {t("signalAllDevices")}
             </span>
           </div>
         </div>

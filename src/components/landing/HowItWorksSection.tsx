@@ -1,40 +1,41 @@
 import { Link, Play, Share2 } from "lucide-react";
+import type { Locale } from "@/i18n/config";
+import { getTranslations } from "@/i18n/server";
 
 const steps = [
   {
     number: "01",
     icon: Link,
-    title: "Create or Join",
-    description: "Start a new watch party by pasting a video link, or join an existing room with a shared link.",
+    key: "step1",
     gradient: "from-rose-500 via-pink-500 to-fuchsia-500",
   },
   {
     number: "02",
     icon: Share2,
-    title: "Invite Friends",
-    description: "Share your unique room link with friends. They can join instantly, with no account required to watch.",
+    key: "step2",
     gradient: "from-pink-500 via-fuchsia-500 to-purple-500",
   },
   {
     number: "03",
     icon: Play,
-    title: "Watch Together",
-    description: "Hit play and enjoy perfectly synced playback. Chat, react, and open a game when the video ends.",
+    key: "step3",
     gradient: "from-fuchsia-500 via-purple-500 to-indigo-500",
   },
 ];
 
-const HowItWorksSection = () => {
+const HowItWorksSection = ({ locale }: { locale: Locale }) => {
+  const t = getTranslations(locale, "howItWorks");
+
   return (
     <section id="how-it-works" className="landing-section">
       <div className="landing-shell relative z-10">
         {/* Section Header */}
         <div className="landing-section-heading">
           <h2 className="landing-section-title">
-            Start in <span className="text-gradient">3 Simple Steps</span>
+{t("title")}
           </h2>
           <p className="landing-section-copy">
-            No complicated setup. No downloads. Just share and watch.
+{t("subtitle")}
           </p>
         </div>
 
@@ -57,13 +58,13 @@ const HowItWorksSection = () => {
               </div>
 
               <span className="mb-2 block text-xs font-medium uppercase tracking-[0.18em] text-white/48">
-                Step {step.number}
+                {t("stepLabel")} {step.number}
               </span>
               <h3 className="mb-2 font-parkinsans text-xl font-semibold tracking-tight text-white">
-                {step.title}
+                {t(step.key)}
               </h3>
               <p className="text-[14.5px] leading-[1.65] text-white/68">
-                {step.description}
+                {t(`${step.key}Copy`)}
               </p>
             </article>
           ))}

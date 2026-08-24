@@ -45,12 +45,12 @@ export const portableTextComponents: PortableTextComponents = {
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="my-6 ml-6 list-disc space-y-2.5 text-white/72 marker:text-white/34">
+      <ul className="my-6 ms-6 list-disc space-y-2.5 text-white/72 marker:text-white/34">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="my-6 ml-6 list-decimal space-y-2.5 text-white/72 marker:text-white/34">
+      <ol className="my-6 ms-6 list-decimal space-y-2.5 text-white/72 marker:text-white/34">
         {children}
       </ol>
     ),
@@ -82,7 +82,7 @@ export const portableTextComponents: PortableTextComponents = {
       </p>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="my-8 border-l-2 border-rose-200/16 bg-rose-200/[0.03] py-3 pl-6 italic text-base text-white/60 break-words overflow-wrap-anywhere">
+      <blockquote className="my-8 border-l-2 border-rose-200/16 bg-rose-200/[0.03] py-3 ps-6 italic text-base text-white/60 break-words overflow-wrap-anywhere">
         {children}
       </blockquote>
     ),
