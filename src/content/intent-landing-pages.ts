@@ -363,6 +363,42 @@ export const watchTogetherPageData: IntentLandingPageData = {
     },
   ],
 
+  guidesEyebrow: "Go deeper",
+  guidesTitle: "Guides for watching together.",
+  guidesCopy:
+    "Longer reads on the parts worth getting right — which tools do what, how to handle the platforms that block embedding, and playing your own files to a room.",
+  guides: [
+    {
+      title: "How to watch movies together online",
+      description: "Six ways compared honestly: watch party rooms, sync extensions, screen sharing and more.",
+      href: "/blog/how-to-watch-movies-together-online",
+    },
+    {
+      title: "Best watch party sites, compared",
+      description: "What each type is, what it demands of everyone watching, and what replaced Rabb.it.",
+      href: "/blog/best-watch-party-sites",
+    },
+    {
+      title: "Watch local files together online",
+      description: "Stream a video from your own computer to the room in sync, with no upload and no waiting.",
+      href: "/blog/watch-local-files-together-online",
+    },
+    {
+      title: "How to host a YouTube watch party",
+      description: "The simplest starting point: a supported link, one room, and synced playback.",
+      href: "/blog/how-to-host-a-youtube-watch-party",
+    },
+    {
+      title: "How to use Movmash",
+      description: "Step by step through picking a source, sharing the link, and watching in sync.",
+      href: "/blog/how-to-use-movmash",
+    },
+    {
+      title: "Watch movies together online free",
+      description: "What the free plan actually covers, and where screen sharing takes over.",
+      href: "/blog/watch-movies-together-online-free",
+    },
+  ],
   exploreTitle: "Explore more",
   exploreLinks: [
     {
