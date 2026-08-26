@@ -399,6 +399,41 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
           </section>
         ) : null}
 
+        {data.guides && data.guides.length > 0 ? (
+          <section className="space-y-6">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/36">
+                {data.guidesEyebrow}
+              </p>
+              <h2 className="mt-3 font-parkinsans text-[1.55rem] font-semibold leading-[1.08] tracking-[-0.04em] text-white md:text-[2rem]">
+                {data.guidesTitle}
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/60 md:text-[15px]">
+                {data.guidesCopy}
+              </p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              {data.guides.map((guide) => (
+                <Link
+                  key={guide.href}
+                  href={guide.href}
+                  className="group rounded-[1.4rem] bg-white/[0.022] px-5 py-5 transition-colors hover:bg-white/[0.035]"
+                >
+                  <h3 className="font-parkinsans text-[1.02rem] font-semibold tracking-tight text-white transition-colors group-hover:text-white/88">
+                    {guide.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-white/58">{guide.description}</p>
+                  <span className="mt-3.5 inline-flex items-center gap-2 text-sm text-white/62 transition-colors group-hover:text-white/82">
+                    Read the guide
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
         {data.platformGroups && data.platformGroups.length > 0 ? (
           <section className="space-y-8">
             <div className="mx-auto max-w-3xl text-center">

@@ -29,11 +29,12 @@ export default function LongDistanceDateNightPage() {
         url={pageUrl}
         description={longDistanceDateNightPageData.metadataDescription}
         features={[
-          "Private rooms",
-          "Synced movie watching",
-          "Live chat and reactions",
-          "Guest-friendly browser join",
-          "Screen sharing",
+          "Private rooms for two on the free plan",
+          "Synced playback held on one shared clock",
+          "Live chat and reactions beside the video",
+          "Browser join with no account for the guest",
+          "Screen sharing for Netflix, Disney+ and Prime Video",
+          "Local file streaming from the host's computer",
         ]}
       />
       <BreadcrumbSchema

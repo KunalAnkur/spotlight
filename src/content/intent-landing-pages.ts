@@ -63,6 +63,19 @@ export interface IntentLandingPagePlatformGroup {
   note: string;
 }
 
+/**
+ * Hub links out to the blog guides that cover a topic in depth.
+ *
+ * The intent page targets the broad term and hands the specific ones to the articles, which
+ * is also the only inbound link several of them have — they were indexed but unranked with
+ * nothing pointing at them.
+ */
+export interface IntentLandingPageGuide {
+  title: string;
+  description: string;
+  href: string;
+}
+
 export interface IntentLandingPageLink {
   title: string;
   description: string;
@@ -109,6 +122,10 @@ export interface IntentLandingPageData {
   stepsCopy: string;
   steps: IntentLandingPageStep[];
   faqs: IntentLandingPageFaq[];
+  guidesEyebrow?: string;
+  guidesTitle?: string;
+  guidesCopy?: string;
+  guides?: IntentLandingPageGuide[];
   exploreTitle: string;
   exploreLinks: IntentLandingPageLink[];
   finalTitle: string;
@@ -372,9 +389,9 @@ export const watchTogetherPageData: IntentLandingPageData = {
 
 export const longDistanceDateNightPageData: IntentLandingPageData = {
   slug: "long-distance-date-night",
-  metadataTitle: "Long Distance Date Night | Watch Movies Together Online",
+  metadataTitle: "Long Distance Date Night | Free for Two",
   metadataDescription:
-    "Plan a long-distance date night with synced movie watching, private rooms, live chat, and reactions. Movmash helps couples watch together online and feel closer from anywhere.",
+    "Watch movies together long distance in a private room for two — synced playback, chat and reactions. Free for two people, works in any browser, nothing to install.",
   metadataKeywords: [
     "long distance date night",
     "ldr date night",
@@ -382,22 +399,70 @@ export const longDistanceDateNightPageData: IntentLandingPageData = {
     "virtual movie date",
     "watch together for couples",
     "long distance relationship movie night",
+    "online movie date",
+    "couple movie watching website",
   ],
   kicker: "Long-distance date night",
-  title: "Make long-distance date night",
-  titleAccent: "feel a little closer.",
+  title: "Long-distance date night",
+  titleAccent: "that actually feels like a date.",
   intro:
-    "Movmash gives couples a simple way to watch movies together online in a private room with synced playback, chat, and light reactions.",
+    "Open a private room for two, share one link, and watch movies together long distance with synced playback, chat and reactions. Rooms for two are free, and the person joining does not need an account.",
   ctaLabel: "Start Your Date Night Room",
   ctaHref: "https://app.movmash.com",
-  secondaryCtaLabel: "See Setup",
+  secondaryCtaLabel: "See how it works",
   secondaryCtaHref: "/#how-it-works",
-  heroSignals: ["Private room for two", "Watch together online", "Easy browser join"],
+  heroSignals: ["Private room for two", "Free for two people", "Easy browser join"],
   mediaType: "image",
   mediaSrc: "/assets/app-showcase.png",
   mediaAlt: "Movmash room layout for a private long-distance movie night",
   mediaCaption:
     "A private room layout that keeps the movie central and the conversation easy to follow while you spend time together.",
+
+  overview: {
+    eyebrow: "Why it is different",
+    title: "Long-distance watching has its own problems.",
+    paragraphs: [
+      "Watching something with a partner in another city is not the same problem as a group watch party, and tools built for groups tend to miss what actually goes wrong. It is two people, usually at the end of a long day, often in different time zones, trying to spend an hour feeling like they are in the same room. The technology only has to do one thing: get out of the way.",
+      "The failure is rarely the video. It is that one of you is three hours ahead and already tired. It is the ten minutes spent deciding what to watch, then another ten getting the thing to actually play on both ends. It is texting reactions into a separate app while the film runs, so you are technically watching together and practically watching alone. By the time it works, the evening you were protecting is mostly gone.",
+      "A room for two fixes the mechanical half of that. Playback stays on one shared clock, so a pause is a pause for both of you and neither person is quietly thirty seconds ahead. Chat and reactions sit beside the video instead of in another window. And the join is a link — the person on the other end opens it and is simply there, with no account, no install, and no walking them through anything.",
+      "Rooms for two are on the free plan, which is worth saying plainly because it is the case most watch-party tools charge for. Two people is not a trial tier here. It is the shape of the product, and it happens to be exactly the shape of a long-distance relationship.",
+    ],
+  },
+
+  modesEyebrow: "Getting the film on screen",
+  modesTitle: "Three ways to start, depending on what you are watching.",
+  modesCopy:
+    "Most date nights are a subscription service, which means screen sharing is the one to learn. The other two are there for when it is something simpler or something you already have.",
+  modes: [
+    {
+      icon: ScreenShare,
+      name: "Share your screen",
+      summary:
+        "Play the film on your machine and broadcast it into the room. This is the route for the services most couples actually use, because none of them allow a video to be embedded somewhere else.",
+      bestFor: "Netflix, Disney+, Prime Video, Max and anything in a browser",
+      needs: "Both of you still need your own subscription",
+      limit: "Share the browser tab, not the whole screen — it is the only way the sound comes through",
+    },
+    {
+      icon: Link2,
+      name: "Paste a supported link",
+      summary:
+        "Drop in a URL and the room syncs playback for both of you. Lighter than screen sharing because each side streams it directly, which helps on a weaker connection.",
+      bestFor: "YouTube, Vimeo, Twitch, Dailymotion and direct streams",
+      needs: "Just the link",
+      limit: "Only works where the platform allows embedded playback",
+    },
+    {
+      icon: FileVideo,
+      name: "Play a local file",
+      summary:
+        "Stream a video straight from your computer into the room. Useful for the things that were never on a service — a download, an old favourite, something you made.",
+      bestFor: "Downloads, home videos, anything offline",
+      needs: "The file on the hosting side",
+      limit: "Whoever is hosting has to stay in the room, since it plays from their machine",
+    },
+  ],
+
   benefitEyebrow: "Built for date-night comfort",
   benefitTitle: "More room for the actual date.",
   benefitCopy:
@@ -407,111 +472,187 @@ export const longDistanceDateNightPageData: IntentLandingPageData = {
       icon: Heart,
       title: "Closer than texting through a movie",
       description:
-        "Synced playback and light reactions make the night feel shared instead of split.",
+        "Synced playback and light reactions make the night feel shared instead of split. You react to the same second, not to a message about a scene that already passed.",
     },
     {
       icon: LockKeyhole,
       title: "Private by default",
       description:
-        "Keep the room just for the two of you with a private link and a calmer layout.",
+        "The room is reachable only by the link you send. There is no directory, nothing public, and nobody arrives who was not invited.",
     },
     {
       icon: Sparkles,
       title: "Easy to enter on both sides",
       description:
-        "No heavy app install and no awkward first ten minutes of explaining where everything is.",
+        "No install and no account for the person joining, which spares you the awkward first ten minutes of explaining where everything is.",
     },
     {
       icon: Shield,
       title: "Flexible when plans change",
       description:
-        "Use a supported link, switch to screen sharing, or stream a local file when plans shift.",
+        "Use a link, switch to screen sharing, or stream a local file. If the plan for the evening changes, the room does not have to.",
     },
   ],
+
   scenarioEyebrow: "Use it for",
-  scenarioTitle: "A better fit for cozy nights in.",
+  scenarioTitle: "The nights worth protecting.",
   scenarioCopy:
-    "Use it for movie nights, surprise links, comfort rewatches, or a small weekly ritual that feels more present.",
+    "The couples who keep this going tend to make it a standing thing rather than something they arrange each time.",
   scenarios: [
     {
-      title: "Weekly movie nights",
+      title: "A weekly standing night",
       description:
-        "Create a simple ritual that gives the relationship a shared rhythm.",
+        "Same evening, same room link, no negotiating. A ritual survives a busy week in a way that 'we should watch something sometime' never does.",
     },
     {
       title: "Surprise dates",
       description:
-        "Send a room link and turn an ordinary evening into something a little softer.",
+        "Send a link with no warning and turn an ordinary evening into something better. It works because the setup cost on the other end is nothing.",
     },
     {
       title: "Comfort rewatches",
       description:
-        "Go back to familiar shows and films when the goal is just to feel close.",
+        "Something you have both seen twice is the right pick when the point is company rather than the film. Nobody has to concentrate to feel close.",
     },
   ],
+
+  guidesEyebrow: "Go deeper",
+  guidesTitle: "Guides for long-distance couples.",
+  guidesCopy:
+    "Longer reads on making distance feel smaller — date-night ideas, the apps worth having, and why shared watching helps in the first place.",
+  guides: [
+    {
+      title: "25 long-distance date night ideas",
+      description: "Virtual date ideas that hold up past the first week, not a list of novelties.",
+      href: "/blog/ldr-date-night-ideas",
+    },
+    {
+      title: "How to watch Netflix together long distance",
+      description: "Netflix removed watch party. Here is what still works in 2026, compared honestly.",
+      href: "/blog/how-to-watch-netflix-together-long-distance",
+    },
+    {
+      title: "Best apps for LDR couples",
+      description: "Eleven apps for synced movie nights, daily connection, and game nights.",
+      href: "/blog/best-apps-for-ldr-couples",
+    },
+    {
+      title: "Why watching together matters in LDR",
+      description: "Emotional synchrony, shared memories, and filling the quiet hours distance creates.",
+      href: "/blog/why-watching-together-is-important-in-long-distance-relationships",
+    },
+    {
+      title: "How to feel close when miles apart",
+      description: "Shared activities over status updates, small repeatable rituals, and time-zone planning.",
+      href: "/blog/how-long-distance-couples-can-feel-close-even-when-miles-apart",
+    },
+    {
+      title: "Watch movies together online free",
+      description: "The general version of the setup, for friends and groups as well as couples.",
+      href: "/blog/watch-movies-together-online-free",
+    },
+  ],
+
   stepsEyebrow: "How it works",
   stepsTitle: "Open Movmash, send the link, settle in.",
   stepsCopy:
-    "The setup stays calm, even if one person has never used Movmash before.",
+    "The setup stays calm, even if one person has never used Movmash before and is doing this half asleep.",
   steps: [
     {
-      title: "Open Movmash",
+      title: "Open a room",
       description:
-        "Create a private room and choose the source that fits the night.",
+        "Sign in with Google and create a private room. Pick whether you are sharing your screen, pasting a link, or playing a file.",
     },
     {
       title: "Send the link",
       description:
-        "The other person joins from the browser without extra friction before the date starts.",
+        "They open it in whatever browser is already in front of them, on a laptop or a phone. No account, no install, no instructions from you.",
     },
     {
       title: "Watch and react",
       description:
-        "Press play and keep the conversation close instead of split across different tabs.",
+        "Press play. Playback stays shared from there, so pausing to talk does not mean re-syncing afterwards.",
     },
   ],
+
   faqs: [
     {
-      question: "Can we use Movmash for a private long-distance date night?",
+      question: "How can couples watch movies together online?",
       answer:
-        "Yes. Rooms are private by default, so you can keep the session just for the people you invite.",
+        "Open a private room, choose how the film gets on screen, and send your partner the link. For a subscription service like Netflix or Disney+ you share your browser tab, since none of them allow embedded playback anywhere. For YouTube or a direct link you can paste the URL and the room syncs both sides automatically.",
     },
     {
-      question: "Does my partner need to install anything first?",
+      question: "Is it free for two people?",
       answer:
-        "No. The join flow stays browser-based, which helps the room feel simple to open and easy to trust.",
+        "Yes. Rooms for two are on the free plan, which covers most long-distance watching. Paid plans raise the participant limit, watch time, video calls and screen-share quality — none of which a couple necessarily needs.",
     },
     {
-      question: "Can we use this even if our source is not directly supported?",
+      question: "Does my partner need an account?",
       answer:
-        "Yes. Screen sharing and local file streaming give you flexible ways to keep the date going when a direct link is not enough.",
+        "No. They open the room link in a browser and they are in. Only the person creating the room signs in, with Google, so the room stays tied to them.",
+    },
+    {
+      question: "Can we watch Netflix together long distance?",
+      answer:
+        "Yes, through screen sharing. Netflix retired its own watch party feature and blocks embedded playback, so no tool can pull it in from a link — sharing your tab is how it is done. You will both still need your own Netflix accounts.",
+    },
+    {
+      question: "What if we are in different time zones?",
+      answer:
+        "Pick the slot by whoever has the earlier morning rather than splitting the difference, and keep it fixed week to week so nobody is recalculating. A shorter film on a hard night beats cancelling — an hour together is worth more than a perfect three-hour plan that never happens.",
+    },
+    {
+      question: "Does the video stay in sync if one of us pauses?",
+      answer:
+        "Yes. The room holds one playback position for both of you, so a pause is a pause for both. You can stop to talk, or rewind the line neither of you caught, without anyone having to count down to get back in step.",
+    },
+    {
+      question: "Can we talk while we watch?",
+      answer:
+        "Every room has text chat and reactions beside the video. Paid plans add video and voice calling in the room, which some couples prefer for a date night and others find gets in the way of the film.",
+    },
+    {
+      question: "Can we do this from a phone?",
+      answer:
+        "Yes. Joining works from a mobile browser with the same link, so it does not matter if one of you is on a laptop and the other is in bed with a phone. Hosting is easier on a computer, especially for screen sharing.",
+    },
+    {
+      question: "Is the room private?",
+      answer:
+        "Yes. Rooms are private by default and only reachable by someone with the link. There is no public listing and nothing browsable.",
+    },
+    {
+      question: "What should we watch?",
+      answer:
+        "Decide before the call rather than during it — the deciding is what eats the evening. A series you are both working through removes the choice entirely, which is why standing weekly nights usually end up being a show rather than a film.",
     },
     {
       question: "Is this only for couples?",
       answer:
-        "Not at all. It is designed with couples in mind on this page, but the same room flow works for friends, siblings, or anyone trying to share a movie night from different places.",
+        "Not at all. This page is written with couples in mind, but the same room works for friends, siblings, or anyone sharing a film from different places. The watch-together page covers the group version.",
     },
   ],
+
   exploreTitle: "Explore more",
   exploreLinks: [
     {
-      title: "Watch together page",
-      description: "See the broader setup for groups, episode drops, and casual nights in.",
+      title: "Watch together online",
+      description: "The broader setup for groups, episode drops, and casual nights in.",
       href: "/watch-together",
     },
     {
-      title: "Movmash blog",
-      description: "Read date-night ideas and future shared-watching guides.",
-      href: "/blog",
+      title: "Games to play together",
+      description: "Free browser games that run in the same room, for when the film ends.",
+      href: "/games",
     },
     {
-      title: "Main landing page",
-      description: "Return to the core Movmash overview and demo.",
-      href: "/",
+      title: "Movmash blog",
+      description: "Date-night ideas and shared-watching guides.",
+      href: "/blog",
     },
   ],
   finalTitle: "Make the next long-distance movie night easier to start.",
   finalCopy:
     "Movmash keeps the room simple, private, and warm enough that the date can feel like the main event.",
-  finalSignals: ["Private room links", "No downloads required", "Easy browser join"],
+  finalSignals: ["Private room links", "Free for two people", "Easy browser join"],
 };
