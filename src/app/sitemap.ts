@@ -27,7 +27,7 @@ const PAGE_LAST_MODIFIED: Record<string, string> = {
   '/about': '2026-03-30',
   '/contact': '2026-03-30',
   '/watch-together': '2026-08-26',
-  '/long-distance-date-night': '2026-08-26',
+  '/long-distance-date-night': '2026-09-13',
   '/watch-party-shop': '2026-08-24',
   '/legal': '2026-08-23',
 }

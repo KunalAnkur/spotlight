@@ -425,9 +425,13 @@ export const watchTogetherPageData: IntentLandingPageData = {
 
 export const longDistanceDateNightPageData: IntentLandingPageData = {
   slug: "long-distance-date-night",
-  metadataTitle: "Long Distance Date Night | Free for Two",
+  // Search Console shows this page ranks ~position 3 almost entirely for app-shaped queries
+  // ("app for ldr", "ldr movie date app", "movie app for long distance relationship") yet
+  // converts at 1.6% where position 3 should see ~10%. The title carried neither "app" nor
+  // "watch movies", so it matched none of them.
+  metadataTitle: "Long Distance Date Night App | Watch Movies Together",
   metadataDescription:
-    "Watch movies together long distance in a private room for two — synced playback, chat and reactions. Free for two people, works in any browser, nothing to install.",
+    "A long-distance date night app for couples — watch movies together in a private room with synced playback, chat and reactions. Free for two, nothing to install.",
   metadataKeywords: [
     "long distance date night",
     "ldr date night",
