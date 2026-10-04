@@ -137,7 +137,7 @@ export const watchTogetherPageData: IntentLandingPageData = {
   slug: "watch-together",
   metadataTitle: "Watch Together Online — Free, No Download",
   metadataDescription:
-    "Watch together online in a private room — a synced video link, your screen, or your own files. Friends join from any browser with one link. No download, free to start.",
+    "Watch movies and shows together online, free in the browser. Open a private room, sync a video link, share your screen or play your own files. No download.",
   metadataKeywords: [
     "watch together",
     "watch together online",
@@ -317,9 +317,9 @@ export const watchTogetherPageData: IntentLandingPageData = {
         "No. Guests join from the browser with the room link and nothing else. Creating a room takes a Google sign-in so the room stays tied to you, but the people you invite never have to sign up.",
     },
     {
-      question: "Is Movmash free?",
+      question: "Is there a free website to watch movies together online?",
       answer:
-        "Yes, there is a free plan and you can start a room on it without paying. Free rooms are built for two people, which covers most long-distance watching. Paid plans are what raise the participant limit past that, along with watch time, video calls, and screen-share quality.",
+        "Yes. Movmash is a free website for watching movies together: there is a free plan, it runs in the browser, and you can start a room on it without paying or downloading anything. Free rooms are built for two people, which covers most long-distance watching. Paid plans are what raise the participant limit past that, along with watch time, video calls, and screen-share quality.",
     },
     {
       question: "How many people can watch together in one room?",

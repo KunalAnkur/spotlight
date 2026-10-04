@@ -9,6 +9,12 @@ const retiredSlugs = new Set(retiredPosts.map(({ from }) => from.replace('/blog/
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com'
 
+// Without this the sitemap is generated once at build time and then served unchanged until
+// the next deploy — a post published in Sanity stayed out of it for weeks, which is the one
+// place Google is told the post exists. The blog pages already revalidate; the index of them
+// has to as well.
+export const revalidate = 3600
+
 /**
  * When each static page's content last actually changed.
  *
@@ -22,11 +28,11 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://movmash.com'
  */
 const PAGE_LAST_MODIFIED: Record<string, string> = {
   '/': '2026-08-23',
-  '/blog': '2026-08-23',
+  '/blog': '2026-10-04',
   '/games': '2026-08-25',
   '/about': '2026-03-30',
   '/contact': '2026-03-30',
-  '/watch-together': '2026-08-26',
+  '/watch-together': '2026-10-04',
   '/long-distance-date-night': '2026-09-13',
   '/watch-party-shop': '2026-08-24',
   '/legal': '2026-08-23',
@@ -99,12 +105,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch blog post slugs from Sanity
   let blogPosts: MetadataRoute.Sitemap = []
   try {
-    const slugs = await client.fetch<{ slug: string; _updatedAt?: string; publishedAt?: string }[]>(postSlugsQuery)
+    const slugs = await client.fetch<
+      { slug: string; updatedAt?: string; _updatedAt?: string; publishedAt?: string }[]
+    >(postSlugsQuery)
     blogPosts = slugs
       .filter((item) => item.slug && !retiredSlugs.has(item.slug))
       .map((item) => ({
         url: `${baseUrl}/blog/${item.slug}`,
-        lastModified: item._updatedAt || item.publishedAt || undefined,
+        // The editorial date first, matching dateModified in the post's Article schema.
+        // _updatedAt moves on every document write — a bulk patch stamps all posts at once.
+        lastModified: item.updatedAt || item._updatedAt || item.publishedAt || undefined,
         changeFrequency: 'weekly' as const,
         priority: 0.8,
       }))

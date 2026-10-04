@@ -30,6 +30,17 @@ const footerLinks = {
     { key: "dateNight", href: "/long-distance-date-night" },
     { key: "faq", href: "/#faq", hash: "faq" },
   ] satisfies FooterLinkItem[],
+  // The guides people actually search for. Before this the only route to a blog post was
+  // through /blog or one landing page, and the home page — where the site's authority sits —
+  // linked to none of them, so new posts sat in "Discovered – currently not indexed".
+  guides: [
+    { key: "guideWatchMovies", href: "/blog/how-to-watch-movies-together-online" },
+    { key: "guideWatchPartySites", href: "/blog/best-watch-party-sites" },
+    { key: "guideWatchFree", href: "/blog/watch-movies-together-online-free" },
+    { key: "guideLocalFiles", href: "/blog/watch-local-files-together-online" },
+    { key: "guideNetflix", href: "/blog/how-to-watch-netflix-together-long-distance" },
+    { key: "guideLdrApps", href: "/blog/best-apps-for-ldr-couples" },
+  ] satisfies FooterLinkItem[],
   company: [
     { key: "aboutUs", href: "/about" },
     { key: "contact", href: "/contact" },
@@ -129,6 +140,22 @@ const Footer = () => {
                     >
                       {t(link.key)}
                     </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Guide Links */}
+            <div className="flex flex-col">
+              <h4 className="mb-[13px] font-parkinsans text-[15px] font-semibold tracking-[-0.01em] text-white">
+                {t("guides")}
+              </h4>
+              <ul className="flex flex-col gap-[9px]">
+                {footerLinks.guides.map((link) => (
+                  <li key={link.key}>
+                    <Link href={link.href} className={footerLinkClassName}>
+                      {t(link.key)}
+                    </Link>
                   </li>
                 ))}
               </ul>

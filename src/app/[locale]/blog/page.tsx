@@ -9,9 +9,9 @@ import { client } from "@/sanity/lib/client";
 import { postsQuery } from "@/sanity/lib/queries";
 
 export const metadata = createPageMetadata({
-  title: "Blog",
+  title: "Blog — Watch Party & Long-Distance Guides",
   description:
-    "Watch party guides, watch-together tips, and practical ideas for smoother movie nights with Movmash.",
+    "Guides to watching movies together online, hosting a watch party, and long-distance date nights — how-tos, comparisons, and ideas from the Movmash team.",
   path: "/blog",
   keywords: blogKeywords,
   openGraph: {
@@ -58,6 +58,9 @@ export default async function BlogPage() {
       <SecondaryPageLayout>
         {posts.length > 0 ? (
           <section className="mx-auto w-full max-w-6xl space-y-6">
+            <h1 className="text-center font-parkinsans text-[1.65rem] font-semibold tracking-tight text-white md:text-start md:text-[2rem]">
+              Watch party and long-distance guides
+            </h1>
             <div className="flex flex-col items-center justify-between gap-3 text-center md:flex-row md:text-start">
               <p className="text-sm text-white/50">
                 Fresh notes on the product, shared watching, and better room experiences.

@@ -10,6 +10,7 @@ import AuthorBio from "@/components/blog/AuthorBio";
 import BlogCard from "@/components/blog/BlogCard";
 import ArticleSchema from "@/components/blog/ArticleSchema";
 import BreadcrumbSchema from "@/components/SEO/BreadcrumbSchema";
+import FAQPageSchema from "@/components/SEO/FAQPageSchema";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { postQuery, postSlugsQuery, relatedPostsQuery } from "@/sanity/lib/queries";
@@ -224,6 +225,22 @@ export default async function BlogPostPage({
       })
     : "";
 
+  // Most posts were rewritten long after they were first published. Showing only the
+  // original date makes a current guide look stale in the SERP, so surface the editorial
+  // update date when it is a different day.
+  const updatedDate =
+    post.updatedAt && post.updatedAt.slice(0, 10) !== post.publishedAt?.slice(0, 10)
+      ? new Date(post.updatedAt).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      : "";
+
+  const faqs = Array.isArray(post.faq)
+    ? post.faq.filter((item: any) => item?.question && item?.answer)
+    : [];
+
   const articleImageUrl = imageUrl || createSocialImage().url;
   const articleDescription = getArticleDescription(post);
   const articleIntro = getArticleIntro(post, post.title);
@@ -263,6 +280,10 @@ export default async function BlogPostPage({
         ]}
       />
 
+      {/* The questions are already on the page; this is the same markup the landing pages
+          emit, for answer engines rather than a SERP rich result. */}
+      <FAQPageSchema faqs={faqs} />
+
       <div className="min-h-screen text-white">
         <Navbar />
         <main className="relative overflow-hidden pb-24 pt-24 md:pb-28 md:pt-28">
@@ -289,6 +310,7 @@ export default async function BlogPostPage({
                           <span>{publishedDate}</span>
                         </span>
                       ) : null}
+                      {updatedDate ? <span>Updated {updatedDate}</span> : null}
                       {post.author?.name ? <span>By {post.author.name}</span> : null}
                       <span className="inline-flex items-center rounded-full bg-[linear-gradient(90deg,rgba(251,113,133,0.16)_0%,rgba(251,191,36,0.08)_100%)] px-3 py-1.5 text-white/78">
                         {categoryLabel}
@@ -353,7 +375,7 @@ export default async function BlogPostPage({
                 </section>
               ) : null}
 
-              {Array.isArray(post.faq) && post.faq.length > 0 ? (
+              {faqs.length > 0 ? (
                 <section className="mt-16 w-full max-w-5xl border-t border-white/6 pt-10">
                   <div className="space-y-5">
                     <div>
@@ -366,7 +388,7 @@ export default async function BlogPostPage({
                     </div>
 
                     <div className="space-y-4">
-                      {post.faq.map((item: any) => (
+                      {faqs.map((item: any) => (
                         <article key={item.question} className="rounded-[1.2rem] bg-white/[0.02] px-5 py-5">
                           <h3 className="font-parkinsans text-[1rem] font-semibold tracking-tight text-white">
                             {item.question}
