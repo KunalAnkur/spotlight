@@ -7,7 +7,7 @@ import OrganizationSchema from "@/components/SEO/OrganizationSchema";
 import WebsiteSchema from "@/components/SEO/WebsiteSchema";
 import MovmashBackdrop from "@/components/layout/MovmashBackdrop";
 import { baseKeywords } from "@/constants/seo-keywords";
-import { baseUrl, createPageMetadata } from "@/lib/metadata";
+import { baseUrl, createPageMetadata, robotsFor } from "@/lib/metadata";
 import { defaultLocale, dirFor, locales, type Locale } from "@/i18n/config";
 import { getMessages, resolveLocale } from "@/i18n/server";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
@@ -39,21 +39,11 @@ export function generateMetadata({ params }: { params: { locale: string } }): Me
     address: false,
     telephone: false,
   },
-  // Translated variants render at the same clean URL through a middleware rewrite, and
-  // Googlebot never sends a locale cookie — so in practice the crawler only ever sees
-  // English. If a non-default variant is reached directly it must not compete with the
-  // English page it duplicates, which is what keeps SEO English-only as intended.
-  robots: {
-    index: isDefault,
-    follow: true,
-    googleBot: {
-      index: isDefault,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
+  // English is indexable everywhere. Another language is indexable only where the page says
+  // its copy is translated (createPageMetadata with a locale, see translatedPaths). Until
+  // then /tr/… is the English page with translated menus and must not compete with the page
+  // it duplicates.
+  robots: robotsFor(isDefault),
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },

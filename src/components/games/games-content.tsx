@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { GameSlug } from "@/content/games-page";
 
 /**
  * The arcade in the app — where you actually play. Every "play this" affordance on the
@@ -43,24 +44,18 @@ const JigsawGlyph = () => (
 );
 
 export interface GameEntry {
-  slug: string;
-  /** Key into the "games" namespace, for the translated home-page card. */
+  /** What the games page says about the game is kept per language under this slug (content/games-page.ts). */
+  slug: GameSlug;
+  /** Key into the "games" namespace: the game's name and its home-page card, in every language. */
   i18nKey: string;
   name: string;
   accent: string;
   glyph: ReactNode;
   image: string;
-  imageAlt: string;
   /** Card copy on the landing page. */
   blurb: string;
-  /** Card copy on the games page, where the surrounding text already sets the scene. */
-  shortBlurb: string;
   players: string;
   mode: string;
-  /** Longer copy for the games page detail row. */
-  detail: string;
-  /** One concrete piece of play advice — the reason the row is worth reading. */
-  tip: string;
   /** The blog guide that covers this game in full. The games page is the hub; these are
    *  the spokes, and they were sitting in the sitemap with nothing linking to them. */
   guideHref: string;
@@ -74,15 +69,9 @@ export const GAMES: GameEntry[] = [
     accent: "#dc685a",
     glyph: <TicTacToeGlyph />,
     image: "/assets/games/tic-tac-toe.png",
-    imageAlt:
-      "Online Tic-Tac-Toe in a Movmash room: a 3 by 3 board with X and O marks",
     blurb: "Three in a row. Quick enough to fit between two episodes.",
-    shortBlurb: "Three in a row. About a minute a round.",
     players: "2 players",
     mode: "Turn-based",
-    detail:
-      "The one everybody already knows, which is exactly why it works as a warm-up. A round lasts about a minute, so it fills the gap while the last person is still finding the link, and it never needs explaining to anyone.",
-    tip: "Take the centre square if you go first. It sits on four of the eight winning lines, twice as many as any corner, and it is the single move that most often decides an otherwise drawn game.",
     guideHref: "/blog/play-tic-tac-toe-online-with-friends",
   },
   {
@@ -92,15 +81,9 @@ export const GAMES: GameEntry[] = [
     accent: "#3b82f6",
     glyph: <ConnectFourGlyph />,
     image: "/assets/games/connect-4.png",
-    imageAlt:
-      "Connect 4 online multiplayer on Movmash: a blue board with red and yellow discs",
     blurb: "Drop discs and line up four. The longer of the two head-to-head games.",
-    shortBlurb: "Drop discs, line up four. The longer match.",
     players: "2 players",
     mode: "Turn-based",
-    detail:
-      "The longer head-to-head game, and the one with actual depth. Matches run five to ten minutes, which makes it the better fit for a proper break between episodes rather than a gap-filler between them.",
-    tip: "Play the centre column early. Discs there contribute to more possible fours than any other column, and controlling it forces your opponent to react to you for the rest of the match.",
     guideHref: "/blog/play-connect-4-online-with-friends",
   },
   {
@@ -110,15 +93,9 @@ export const GAMES: GameEntry[] = [
     accent: "#8b5cf6",
     glyph: <JigsawGlyph />,
     image: "/assets/games/jigsaw.png",
-    imageAlt:
-      "Co-op online jigsaw puzzle on Movmash: loose pieces on the left, a partly solved grid on the right",
     blurb: "One picture, everyone placing pieces. The calm one for a long call.",
-    shortBlurb: "One picture, up to eight people solving it.",
     players: "Up to 8",
     mode: "Co-op",
-    detail:
-      "The calm one, and the only game here that scales past two people. Up to eight can work the same board at once, with difficulty levels and a choice of picture, so it stretches to fill a long call instead of ending in a minute.",
-    tip: "Split the board rather than all digging through the same pile. One person on edges while everyone else claims a colour region is far faster than eight people racing for the same piece.",
     guideHref: "/blog/online-jigsaw-puzzle-with-friends",
   },
 ];

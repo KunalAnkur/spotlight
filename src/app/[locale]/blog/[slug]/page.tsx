@@ -16,12 +16,15 @@ import { urlFor } from "@/sanity/lib/image";
 import { postQuery, postSlugsQuery, relatedPostsQuery } from "@/sanity/lib/queries";
 import { blogPostKeywords } from "@/constants/seo-keywords";
 import retiredPosts from "@/content/retired-posts.json";
-import { baseUrl, createPageMetadata, createSocialImage } from "@/lib/metadata";
+import { dateLocales, defaultLocale, locales, localizePath, type Locale } from "@/i18n/config";
+import { getTranslations, resolveLocale, type Translator } from "@/i18n/server";
+import { postLanguagePaths } from "@/lib/blog";
+import { createPageMetadata, createSocialImage, pageUrl } from "@/lib/metadata";
 
 export const revalidate = 60;
 
 // These slugs are served by a permanent redirect in next.config.mjs, so prerendering them
-// only produces pages nothing can ever reach.
+// only produces pages nothing can ever reach. The redirects are English addresses.
 const retiredSlugs = new Set(retiredPosts.map(({ from }) => from.replace("/blog/", "")));
 
 /**
@@ -31,7 +34,7 @@ const retiredSlugs = new Set(retiredPosts.map(({ from }) => from.replace("/blog/
  * template owns the suffix and the CMS field stays forgiving.
  */
 function stripBrandSuffix(value: string) {
-  return value.replace(/(?:\s*[|\u2013\u2014-]\s*Movmash\s*)+$/i, "").trim();
+  return value.replace(/(?:\s*[|–—-]\s*Movmash\s*)+$/i, "").trim();
 }
 
 function getArticleExcerpt(body: any, fallbackTitle?: string) {
@@ -56,7 +59,7 @@ function getArticleExcerpt(body: any, fallbackTitle?: string) {
   return fallbackTitle;
 }
 
-function getArticleDescription(post: any) {
+function getArticleDescription(post: any, t: Translator) {
   const explicitDescription = post.seoDescription?.trim();
   if (explicitDescription) {
     return explicitDescription;
@@ -72,13 +75,11 @@ function getArticleDescription(post: any) {
     return snippetAnswer;
   }
 
-  return (
-    getArticleExcerpt(post.body, `Read ${post.title} on Movmash blog`) ||
-    `Read ${post.title} on Movmash blog`
-  );
+  const fallback = t("readOn", { title: post.title });
+  return getArticleExcerpt(post.body, fallback) || fallback;
 }
 
-function getArticleIntro(post: any, title: string) {
+function getArticleIntro(post: any, t: Translator) {
   const featuredAnswer = post.featuredSnippetAnswer?.trim();
 
   if (featuredAnswer) {
@@ -87,37 +88,27 @@ function getArticleIntro(post: any, title: string) {
 
   const excerpt = post.excerpt?.trim() || getArticleExcerpt(post.body)?.trim();
 
-  if (excerpt && excerpt !== `Read ${title} on Movmash blog`) {
+  if (excerpt && excerpt !== t("readOn", { title: post.title })) {
     return excerpt;
   }
 
-  return "A Movmash guide to making watch parties smoother, clearer, and easier to enjoy together.";
+  return t("defaultIntro");
 }
 
-const relatedLandingPageMeta: Record<
-  string,
-  { title: string; description: string; href: string }
-> = {
-  "/": {
-    title: "Watch party homepage",
-    description: "See the main Movmash overview for starting a watch party.",
-    href: "/",
-  },
-  "/watch-together": {
-    title: "Watch together guide",
-    description: "See the main Movmash setup for watching together online.",
-    href: "/watch-together",
-  },
-  "/long-distance-date-night": {
-    title: "Long-distance date night",
-    description: "See the softer two-person version of the Movmash room flow.",
-    href: "/long-distance-date-night",
-  },
+/** The landing pages a post can point at, and the "blog" message keys that describe each. */
+const relatedLandingPages: Record<string, string> = {
+  "/": "relatedHome",
+  "/watch-together": "relatedWatchTogether",
+  "/long-distance-date-night": "relatedDateNight",
 };
 
-async function getPost(slug: string) {
+/**
+ * A post belongs to one language. The same slug asked for under another language is not this
+ * post — /tr/blog/an-english-slug is a 404, not the English article with Turkish menus.
+ */
+async function getPost(slug: string, locale: Locale) {
   try {
-    const post = await client.fetch(postQuery, { slug });
+    const post = await client.fetch(postQuery, { slug, language: locale });
     return post || null;
   } catch (error) {
     console.error("Error fetching post:", error);
@@ -128,9 +119,10 @@ async function getPost(slug: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: { locale: string; slug: string };
 }): Promise<Metadata> {
-  const post = await getPost(params.slug);
+  const locale = resolveLocale(params.locale);
+  const post = await getPost(params.slug, locale);
 
   if (!post) {
     return {
@@ -142,12 +134,17 @@ export async function generateMetadata({
     ? urlFor(post.mainImage).width(1200).height(630).fit("crop").format("jpg").url()
     : createSocialImage().url;
 
-  const description = getArticleDescription(post);
+  const description = getArticleDescription(post, getTranslations(locale, "blog"));
   const metadataTitle = stripBrandSuffix(post.seoTitle?.trim() || post.title) || post.title;
 
   const categoryKeywords = post.categories?.map((cat: any) => cat.title) || [];
   const primaryKeyword = post.primaryKeyword?.trim();
-  const keywords = [...blogPostKeywords, ...categoryKeywords, ...(primaryKeyword ? [primaryKeyword] : [])];
+  const keywords = [
+    // The shared keyword list is English, so it only belongs on English posts.
+    ...(locale === defaultLocale ? blogPostKeywords : []),
+    ...categoryKeywords,
+    ...(primaryKeyword ? [primaryKeyword] : []),
+  ];
 
   return {
     ...createPageMetadata({
@@ -166,18 +163,23 @@ export async function generateMetadata({
         authors: post.author?.name ? [post.author.name] : undefined,
         tags: categoryKeywords,
       },
+      locale,
+      // Each translation has its own slug, so the post says where its other languages live.
+      languagePaths: postLanguagePaths({ ...post, slug: params.slug }),
     }),
     authors: post.author?.name ? [{ name: post.author.name }] : undefined,
   };
 }
 
-export async function generateStaticParams() {
+/** Called once per language by Next, with that language in `params`: only its own posts. */
+export async function generateStaticParams({ params }: { params: { locale: string } }) {
   try {
-    const slugs = await client.fetch<{ slug: string }[]>(postSlugsQuery);
-    return slugs
-      .filter((item) => item.slug && !retiredSlugs.has(item.slug))
-      .map((item) => ({
-        slug: item.slug,
+    const posts = await client.fetch<{ slug: string; language: string }[]>(postSlugsQuery);
+    return posts
+      .filter((post) => post.language === params.locale)
+      .filter((post) => !(post.language === defaultLocale && retiredSlugs.has(post.slug)))
+      .map((post) => ({
+        slug: post.slug,
       }));
   } catch (error) {
     console.error("Error generating static params:", error);
@@ -185,12 +187,13 @@ export async function generateStaticParams() {
   }
 }
 
-async function getRelatedPosts(currentPostId: string, categoryRefs: string[]) {
+async function getRelatedPosts(currentPostId: string, categoryRefs: string[], locale: Locale) {
   try {
     if (categoryRefs.length === 0) return [];
     const posts = await client.fetch(relatedPostsQuery, {
       currentPostId,
       categoryRefs,
+      language: locale,
     });
     return posts || [];
   } catch (error) {
@@ -202,23 +205,35 @@ async function getRelatedPosts(currentPostId: string, categoryRefs: string[]) {
 export default async function BlogPostPage({
   params,
 }: {
-  params: { slug: string };
+  params: { locale: string; slug: string };
 }) {
-  const post = await getPost(params.slug);
+  const locale = resolveLocale(params.locale);
+  const post = await getPost(params.slug, locale);
 
   if (!post) {
     notFound();
   }
 
+  const t = getTranslations(locale, "blog");
+  const blogName = getTranslations(locale, "nav")("blog");
+  const postUrl = pageUrl(`/blog/${params.slug}`, locale);
+
+  // The language menu leads to this post's translation where one exists, and to that
+  // language's blog where it does not — never to this slug under another language.
+  const versions = postLanguagePaths({ ...post, slug: params.slug });
+  const languageMenuPaths = Object.fromEntries(
+    locales.map((language) => [language, versions[language] ?? "/blog"]),
+  );
+
   const categoryRefs = (post as any).categoryRefs?.filter(Boolean) || [];
-  const relatedPosts = await getRelatedPosts(post._id, categoryRefs);
+  const relatedPosts = await getRelatedPosts(post._id, categoryRefs, locale);
 
   const imageUrl = post.mainImage?.asset?._ref
     ? urlFor(post.mainImage).width(1600).fit("max").auto("format").url()
     : null;
 
   const publishedDate = post.publishedAt
-    ? new Date(post.publishedAt).toLocaleDateString("en-US", {
+    ? new Date(post.publishedAt).toLocaleDateString(dateLocales[locale], {
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -230,7 +245,7 @@ export default async function BlogPostPage({
   // update date when it is a different day.
   const updatedDate =
     post.updatedAt && post.updatedAt.slice(0, 10) !== post.publishedAt?.slice(0, 10)
-      ? new Date(post.updatedAt).toLocaleDateString("en-US", {
+      ? new Date(post.updatedAt).toLocaleDateString(dateLocales[locale], {
           year: "numeric",
           month: "long",
           day: "numeric",
@@ -242,8 +257,8 @@ export default async function BlogPostPage({
     : [];
 
   const articleImageUrl = imageUrl || createSocialImage().url;
-  const articleDescription = getArticleDescription(post);
-  const articleIntro = getArticleIntro(post, post.title);
+  const articleDescription = getArticleDescription(post, t);
+  const articleIntro = getArticleIntro(post, t);
 
   const authorImageUrl = post.author?.image?.asset?._ref
     ? urlFor(post.author.image).width(200).height(200).url()
@@ -254,14 +269,14 @@ export default async function BlogPostPage({
   const categoryLabel = post.categories?.[0]?.title || "Movmash";
   const primaryKeyword = post.primaryKeyword?.trim();
   const schemaKeywords = [...(post.categories?.map((cat: any) => cat.title) || []), ...(primaryKeyword ? [primaryKeyword] : [])];
-  const relatedLandingPage = relatedLandingPageMeta[post.relatedLandingPage || ""];
+  const relatedLandingPage = relatedLandingPages[post.relatedLandingPage || ""];
 
   return (
     <>
       <ArticleSchema
         title={post.title}
         description={articleDescription}
-        url={`${baseUrl}/blog/${params.slug}`}
+        url={postUrl}
         image={articleImageUrl}
         datePublished={publishedDateISO}
         dateModified={modifiedDateISO}
@@ -270,13 +285,14 @@ export default async function BlogPostPage({
         publisherName="Movmash"
         categories={post.categories?.map((cat: any) => cat.title) || []}
         keywords={schemaKeywords}
+        inLanguage={locale}
       />
 
       <BreadcrumbSchema
         items={[
-          { name: "Home", url: baseUrl },
-          { name: "Blog", url: `${baseUrl}/blog` },
-          { name: post.title, url: `${baseUrl}/blog/${params.slug}` },
+          { name: t("breadcrumbHome"), url: pageUrl("/", locale) },
+          { name: blogName, url: pageUrl("/blog", locale) },
+          { name: post.title, url: postUrl },
         ]}
       />
 
@@ -285,7 +301,7 @@ export default async function BlogPostPage({
       <FAQPageSchema faqs={faqs} />
 
       <div className="min-h-screen text-white">
-        <Navbar />
+        <Navbar languagePaths={languageMenuPaths} />
         <main className="relative overflow-hidden pb-24 pt-24 md:pb-28 md:pt-28">
           <div className="pointer-events-none absolute left-1/2 top-0 h-48 w-[34rem] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(244,63,94,0.10)_0%,rgba(244,63,94,0.04)_34%,transparent_76%)] blur-[60px] md:w-[48rem]" />
           <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(244,63,94,0.03)_0%,transparent_100%)]" />
@@ -296,11 +312,11 @@ export default async function BlogPostPage({
                 <header className="mt-6 w-full max-w-6xl space-y-5 pb-5 md:pb-6">
                   <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                     <Link
-                      href="/blog"
+                      href={localizePath(locale, "/blog")}
                       className="inline-flex items-center gap-2 text-sm text-white/50 transition-colors hover:text-white"
                     >
-                      <ArrowLeft className="h-4 w-4" />
-                      <span>Back to blog</span>
+                      <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
+                      <span>{t("back")}</span>
                     </Link>
 
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/38 md:justify-end">
@@ -310,8 +326,8 @@ export default async function BlogPostPage({
                           <span>{publishedDate}</span>
                         </span>
                       ) : null}
-                      {updatedDate ? <span>Updated {updatedDate}</span> : null}
-                      {post.author?.name ? <span>By {post.author.name}</span> : null}
+                      {updatedDate ? <span>{t("updated", { date: updatedDate })}</span> : null}
+                      {post.author?.name ? <span>{t("by", { name: post.author.name })}</span> : null}
                       <span className="inline-flex items-center rounded-full bg-[linear-gradient(90deg,rgba(251,113,133,0.16)_0%,rgba(251,191,36,0.08)_100%)] px-3 py-1.5 text-white/78">
                         {categoryLabel}
                       </span>
@@ -333,7 +349,9 @@ export default async function BlogPostPage({
                   <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[2rem] ring-1 ring-white/10 shadow-[0_34px_90px_rgba(0,0,0,0.26)]">
                       <Image
                         src={imageUrl}
-                        alt={post.title}
+                        // What the picture shows, as the editor described it. Repeating the
+                        // title told a reader who cannot see it nothing they had not just heard.
+                        alt={post.mainImage?.alt?.trim() || post.title}
                         fill
                         sizes="(min-width: 1280px) 1152px, (min-width: 768px) calc(100vw - 64px), calc(100vw - 32px)"
                         className="object-cover object-center"
@@ -351,24 +369,24 @@ export default async function BlogPostPage({
                 <section className="mt-14 w-full max-w-5xl border-t border-white/6 pt-8">
                   <div className="rounded-[1.35rem] bg-white/[0.022] px-5 py-5 sm:px-6">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/34">
-                      Related page
+                      {t("relatedPage")}
                     </p>
                     <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                       <div>
                         <h2 className="font-parkinsans text-[1.05rem] font-semibold tracking-tight text-white">
-                          {relatedLandingPage.title}
+                          {t(`${relatedLandingPage}Title`)}
                         </h2>
                         <p className="mt-1.5 max-w-2xl text-sm leading-7 text-white/60">
-                          {relatedLandingPage.description}
+                          {t(`${relatedLandingPage}Copy`)}
                         </p>
                       </div>
                       <Link
-                        href={relatedLandingPage.href}
+                        href={localizePath(locale, post.relatedLandingPage)}
                         className="inline-flex items-center gap-2 text-sm text-white/72 transition-colors hover:text-white"
                       >
                         <Link2 className="h-4 w-4" />
-                        Open page
-                        <ArrowRight className="h-4 w-4" />
+                        {t("openPage")}
+                        <ArrowRight className="h-4 w-4 rtl:rotate-180" />
                       </Link>
                     </div>
                   </div>
@@ -380,10 +398,10 @@ export default async function BlogPostPage({
                   <div className="space-y-5">
                     <div>
                       <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/34">
-                        Quick answers
+                        {t("faqKicker")}
                       </p>
                       <h2 className="mt-2 font-parkinsans text-[1.4rem] font-semibold tracking-tight text-white md:text-[1.7rem]">
-                        Common questions about this topic
+                        {t("faqTitle")}
                       </h2>
                     </div>
 
@@ -422,7 +440,7 @@ export default async function BlogPostPage({
                     )}
                     <div className="min-w-0">
                       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/34">
-                        About the author
+                        {t("aboutAuthor")}
                       </p>
                       <h2 className="mt-2 font-parkinsans text-[1.3rem] font-semibold tracking-tight text-white">
                         {post.author.name}
@@ -443,17 +461,17 @@ export default async function BlogPostPage({
                     </div>
                     <div>
                       <h2 className="font-parkinsans text-2xl font-semibold tracking-tight text-white md:text-[2rem]">
-                        More from Movmash
+                        {t("moreTitle")}
                       </h2>
                       <p className="mt-1 text-sm text-white/54">
-                        Other reads on rooms, shared watching, and smoother hosting.
+                        {t("moreCopy")}
                       </p>
                     </div>
                   </div>
 
                   <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                     {relatedPosts.map((relatedPost: any) => (
-                      <BlogCard key={relatedPost._id} post={relatedPost} />
+                      <BlogCard key={relatedPost._id} post={relatedPost} locale={locale} />
                     ))}
                   </div>
                 </section>

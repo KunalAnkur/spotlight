@@ -5,6 +5,7 @@ interface WebPageSchemaProps {
   description?: string;
   url?: string;
   breadcrumbUrl?: string;
+  inLanguage?: string;
 }
 
 export default function WebPageSchema({
@@ -12,6 +13,7 @@ export default function WebPageSchema({
   description = "Insights, tips, and stories to help you get the most out of Movmash.",
   url = `${baseUrl}/blog`,
   breadcrumbUrl,
+  inLanguage,
 }: WebPageSchemaProps) {
   const schema: any = {
     "@context": "https://schema.org",
@@ -19,6 +21,7 @@ export default function WebPageSchema({
     name: title,
     description: description,
     url: url,
+    ...(inLanguage ? { inLanguage } : {}),
     publisher: {
       "@type": "Organization",
       name: "Movmash",

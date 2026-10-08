@@ -6,13 +6,19 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import MovmashSocialLinks from "@/components/shared/MovmashSocialLinks";
 import { Button } from "@/components/ui/button";
-import { useT } from "@/i18n/LocaleProvider";
+import { defaultLocale, localizePath, stripLocale, type Locale } from "@/i18n/config";
+import { useLocale, useT } from "@/i18n/LocaleProvider";
 
 interface FooterLinkItem {
   /** Key into the "footer" namespace; the label itself is translated at render time. */
   key: string;
   href: string;
   hash?: string;
+}
+
+interface FooterGuideItem extends FooterLinkItem {
+  /** The guide's translations: for each language it exists in, that version's own address. */
+  translations?: Partial<Record<Locale, string>>;
 }
 
 // Pricing lives in the app, not on spotlight — /pricing is not a route here, so pointing at
@@ -33,6 +39,11 @@ const footerLinks = {
   // The guides people actually search for. Before this the only route to a blog post was
   // through /blog or one landing page, and the home page — where the site's authority sits —
   // linked to none of them, so new posts sat in "Discovered – currently not indexed".
+  //
+  // `href` is the English post. A post lives only under its own language — there is no
+  // "/tr/blog/<an English slug>" — so another language is offered a guide once it has been
+  // translated: add `translations: { tr: "/blog/<the Turkish slug>" }` when that post is
+  // published, and the label already translated in the message files starts to show.
   guides: [
     { key: "guideWatchMovies", href: "/blog/how-to-watch-movies-together-online" },
     { key: "guideWatchPartySites", href: "/blog/best-watch-party-sites" },
@@ -40,7 +51,7 @@ const footerLinks = {
     { key: "guideLocalFiles", href: "/blog/watch-local-files-together-online" },
     { key: "guideNetflix", href: "/blog/how-to-watch-netflix-together-long-distance" },
     { key: "guideLdrApps", href: "/blog/best-apps-for-ldr-couples" },
-  ] satisfies FooterLinkItem[],
+  ] satisfies FooterGuideItem[] as FooterGuideItem[],
   company: [
     { key: "aboutUs", href: "/about" },
     { key: "contact", href: "/contact" },
@@ -58,24 +69,26 @@ const footerLinkClassName =
 
 const Footer = () => {
   const t = useT("footer");
+  const locale = useLocale();
   const currentYear = new Date().getFullYear();
   const router = useRouter();
-  const pathname = usePathname();
+  // The page without its language, so "/" means home in every language.
+  const path = stripLocale(usePathname());
+  // The guides that exist in the language being read; see `footerLinks.guides`.
+  const guides = footerLinks.guides.flatMap((link) => {
+    const href = locale === defaultLocale ? link.href : link.translations?.[locale];
+    return href ? [{ key: link.key, href: localizePath(locale, href) }] : [];
+  });
 
   const handleProductLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash?: string) => {
     if (!hash) {
       return;
     }
     e.preventDefault();
-    if (pathname !== "/") {
-      router.push("/");
-      // Wait for navigation, then scroll to section
-      setTimeout(() => {
-        const element = document.getElementById(hash);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 100);
+    if (path !== "/") {
+      // Next scrolls to the section itself once the home page has rendered. Scrolling from a
+      // 100ms timer used to fire before the page existed, leaving the visitor at the top.
+      router.push(localizePath(locale, `/#${hash}`));
     } else {
       // Already on home page, just scroll
       const element = document.getElementById(hash);
@@ -93,7 +106,7 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="max-w-[400px] flex-1 basis-[320px]">
             <Link
-              href="/"
+              href={localizePath(locale, "/")}
               className="mb-3 inline-flex items-center gap-2.5 font-parkinsans text-[22px] font-semibold tracking-[-0.02em] text-white transition-opacity hover:opacity-80"
             >
               <Image
@@ -134,7 +147,7 @@ const Footer = () => {
                 {footerLinks.product.map((link) => (
                   <li key={link.key}>
                     <a
-                      href={link.href}
+                      href={localizePath(locale, link.href)}
                       onClick={(e) => handleProductLinkClick(e, link.hash)}
                       className={footerLinkClassName}
                     >
@@ -146,20 +159,22 @@ const Footer = () => {
             </div>
 
             {/* Guide Links */}
-            <div className="flex flex-col">
-              <h4 className="mb-[13px] font-parkinsans text-[15px] font-semibold tracking-[-0.01em] text-white">
-                {t("guides")}
-              </h4>
-              <ul className="flex flex-col gap-[9px]">
-                {footerLinks.guides.map((link) => (
-                  <li key={link.key}>
-                    <Link href={link.href} className={footerLinkClassName}>
-                      {t(link.key)}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {guides.length > 0 ? (
+              <div className="flex flex-col">
+                <h4 className="mb-[13px] font-parkinsans text-[15px] font-semibold tracking-[-0.01em] text-white">
+                  {t("guides")}
+                </h4>
+                <ul className="flex flex-col gap-[9px]">
+                  {guides.map((link) => (
+                    <li key={link.key}>
+                      <Link href={link.href} className={footerLinkClassName}>
+                        {t(link.key)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
 
             {/* Company Links */}
             <div className="flex flex-col">
@@ -169,7 +184,7 @@ const Footer = () => {
               <ul className="flex flex-col gap-[9px]">
                 {footerLinks.company.map((link) => (
                   <li key={link.key}>
-                    <Link href={link.href} className={footerLinkClassName}>
+                    <Link href={localizePath(locale, link.href)} className={footerLinkClassName}>
                       {t(link.key)}
                     </Link>
                   </li>
@@ -185,7 +200,7 @@ const Footer = () => {
               <ul className="flex flex-col gap-[9px]">
                 {footerLinks.legal.map((link) => (
                   <li key={link.key}>
-                    <Link href={link.href} className={footerLinkClassName}>
+                    <Link href={localizePath(locale, link.href)} className={footerLinkClassName}>
                       {t(link.key)}
                     </Link>
                   </li>

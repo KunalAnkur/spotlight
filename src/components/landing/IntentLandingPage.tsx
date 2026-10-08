@@ -44,34 +44,27 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
     ? [Tv2, MessageCircle, Clapperboard]
     : [Heart, MessageCircle, Tv2];
 
+  // Which pictures the page shows. What they show is said in data.media, in the page's language.
   const pageMedia = isDateNight
     ? {
         heroSrc: "/assets/ldrcouple.png",
-        heroAlt: "Long-distance couple spending time together online",
-        heroCaption: "A softer room setup for nights that should feel calm before they feel technical.",
         heroObject: "object-cover object-center",
         heroAspect: "aspect-[5/4] md:aspect-[6/5]",
         stepsSrc: "/assets/ldrcouple2.png",
-        stepsAlt: "Long-distance couple visual for a movie date night",
         stepsObject: "object-cover object-center",
         stepsAspect: "aspect-[16/11]",
         featureSrc: "/assets/ldrcouple3.png",
-        featureAlt: "Couple visual for a cozy long-distance date night",
         featureObject: "object-cover object-center",
         featureAspect: "aspect-[5/4] md:aspect-[6/5]",
       }
     : {
         heroSrc: "/assets/friendgroup.png",
-        heroAlt: "Friends getting ready for a watch party together online",
-        heroCaption: "A friend-first watch party feel that still leads people into a simple room setup.",
         heroObject: "object-cover object-center",
         heroAspect: "aspect-[16/10]",
         stepsSrc: "/assets/remotefriends.png",
-        stepsAlt: "Friends joining a watch party together online",
         stepsObject: "object-cover object-center",
         stepsAspect: "aspect-square md:aspect-[1/1]",
         featureSrc: "/assets/friendgroup.png",
-        featureAlt: "Friends together for an online watch party",
         featureObject: "object-cover object-center",
         featureAspect: "aspect-[3/2]",
       };
@@ -139,7 +132,7 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
               <Button variant="outline" size="lg" asChild className="font-parkinsans">
                 <Link href={data.secondaryCtaHref}>
                   {data.secondaryCtaLabel}
-                  <ArrowRight className="h-5 w-5" />
+                  <ArrowRight className="h-5 w-5 rtl:rotate-180" />
                 </Link>
               </Button>
             </div>
@@ -166,7 +159,7 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
             <div className="overflow-hidden rounded-[2rem] shadow-[0_28px_72px_rgba(0,0,0,0.22)]">
               <Image
                 src={pageMedia.heroSrc}
-                alt={pageMedia.heroAlt}
+                alt={data.media.heroAlt}
                 width={1400}
                 height={860}
                 className={`h-auto w-full ${pageMedia.heroAspect} ${pageMedia.heroObject}`}
@@ -174,7 +167,7 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
               />
             </div>
             <p className="mx-auto mt-4 max-w-2xl text-center text-[13px] leading-6 text-white/52 lg:mx-0 lg:text-start">
-              {pageMedia.heroCaption}
+              {data.media.heroCaption}
             </p>
           </div>
         </section>
@@ -247,20 +240,20 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
             <div className="min-w-0">
               <Image
                 src={pageMedia.stepsSrc}
-                alt={pageMedia.stepsAlt}
+                alt={data.media.stepsAlt}
                 width={1400}
                 height={860}
                 className={`h-full w-full ${pageMedia.stepsAspect} ${pageMedia.stepsObject}`}
               />
             </div>
 
-            {isDateNight ? (
+            {data.insideRoom ? (
               <div className="px-6 py-6 md:px-8">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/34">
-                  Inside the room
+                  {data.insideRoom.eyebrow}
                 </p>
                 <h3 className="mt-3 font-parkinsans text-[1.22rem] font-semibold tracking-tight text-white md:text-[1.38rem]">
-                  Clear enough that people can focus on the night, not the layout.
+                  {data.insideRoom.title}
                 </h3>
                 <div className="mt-5 space-y-3">
                   {data.heroSignals.map((signal) => (
@@ -302,9 +295,9 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
 
                   <dl className="mt-5 space-y-3 border-t border-white/6 pt-4 text-sm">
                     {[
-                      { term: "Best for", detail: mode.bestFor },
-                      { term: "You need", detail: mode.needs },
-                      { term: "Worth knowing", detail: mode.limit },
+                      { term: data.labels.bestFor, detail: mode.bestFor },
+                      { term: data.labels.youNeed, detail: mode.needs },
+                      { term: data.labels.worthKnowing, detail: mode.limit },
                     ].map((row) => (
                       <div key={row.term}>
                         <dt className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/34">
@@ -324,7 +317,7 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
           <div className="overflow-hidden rounded-[2rem] shadow-[0_26px_70px_rgba(0,0,0,0.18)]">
             <Image
               src={pageMedia.featureSrc}
-              alt={pageMedia.featureAlt}
+              alt={data.media.featureAlt}
               width={1400}
               height={860}
               className={`h-full w-full ${pageMedia.featureAspect} ${pageMedia.featureObject}`}
@@ -425,8 +418,8 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-white/58">{guide.description}</p>
                   <span className="mt-3.5 inline-flex items-center gap-2 text-sm text-white/62 transition-colors group-hover:text-white/82">
-                    Read the guide
-                    <ArrowRight className="h-3.5 w-3.5" />
+                    {data.labels.readGuide}
+                    <ArrowRight className="h-3.5 w-3.5 rtl:rotate-180" />
                   </span>
                 </Link>
               ))}
@@ -456,7 +449,8 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
                   </h3>
                   <ul className="mt-4 flex flex-wrap gap-2">
                     {group.items.map((item) => (
-                      <li key={item} className={`inline-flex items-center rounded-full px-3 py-1.5 text-[12px] ${theme.chip}`}>
+                      // A name like "Disney+" keeps its plus sign on the right inside an Arabic page.
+                      <li key={item} dir="auto" className={`inline-flex items-center rounded-full px-3 py-1.5 text-[12px] ${theme.chip}`}>
                         {item}
                       </li>
                     ))}
@@ -471,10 +465,10 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
         <section className="space-y-6">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/36">
-              FAQ
+              {data.labels.faqEyebrow}
             </p>
             <h2 className="mt-3 font-parkinsans text-[1.55rem] font-semibold leading-[1.08] tracking-[-0.04em] text-white md:text-[2rem]">
-              Quick answers, kept simple.
+              {data.labels.faqTitle}
             </h2>
           </div>
 
@@ -509,8 +503,8 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
                     {link.description}
                   </p>
                   <div className="mt-4 inline-flex items-center gap-2 text-sm text-white/66 transition-colors group-hover:text-white/82">
-                    <span>Open page</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
+                    <span>{data.labels.openPage}</span>
+                    <ArrowRight className="h-3.5 w-3.5 rtl:rotate-180" />
                   </div>
                 </Link>
               );
@@ -537,7 +531,7 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
             <Button variant="outline" size="lg" asChild className="font-parkinsans">
               <Link href={data.secondaryCtaHref}>
                 {data.secondaryCtaLabel}
-                <ArrowRight className="h-5 w-5" />
+                <ArrowRight className="h-5 w-5 rtl:rotate-180" />
               </Link>
             </Button>
           </div>

@@ -56,10 +56,12 @@ export const portableTextComponents: PortableTextComponents = {
     ),
   },
   block: {
+    // The post title is the page's only <h1>. The editor no longer offers H1, and anything
+    // that arrives with that style anyway (pasted content) is demoted to a section heading.
     h1: ({ children }) => (
-      <h1 className="mb-6 mt-12 font-parkinsans text-3xl font-semibold leading-tight text-white break-words overflow-wrap-anywhere md:text-4xl">
+      <h2 className="mb-5 mt-10 font-parkinsans text-2xl font-semibold leading-tight text-white break-words overflow-wrap-anywhere md:text-3xl">
         {children}
-      </h1>
+      </h2>
     ),
     h2: ({ children }) => (
       <h2 className="mb-5 mt-10 font-parkinsans text-2xl font-semibold leading-tight text-white break-words overflow-wrap-anywhere md:text-3xl">

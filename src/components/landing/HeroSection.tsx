@@ -1,5 +1,5 @@
 import { Play } from "lucide-react";
-import type { Locale } from "@/i18n/config";
+import { localizePath, type Locale } from "@/i18n/config";
 import { getTranslations } from "@/i18n/server";
 import { Button } from "@/components/ui/button";
 import DemoVideoPreview from "@/components/landing/DemoVideoPreview";
@@ -77,18 +77,18 @@ const HeroSection = ({ locale }: { locale: Locale }) => {
             </a>
           </Button>
           <Button variant="outline" asChild className="font-parkinsans">
-            <Link href="/games">{t("ctaSecondary")}</Link>
+            <Link href={localizePath(locale, "/games")}>{t("ctaSecondary")}</Link>
           </Button>
         </div>
 
         <p className="mt-[22px] animate-slide-up text-sm text-white/46">
           {t("alsoExploring")}{" "}
-          <Link href="/watch-together" className="text-white/72 transition-colors hover:text-white">
+          <Link href={localizePath(locale, "/watch-together")} className="text-white/72 transition-colors hover:text-white">
             {t("linkWatchTogether")}
           </Link>{" "}
           {t("and")}{" "}
           <Link
-            href="/long-distance-date-night"
+            href={localizePath(locale, "/long-distance-date-night")}
             className="text-white/72 transition-colors hover:text-white"
           >
             {t("linkDateNight")}

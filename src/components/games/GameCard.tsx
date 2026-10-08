@@ -5,27 +5,30 @@ interface GameCardProps {
   game: GameEntry;
   /** Landing page uses the longer blurb; the games page has surrounding copy already. */
   blurb: string;
-  /** Translated overrides. Omitted on /games, which stays English by design. */
-  name?: string;
-  players?: string;
-  mode?: string;
-  freeLabel?: string;
+  /** Everything below is in the language of the page the card sits on. */
+  name: string;
+  players: string;
+  mode: string;
+  freeLabel: string;
+  imageAlt: string;
+  /** What a screen reader announces for the card: "Play Connect 4 on Movmash". */
+  label: string;
 }
 
 // A card is the game itself, so clicking one goes straight into the arcade in the app rather
 // than to more reading about it — the marketing copy is already on the card.
-const GameCard = ({ game, blurb, name, players, mode, freeLabel }: GameCardProps) => (
+const GameCard = ({ game, blurb, name, players, mode, freeLabel, imageAlt, label }: GameCardProps) => (
   <a
     href={PLAY_URL}
     rel="noopener noreferrer"
     className="game-card"
-    aria-label={`Play ${name ?? game.name} on Movmash`}
+    aria-label={label}
     style={{ ["--acc" as string]: game.accent }}
   >
     <div className="game-shot">
       <Image
         src={game.image}
-        alt={game.imageAlt}
+        alt={imageAlt}
         width={1200}
         height={960}
         sizes="(max-width: 860px) 100vw, 33vw"
@@ -37,7 +40,7 @@ const GameCard = ({ game, blurb, name, players, mode, freeLabel }: GameCardProps
       <div className="mb-[9px] flex items-center gap-[11px]">
         <span className="game-glyph">{game.glyph}</span>
         <h3 className="font-parkinsans text-[19px] font-semibold tracking-tight text-white">
-          {name ?? game.name}
+          {name}
         </h3>
       </div>
 
@@ -45,12 +48,12 @@ const GameCard = ({ game, blurb, name, players, mode, freeLabel }: GameCardProps
 
       <span className="mt-4 flex items-center gap-[9px] text-[12.5px] text-white/46">
         <b className="font-semibold" style={{ color: game.accent }}>
-          {players ?? game.players}
+          {players}
         </b>
         <i className="h-[3px] w-[3px] shrink-0 rounded-full bg-current opacity-50" />
-        {mode ?? game.mode}
+        {mode}
         <i className="h-[3px] w-[3px] shrink-0 rounded-full bg-current opacity-50" />
-        {freeLabel ?? "Free"}
+        {freeLabel}
       </span>
     </div>
   </a>
