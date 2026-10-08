@@ -1,5 +1,5 @@
 import { Play } from "lucide-react";
-import type { Locale } from "@/i18n/config";
+import { localizePath, type Locale } from "@/i18n/config";
 import { getTranslations } from "@/i18n/server";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -71,7 +71,7 @@ const CTASection = ({ locale }: { locale: Locale }) => {
               </a>
             </Button>
             <Button variant="outline" asChild className="font-parkinsans">
-              <Link href="/games">{t("ctaSecondary")}</Link>
+              <Link href={localizePath(locale, "/games")}>{t("ctaSecondary")}</Link>
             </Button>
           </div>
 

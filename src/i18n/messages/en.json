@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "homeTitle": "Watch Party App with Online Games | Watch Together | Movmash",
+    "homeDescription": "Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions and screen sharing — plus online games to play with friends in the same room."
+  },
   "nav": {
     "features": "Features",
     "games": "Games",
@@ -193,5 +197,40 @@
     "screenSharing": "{quality} screen sharing",
     "everyGame": "Every game included",
     "videoCall": "Video + voice call while you watch"
+  },
+  "blog": {
+    "metaTitle": "Blog — Watch Party & Long-Distance Guides",
+    "description": "Guides to watching movies together online, hosting a watch party, and long-distance date nights — how-tos, comparisons, and ideas from the Movmash team.",
+    "ogTitle": "Movmash Blog",
+    "breadcrumbHome": "Home",
+    "title": "Watch party and long-distance guides",
+    "intro": "Fresh notes on the product, shared watching, and better room experiences.",
+    "postCountOne": "{count} post",
+    "postCountOther": "{count} posts",
+    "emptyTitle": "No posts yet",
+    "emptyCopy": "We are still preparing the first stories, guides, and product notes. Check back soon.",
+    "emptyCta": "Read the blog in English",
+    "languages": "Blog language",
+    "soon": "soon",
+    "noCover": "No cover image",
+    "untitled": "Untitled Post",
+    "back": "Back to blog",
+    "by": "By {name}",
+    "updated": "Updated {date}",
+    "defaultIntro": "A Movmash guide to making watch parties smoother, clearer, and easier to enjoy together.",
+    "readOn": "Read {title} on Movmash blog",
+    "relatedPage": "Related page",
+    "openPage": "Open page",
+    "relatedHomeTitle": "Watch party homepage",
+    "relatedHomeCopy": "See the main Movmash overview for starting a watch party.",
+    "relatedWatchTogetherTitle": "Watch together guide",
+    "relatedWatchTogetherCopy": "See the main Movmash setup for watching together online.",
+    "relatedDateNightTitle": "Long-distance date night",
+    "relatedDateNightCopy": "See the softer two-person version of the Movmash room flow.",
+    "faqKicker": "Quick answers",
+    "faqTitle": "Common questions about this topic",
+    "aboutAuthor": "About the author",
+    "moreTitle": "More from Movmash",
+    "moreCopy": "Other reads on rooms, shared watching, and smoother hosting."
   }
 }

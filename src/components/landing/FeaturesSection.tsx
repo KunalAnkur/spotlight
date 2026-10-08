@@ -2,7 +2,7 @@ import { Tv, Monitor, MessageCircle, Users, Gamepad2, Zap } from "lucide-react";
 import type { Locale } from "@/i18n/config";
 import { getTranslations } from "@/i18n/server";
 
-const features = [
+export const features = [
   {
     icon: Tv,
     key: "syncMode",

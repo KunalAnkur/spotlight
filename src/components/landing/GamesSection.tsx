@@ -3,6 +3,7 @@ import type { Locale } from "@/i18n/config";
 import { getTranslations } from "@/i18n/server";
 import GameCard from "@/components/games/GameCard";
 import { GAMES, PLAY_URL } from "@/components/games/games-content";
+import { getGamesPage } from "@/content/games-page";
 
 const sectionEmojis = [
   {
@@ -37,6 +38,7 @@ const sectionEmojis = [
 
 const GamesSection = ({ locale }: { locale: Locale }) => {
   const t = getTranslations(locale, "games");
+  const page = getGamesPage(locale);
   return (
     <section id="games" className="landing-section">
       {/* Anchored to the section, not the 1152px shell — these live in the outer gutters, and
@@ -72,6 +74,8 @@ const GamesSection = ({ locale }: { locale: Locale }) => {
               players={t(game.players === "Up to 8" ? "playersUpTo8" : "players2")}
               mode={t(game.mode === "Co-op" ? "coop" : "turnBased")}
               freeLabel={t("free")}
+              imageAlt={page.games[game.slug].imageAlt}
+              label={page.cardLabel.replace("{name}", t(game.i18nKey))}
             />
           ))}
         </div>

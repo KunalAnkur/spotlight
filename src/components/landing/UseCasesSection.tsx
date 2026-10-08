@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { BookOpen, Gamepad2, GraduationCap, Heart, House, Users } from "lucide-react";
-import type { Locale } from "@/i18n/config";
+import { localizePath, type Locale } from "@/i18n/config";
 import { getTranslations } from "@/i18n/server";
 
 const sectionEmojis = [
@@ -105,7 +105,7 @@ const UseCasesSection = ({ locale }: { locale: Locale }) => {
             {pills.map((pill) => (
               <Link
                 key={pill.key}
-                href={pill.href}
+                href={localizePath(locale, pill.href)}
                 className="inline-flex items-center gap-[9px] rounded-full bg-white/[0.035] px-4 py-2 transition-colors hover:bg-white/[0.06] hover:text-white"
               >
                 <span

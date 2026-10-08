@@ -3,47 +3,55 @@ import FAQPageSchema from "@/components/SEO/FAQPageSchema";
 import SoftwareApplicationSchema from "@/components/SEO/SoftwareApplicationSchema";
 import WebPageSchema from "@/components/SEO/WebPageSchema";
 import IntentLandingPage from "@/components/landing/IntentLandingPage";
-import { longDistanceDateNightPageData } from "@/content/intent-landing-pages";
+import { getIntentLandingPage } from "@/content/intent-landing-pages";
 import { longDistanceDateNightKeywords } from "@/constants/seo-keywords";
-import { baseUrl, createPageMetadata } from "@/lib/metadata";
+import { defaultLocale } from "@/i18n/config";
+import { resolveLocale } from "@/i18n/server";
+import { guidesIn } from "@/lib/blog";
+import { createPageMetadata, pageUrl } from "@/lib/metadata";
 
-const pageUrl = `${baseUrl}/long-distance-date-night`;
+const path = "/long-distance-date-night";
 
-export const metadata = createPageMetadata({
-  title: longDistanceDateNightPageData.metadataTitle,
-  description: longDistanceDateNightPageData.metadataDescription,
-  path: "/long-distance-date-night",
-  keywords: longDistanceDateNightKeywords,
-});
+export function generateMetadata({ params }: { params: { locale: string } }) {
+  const locale = resolveLocale(params.locale);
+  const page = getIntentLandingPage("long-distance-date-night", locale);
 
-export default function LongDistanceDateNightPage() {
+  return createPageMetadata({
+    title: page.metadataTitle,
+    description: page.metadataDescription,
+    path,
+    // The keyword list is English, so it only belongs on the English page.
+    keywords: locale === defaultLocale ? longDistanceDateNightKeywords : undefined,
+    locale,
+  });
+}
+
+export default async function LongDistanceDateNightPage({ params }: { params: { locale: string } }) {
+  const locale = resolveLocale(params.locale);
+  const page = getIntentLandingPage("long-distance-date-night", locale);
+  const url = pageUrl(path, locale);
+
   return (
     <>
-      <FAQPageSchema faqs={longDistanceDateNightPageData.faqs} />
+      <FAQPageSchema faqs={page.faqs} />
       <WebPageSchema
-        title={longDistanceDateNightPageData.metadataTitle}
-        description={longDistanceDateNightPageData.metadataDescription}
-        url={pageUrl}
+        title={page.metadataTitle}
+        description={page.metadataDescription}
+        url={url}
+        inLanguage={locale}
       />
       <SoftwareApplicationSchema
-        url={pageUrl}
-        description={longDistanceDateNightPageData.metadataDescription}
-        features={[
-          "Private rooms for two on the free plan",
-          "Synced playback held on one shared clock",
-          "Live chat and reactions beside the video",
-          "Browser join with no account for the guest",
-          "Screen sharing for Netflix, Disney+ and Prime Video",
-          "Local file streaming from the host's computer",
-        ]}
+        url={url}
+        description={page.metadataDescription}
+        features={page.schemaFeatures}
       />
       <BreadcrumbSchema
         items={[
-          { name: "Home", url: baseUrl },
-          { name: "Long Distance Date Night", url: pageUrl },
+          { name: page.labels.home, url: pageUrl("/", locale) },
+          { name: page.breadcrumbName, url },
         ]}
       />
-      <IntentLandingPage data={longDistanceDateNightPageData} />
+      <IntentLandingPage data={{ ...page, guides: await guidesIn(locale, page.guides ?? []) }} />
     </>
   );
 }

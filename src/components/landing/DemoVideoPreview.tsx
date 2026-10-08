@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 const videoSrc =
   "https://asset.movmash.com/platform/vid/spotlight-cover-video-v2.mp4";
 
-const DemoVideoPreview = () => {
+const DemoVideoPreview = ({ label = "Movmash demo video" }: { label?: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const DemoVideoPreview = () => {
         playsInline
         preload="auto"
         disablePictureInPicture
-        aria-label="Movmash demo video"
+        aria-label={label}
         tabIndex={-1}
       />
     </div>

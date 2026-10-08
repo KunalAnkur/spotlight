@@ -11,6 +11,7 @@ interface ArticleSchemaProps {
   publisherLogo?: string;
   categories?: string[];
   keywords?: string[];
+  inLanguage?: string;
 }
 
 export default function ArticleSchema({
@@ -26,6 +27,7 @@ export default function ArticleSchema({
   publisherLogo,
   categories = [],
   keywords = [],
+  inLanguage,
 }: ArticleSchemaProps) {
   // Build schema object following Google's Article schema requirements
   const schema: any = {
@@ -34,6 +36,7 @@ export default function ArticleSchema({
     headline: title,
     description: description,
     url: url, // Add URL directly to Article
+    ...(inLanguage ? { inLanguage } : {}),
     datePublished: datePublished,
     dateModified: dateModified || datePublished,
     author: {

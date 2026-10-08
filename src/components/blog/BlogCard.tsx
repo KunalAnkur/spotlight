@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Calendar, User } from "lucide-react";
+import { dateLocales, localizePath, type Locale } from "@/i18n/config";
+import { getTranslations } from "@/i18n/server";
 import { urlFor } from "@/sanity/lib/image";
 
 interface BlogCardProps {
@@ -18,9 +20,13 @@ interface BlogCardProps {
     };
     categories?: Array<{ title: string }>;
   };
+  /** The language of the page the card sits on, which is also the post's. */
+  locale: Locale;
 }
 
-export default function BlogCard({ post }: BlogCardProps) {
+export default function BlogCard({ post, locale }: BlogCardProps) {
+  const t = getTranslations(locale, "blog");
+
   // Check if slug exists
   if (!post.slug?.current) {
     return null; // Don't render if no slug
@@ -32,17 +38,17 @@ export default function BlogCard({ post }: BlogCardProps) {
     : null;
 
   const publishedDate = post.publishedAt
-    ? new Date(post.publishedAt).toLocaleDateString("en-US", {
+    ? new Date(post.publishedAt).toLocaleDateString(dateLocales[locale], {
         month: "short",
         day: "numeric",
       })
     : "";
-  const visibleTitle = post.seoTitle?.trim() || post.title || "Untitled Post";
+  const visibleTitle = post.seoTitle?.trim() || post.title || t("untitled");
   const excerpt = post.excerpt?.trim();
 
   return (
     <Link
-      href={`/blog/${post.slug.current}`}
+      href={localizePath(locale, `/blog/${post.slug.current}`)}
       className="group flex h-full flex-col overflow-hidden rounded-[1.25rem] bg-white/[0.02] transition-colors duration-200 hover:bg-white/[0.03]"
     >
       <div className="relative h-40 w-full overflow-hidden bg-gradient-to-br from-rose-500/12 via-pink-500/8 to-fuchsia-500/10">
@@ -50,7 +56,7 @@ export default function BlogCard({ post }: BlogCardProps) {
           <>
             <Image
               src={imageUrl}
-              alt={post.title}
+              alt={post.mainImage?.alt?.trim() || post.title}
               fill
               className="object-cover"
             />
@@ -74,7 +80,7 @@ export default function BlogCard({ post }: BlogCardProps) {
                   />
                 </svg>
               </div>
-              <p className="text-xs font-medium text-white/36">No cover image</p>
+              <p className="text-xs font-medium text-white/36">{t("noCover")}</p>
             </div>
           </div>
         )}

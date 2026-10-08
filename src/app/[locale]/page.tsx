@@ -1,6 +1,7 @@
+import { notFound } from "next/navigation";
 import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
-import FeaturesSection from "@/components/landing/FeaturesSection";
+import FeaturesSection, { features } from "@/components/landing/FeaturesSection";
 import GamesSection from "@/components/landing/GamesSection";
 import PricingPreviewSection from "@/components/landing/PricingPreviewSection";
 import UseCasesSection from "@/components/landing/UseCasesSection";
@@ -14,18 +15,32 @@ import WebPageSchema from "@/components/SEO/WebPageSchema";
 import SoftwareApplicationSchema from "@/components/SEO/SoftwareApplicationSchema";
 import { homeFaqs } from "@/components/landing/faq-content";
 import { homePageKeywords } from "@/constants/seo-keywords";
-import { baseUrl, createPageMetadata } from "@/lib/metadata";
+import { createPageMetadata, pageUrl } from "@/lib/metadata";
+import { defaultLocale, isLocale } from "@/i18n/config";
 import { getTranslations, resolveLocale } from "@/i18n/server";
 
-export const metadata = createPageMetadata({
-  title: "Watch Party App with Online Games | Watch Together | Movmash",
-  description:
-    "Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions and screen sharing — plus online games to play with friends in the same room.",
-  keywords: homePageKeywords,
-});
+export function generateMetadata({ params }: { params: { locale: string } }) {
+  const locale = resolveLocale(params.locale);
+  const t = getTranslations(locale, "meta");
+
+  return createPageMetadata({
+    title: t("homeTitle"),
+    description: t("homeDescription"),
+    // The keyword list is English, so it only belongs on the English page.
+    keywords: locale === defaultLocale ? homePageKeywords : undefined,
+    locale,
+  });
+}
 
 export default function Home({ params }: { params: { locale: string } }) {
-  const locale = resolveLocale(params.locale);
+  // A lone segment with a file extension (/wp-login.php, /llms.txt) skips the middleware and
+  // arrives here as a "locale". It used to render the English home page with a 200.
+  if (!isLocale(params.locale)) notFound();
+
+  const locale = params.locale;
+  const url = pageUrl("/", locale);
+  const tMeta = getTranslations(locale, "meta");
+  const tFeatures = getTranslations(locale, "features");
   const tFaq = getTranslations(locale, "faqItems");
   const faqs = homeFaqs.map(({ key }) => ({
     question: tFaq(`${key}Q`),
@@ -40,23 +55,20 @@ export default function Home({ params }: { params: { locale: string } }) {
 
       {/* WebPage Schema for home page */}
       <WebPageSchema
-        title="Watch Party App with Online Games | Watch Together | Movmash"
-        description="Start a watch party in seconds. Watch together online with synced playback, private room links, live chat, reactions and screen sharing — plus online games to play with friends in the same room."
-        url={baseUrl}
+        title={tMeta("homeTitle")}
+        description={tMeta("homeDescription")}
+        url={url}
+        inLanguage={locale}
       />
 
+      {/* Lists the same feature copy the page shows, so the structured data always matches
+          what is on screen, in whichever language that is. */}
       <SoftwareApplicationSchema
-        url={baseUrl}
-        description="Watch party app for watching videos together in sync and playing online games with friends in the same room."
-        features={[
-          "Synced watch party rooms",
-          "Screen sharing and local file streaming",
-          "Live chat and animated reactions",
-          "Online games: Tic-Tac-Toe, Connect 4, Jigsaw",
-          "Private room links, no download required",
-        ]}
+        url={url}
+        description={tMeta("homeDescription")}
+        features={features.map(({ key }) => tFeatures(`${key}Copy`))}
       />
-      
+
       <div className="min-h-screen">
         <Navbar />
         <main>

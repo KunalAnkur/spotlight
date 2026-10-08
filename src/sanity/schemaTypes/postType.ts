@@ -1,5 +1,42 @@
 import {DocumentTextIcon} from '@sanity/icons'
-import {defineArrayMember, defineField, defineType} from 'sanity'
+import {
+  DEFAULT_STUDIO_CLIENT_OPTIONS,
+  defineArrayMember,
+  defineField,
+  defineType,
+  getPublishedId,
+  type SlugIsUniqueValidator,
+} from 'sanity'
+
+import {DEFAULT_LOCALE} from '../locales'
+
+/**
+ * A slug has to be unique among posts of one language, not across all of them: the Turkish
+ * version of a post lives at /tr/blog/… and may share a slug with its English original.
+ *
+ * This is Sanity's own uniqueness check with the language added. A post that has no language
+ * yet counts as English, which is how the site reads it.
+ */
+const isUniqueInLanguage: SlugIsUniqueValidator = (slug, {document, getClient}) => {
+  if (!document) return true
+
+  return getClient(DEFAULT_STUDIO_CLIENT_OPTIONS)
+    .withConfig({perspective: 'raw'})
+    .fetch(
+      `!defined(*[
+        _type == "post" &&
+        !sanity::versionOf($published) &&
+        slug.current == $slug &&
+        coalesce(language, $fallback) == $language
+      ][0]._id)`,
+      {
+        published: getPublishedId(document._id),
+        slug,
+        fallback: DEFAULT_LOCALE,
+        language: typeof document.language === 'string' ? document.language : DEFAULT_LOCALE,
+      },
+    )
+}
 
 export const postType = defineType({
   name: 'post',
@@ -7,6 +44,14 @@ export const postType = defineType({
   type: 'document',
   icon: DocumentTextIcon,
   fields: [
+    defineField({
+      // Written by the translations plugin and by the per-language "new post" templates.
+      // Hidden because changing it by hand would detach the post from its translations.
+      name: 'language',
+      type: 'string',
+      readOnly: true,
+      hidden: true,
+    }),
     defineField({
       name: 'title',
       type: 'string',
@@ -16,6 +61,7 @@ export const postType = defineType({
       type: 'slug',
       options: {
         source: 'title',
+        isUnique: isUniqueInLanguage,
       },
     }),
     defineField({

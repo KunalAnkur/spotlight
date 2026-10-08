@@ -8,7 +8,9 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import LanguageSwitcher from "@/components/i18n/LanguageSwitcher";
+import { localizePath, stripLocale } from "@/i18n/config";
 import { useLocale, useT } from "@/i18n/LocaleProvider";
+import type { LanguagePaths } from "@/lib/metadata";
 
 const navLinks = [
   { key: "features", href: "/#features", hash: "features" },
@@ -20,13 +22,18 @@ const navLinks = [
   { key: "blog", href: "/blog", hash: "" },
 ];
 
-const Navbar = () => {
+/**
+ * `languagePaths` is for a page whose address differs per language (a blog post): it tells the
+ * language menu where each language leads. Other pages keep the same path in every language.
+ */
+const Navbar = ({ languagePaths }: { languagePaths?: LanguagePaths }) => {
   const t = useT("nav");
   const locale = useLocale();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
-  const pathname = usePathname();
+  // The page without its language, so "/" means home in every language.
+  const path = stripLocale(usePathname());
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,15 +51,10 @@ const Navbar = () => {
     }
 
     e.preventDefault();
-    if (pathname !== "/") {
-      router.push("/");
-      // Wait for navigation, then scroll to section
-      setTimeout(() => {
-        const element = document.getElementById(hash);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 100);
+    if (path !== "/") {
+      // Next scrolls to the section itself once the home page has rendered. Scrolling from a
+      // 100ms timer used to fire before the page existed, leaving the visitor at the top.
+      router.push(localizePath(locale, `/#${hash}`));
     } else {
       // Already on home page, just scroll
       const element = document.getElementById(hash);
@@ -78,7 +80,7 @@ const Navbar = () => {
         <nav className="flex h-[60px] w-full items-center gap-[26px]">
           {/* Logo */}
           <Link
-            href="/"
+            href={localizePath(locale, "/")}
             className="me-auto flex items-center gap-2.5 font-parkinsans text-lg font-semibold tracking-[-0.02em] text-white/90 transition-opacity hover:opacity-80"
           >
             <Image
@@ -97,11 +99,11 @@ const Navbar = () => {
             {navLinks.map((link) => (
               <a
                 key={link.key}
-                href={link.href}
+                href={localizePath(locale, link.href)}
                 onClick={(e) => handleNavLinkClick(e, link.hash)}
                 className={cn(
                   "whitespace-nowrap transition-colors duration-200 hover:text-white",
-                  link.href === pathname && "text-white"
+                  link.href === path && "text-white"
                 )}
               >
                 {t(link.key)}
@@ -113,7 +115,7 @@ const Navbar = () => {
               block. Login lived here too, but it lands in the same place: app.movmash.com
               sends you to sign-in when you are not already in. */}
           <div className="hidden items-center gap-1 md:flex">
-            <LanguageSwitcher locale={locale} label={t("language")} />
+            <LanguageSwitcher locale={locale} label={t("language")} paths={languagePaths} />
             <Button
               variant="hero"
               asChild
@@ -155,7 +157,7 @@ const Navbar = () => {
               {navLinks.map((link) => (
                 <a
                   key={link.key}
-                  href={link.href}
+                  href={localizePath(locale, link.href)}
                   onClick={(e) => handleNavLinkClick(e, link.hash)}
                   className="rounded-[10px] px-3 py-3 font-parkinsans text-[15px] font-medium text-white/76 transition-colors duration-200 hover:bg-white/[0.04] hover:text-white"
                 >
@@ -163,7 +165,7 @@ const Navbar = () => {
                 </a>
               ))}
               <div className="landing-open-divider mt-3 flex items-center justify-between gap-2 pt-3.5">
-                <LanguageSwitcher locale={locale} label={t("language")} />
+                <LanguageSwitcher locale={locale} label={t("language")} paths={languagePaths} />
                 <Button variant="hero" size="sm" asChild className="flex-1 font-parkinsans">
                   <a href="https://app.movmash.com" rel="noopener noreferrer">
                     <Play className="fill-current" strokeWidth={0} />

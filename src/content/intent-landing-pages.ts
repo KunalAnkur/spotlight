@@ -15,6 +15,10 @@ import {
   Tv2,
   Users,
 } from "lucide-react";
+import { localizePath, type Locale } from "@/i18n/config";
+import * as ar from "@/content/landing-translations/ar";
+import * as es from "@/content/landing-translations/es";
+import * as tr from "@/content/landing-translations/tr";
 
 export interface IntentLandingPageBenefit {
   icon: LucideIcon;
@@ -82,11 +86,35 @@ export interface IntentLandingPageLink {
   href: string;
 }
 
+/** What the three pictures on the page show, and the line under the first one. */
+export interface IntentLandingPageMedia {
+  heroAlt: string;
+  heroCaption: string;
+  stepsAlt: string;
+  featureAlt: string;
+}
+
+/** The small fixed words both pages share: card captions, the FAQ heading, the breadcrumb root. */
+export interface IntentLandingPageLabels {
+  home: string;
+  bestFor: string;
+  youNeed: string;
+  worthKnowing: string;
+  readGuide: string;
+  faqEyebrow: string;
+  faqTitle: string;
+  openPage: string;
+}
+
 export interface IntentLandingPageData {
   slug: string;
   metadataTitle: string;
   metadataDescription: string;
-  metadataKeywords: string[];
+  /** The page's name in the breadcrumb search engines are given. */
+  breadcrumbName: string;
+  /** What the app does, as listed in the page's structured data. */
+  schemaFeatures: string[];
+  labels: IntentLandingPageLabels;
   kicker: string;
   title: string;
   titleAccent?: string;
@@ -96,10 +124,9 @@ export interface IntentLandingPageData {
   secondaryCtaLabel: string;
   secondaryCtaHref: string;
   heroSignals: string[];
-  mediaType: "video" | "image";
-  mediaSrc?: string;
-  mediaAlt: string;
-  mediaCaption: string;
+  media: IntentLandingPageMedia;
+  /** The note under the second picture. Only the date-night page carries one. */
+  insideRoom?: { eyebrow: string; title: string };
   overview?: IntentLandingPageOverview;
   modesEyebrow?: string;
   modesTitle?: string;
@@ -126,28 +153,53 @@ export interface IntentLandingPageData {
   guidesTitle?: string;
   guidesCopy?: string;
   guides?: IntentLandingPageGuide[];
-  exploreTitle: string;
   exploreLinks: IntentLandingPageLink[];
   finalTitle: string;
   finalCopy: string;
   finalSignals: string[];
 }
 
+/**
+ * What a translation supplies: every word a visitor reads, and nothing that is not a word.
+ * Icons, addresses and the slug stay with the English page, so a translation can differ from
+ * it in language only. Each list is matched to the English one item by item, in order.
+ */
+export type IntentLandingPageCopy = Omit<
+  IntentLandingPageData,
+  "slug" | "labels" | "ctaHref" | "secondaryCtaHref" | "modes" | "benefits" | "guides" | "exploreLinks"
+> & {
+  modes: Omit<IntentLandingPageMode, "icon">[];
+  benefits: Omit<IntentLandingPageBenefit, "icon">[];
+  guides: Omit<IntentLandingPageGuide, "href">[];
+  exploreLinks: Omit<IntentLandingPageLink, "href">[];
+};
+
+const labels: IntentLandingPageLabels = {
+  home: "Home",
+  bestFor: "Best for",
+  youNeed: "You need",
+  worthKnowing: "Worth knowing",
+  readGuide: "Read the guide",
+  faqEyebrow: "FAQ",
+  faqTitle: "Quick answers, kept simple.",
+  openPage: "Open page",
+};
+
 export const watchTogetherPageData: IntentLandingPageData = {
   slug: "watch-together",
   metadataTitle: "Watch Together Online — Free, No Download",
   metadataDescription:
     "Watch movies and shows together online, free in the browser. Open a private room, sync a video link, share your screen or play your own files. No download.",
-  metadataKeywords: [
-    "watch together",
-    "watch together online",
-    "watch movies together online",
-    "watch party online",
-    "watch together app",
-    "watch together website",
-    "watch together local files",
-    "watch together screen share",
+  breadcrumbName: "Watch Together",
+  schemaFeatures: [
+    "Synced playback across every viewer",
+    "Private room links, no guest account required",
+    "Live chat and reactions beside the video",
+    "Screen sharing for services that block embedding",
+    "Local file streaming from the host's computer",
+    "Runs in the browser on desktop and mobile",
   ],
+  labels,
   kicker: "Watch together",
   title: "Watch together online",
   titleAccent: "with anyone, from any browser.",
@@ -158,10 +210,12 @@ export const watchTogetherPageData: IntentLandingPageData = {
   secondaryCtaLabel: "See how it works",
   secondaryCtaHref: "/#how-it-works",
   heroSignals: ["Watch together online", "Private room links", "No app install"],
-  mediaType: "video",
-  mediaAlt: "Movmash demo video showing a synced watch room with chat and reactions",
-  mediaCaption:
-    "A Movmash room keeps the video clear, the join flow simple, and the conversation close to the moment on screen.",
+  media: {
+    heroAlt: "Friends getting ready for a watch party together online",
+    heroCaption: "A friend-first watch party feel that still leads people into a simple room setup.",
+    stepsAlt: "Friends joining a watch party together online",
+    featureAlt: "Friends together for an online watch party",
+  },
 
   overview: {
     eyebrow: "What it means",
@@ -399,7 +453,6 @@ export const watchTogetherPageData: IntentLandingPageData = {
       href: "/blog/watch-movies-together-online-free",
     },
   ],
-  exploreTitle: "Explore more",
   exploreLinks: [
     {
       title: "Long-distance date night",
@@ -432,16 +485,16 @@ export const longDistanceDateNightPageData: IntentLandingPageData = {
   metadataTitle: "Long Distance Date Night App | Watch Movies Together",
   metadataDescription:
     "A long-distance date night app for couples — watch movies together in a private room with synced playback, chat and reactions. Free for two, nothing to install.",
-  metadataKeywords: [
-    "long distance date night",
-    "ldr date night",
-    "watch movies together long distance",
-    "virtual movie date",
-    "watch together for couples",
-    "long distance relationship movie night",
-    "online movie date",
-    "couple movie watching website",
+  breadcrumbName: "Long Distance Date Night",
+  schemaFeatures: [
+    "Private rooms for two on the free plan",
+    "Synced playback held on one shared clock",
+    "Live chat and reactions beside the video",
+    "Browser join with no account for the guest",
+    "Screen sharing for Netflix, Disney+ and Prime Video",
+    "Local file streaming from the host's computer",
   ],
+  labels,
   kicker: "Long-distance date night",
   title: "Long-distance date night",
   titleAccent: "that actually feels like a date.",
@@ -452,11 +505,16 @@ export const longDistanceDateNightPageData: IntentLandingPageData = {
   secondaryCtaLabel: "See how it works",
   secondaryCtaHref: "/#how-it-works",
   heroSignals: ["Private room for two", "Free for two people", "Easy browser join"],
-  mediaType: "image",
-  mediaSrc: "/assets/app-showcase.png",
-  mediaAlt: "Movmash room layout for a private long-distance movie night",
-  mediaCaption:
-    "A private room layout that keeps the movie central and the conversation easy to follow while you spend time together.",
+  media: {
+    heroAlt: "Long-distance couple spending time together online",
+    heroCaption: "A softer room setup for nights that should feel calm before they feel technical.",
+    stepsAlt: "Long-distance couple visual for a movie date night",
+    featureAlt: "Couple visual for a cozy long-distance date night",
+  },
+  insideRoom: {
+    eyebrow: "Inside the room",
+    title: "Clear enough that people can focus on the night, not the layout.",
+  },
 
   overview: {
     eyebrow: "Why it is different",
@@ -568,7 +626,7 @@ export const longDistanceDateNightPageData: IntentLandingPageData = {
     },
     {
       title: "How to watch Netflix together long distance",
-      description: "Netflix removed watch party. Here is what still works in 2026, compared honestly.",
+      description: "Netflix has no watch party of its own. Here is what works in 2026, compared honestly.",
       href: "/blog/how-to-watch-netflix-together-long-distance",
     },
     {
@@ -634,7 +692,7 @@ export const longDistanceDateNightPageData: IntentLandingPageData = {
     {
       question: "Can we watch Netflix together long distance?",
       answer:
-        "Yes, through screen sharing. Netflix retired its own watch party feature and blocks embedded playback, so no tool can pull it in from a link — sharing your tab is how it is done. You will both still need your own Netflix accounts.",
+        "Yes, through screen sharing. Netflix has no watch party feature of its own and blocks embedded playback, so no tool can pull it in from a link — sharing your tab is how it is done. You will both still need your own Netflix accounts.",
     },
     {
       question: "What if we are in different time zones?",
@@ -673,7 +731,6 @@ export const longDistanceDateNightPageData: IntentLandingPageData = {
     },
   ],
 
-  exploreTitle: "Explore more",
   exploreLinks: [
     {
       title: "Watch together online",
@@ -696,3 +753,43 @@ export const longDistanceDateNightPageData: IntentLandingPageData = {
     "Movmash keeps the room simple, private, and warm enough that the date can feel like the main event.",
   finalSignals: ["Private room links", "Free for two people", "Easy browser join"],
 };
+
+const pages = {
+  "watch-together": watchTogetherPageData,
+  "long-distance-date-night": longDistanceDateNightPageData,
+};
+
+export type IntentLandingPageSlug = keyof typeof pages;
+
+const translations: Partial<
+  Record<Locale, { intentLabels: IntentLandingPageLabels; intentPages: Record<IntentLandingPageSlug, IntentLandingPageCopy> }>
+> = { tr, es, ar };
+
+/**
+ * A page in one language: the English page's structure with that language's words, and every
+ * link on it pointing at the same language. Guides keep the English address they are named
+ * by, since which of them exist in a language depends on what is published (see guidesIn).
+ */
+export function getIntentLandingPage(slug: IntentLandingPageSlug, locale: Locale): IntentLandingPageData {
+  const page = pages[slug];
+  const translation = translations[locale];
+  if (!translation) return page;
+
+  const { intentLabels, intentPages } = translation;
+  const copy = intentPages[slug];
+
+  return {
+    ...page,
+    ...copy,
+    labels: intentLabels,
+    secondaryCtaHref: localizePath(locale, page.secondaryCtaHref),
+    modes: page.modes?.map((mode, index) => ({ ...mode, ...copy.modes[index] })),
+    benefits: page.benefits.map((benefit, index) => ({ ...benefit, ...copy.benefits[index] })),
+    guides: page.guides?.map((guide, index) => ({ ...guide, ...copy.guides[index] })),
+    exploreLinks: page.exploreLinks.map((link, index) => ({
+      ...link,
+      ...copy.exploreLinks[index],
+      href: localizePath(locale, link.href),
+    })),
+  };
+}
