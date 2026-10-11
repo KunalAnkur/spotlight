@@ -65,7 +65,7 @@ const CTASection = ({ locale }: { locale: Locale }) => {
 
           <div className="flex flex-col items-center justify-center gap-3.5 sm:flex-row">
             <Button variant="hero" asChild className="font-parkinsans">
-              <a href="https://app.movmash.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://app.movmash.com" target="_blank" rel="noopener">
                 <Play className="fill-current" strokeWidth={0} />
                 {t("ctaPrimary")}
               </a>

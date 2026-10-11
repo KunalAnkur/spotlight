@@ -91,9 +91,12 @@ export const portableTextComponents: PortableTextComponents = {
   },
   marks: {
     link: ({ children, value }) => {
-      const rel = !value?.href?.startsWith("/")
-        ? "noreferrer noopener"
-        : undefined;
+      // Links into the app keep their referrer: it is how the app knows which article
+      // sent a visitor, and so which articles end in a paid plan. Everything else off-site
+      // stays stripped.
+      const href: string = value?.href || "";
+      const isAppLink = /^https:\/\/app\.movmash\.com(\/|$|\?|#)/.test(href);
+      const rel = href.startsWith("/") ? undefined : isAppLink ? "noopener" : "noreferrer noopener";
       return (
         <Link
           href={value?.href || "#"}

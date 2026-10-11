@@ -121,7 +121,7 @@ const Navbar = ({ languagePaths }: { languagePaths?: LanguagePaths }) => {
               asChild
               className="h-[34px] rounded-[10px] px-3.5 font-parkinsans text-[13px] [&_svg]:size-3.5"
             >
-              <a href="https://app.movmash.com" rel="noopener noreferrer">
+              <a href="https://app.movmash.com" rel="noopener">
                 <Play className="fill-current" strokeWidth={0} />
                 {t("startParty")}
               </a>
@@ -167,7 +167,7 @@ const Navbar = ({ languagePaths }: { languagePaths?: LanguagePaths }) => {
               <div className="landing-open-divider mt-3 flex items-center justify-between gap-2 pt-3.5">
                 <LanguageSwitcher locale={locale} label={t("language")} paths={languagePaths} />
                 <Button variant="hero" size="sm" asChild className="flex-1 font-parkinsans">
-                  <a href="https://app.movmash.com" rel="noopener noreferrer">
+                  <a href="https://app.movmash.com" rel="noopener">
                     <Play className="fill-current" strokeWidth={0} />
                     {t("startParty")}
                   </a>

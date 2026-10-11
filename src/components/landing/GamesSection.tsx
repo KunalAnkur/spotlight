@@ -86,7 +86,7 @@ const GamesSection = ({ locale }: { locale: Locale }) => {
         <div className="text-center">
           <a
             href={PLAY_URL}
-            rel="noopener noreferrer"
+            rel="noopener"
             className="group mt-6 inline-flex items-center gap-2 font-parkinsans text-sm font-medium text-white/68 transition-colors hover:text-white"
           >
             {t("more")}

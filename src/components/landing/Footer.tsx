@@ -130,7 +130,7 @@ const Footer = () => {
             />
 
             <Button variant="outline" size="sm" asChild className="font-parkinsans">
-              <a href={appPricingUrl} rel="noopener noreferrer">
+              <a href={appPricingUrl} rel="noopener">
                 {t("pricing")}
               </a>
             </Button>

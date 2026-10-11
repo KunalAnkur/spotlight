@@ -144,7 +144,7 @@ export default async function GamesPage({ params }: { params: { locale: string }
                   competing with it, and the navbar logo already goes home. */}
               <div className="mt-7 flex animate-slide-up items-center justify-center stagger-3">
                 <Button variant="hero" asChild className="font-parkinsans">
-                  <a href={PLAY_URL} rel="noopener noreferrer">
+                  <a href={PLAY_URL} rel="noopener">
                     <Play className="fill-current" strokeWidth={0} />
                     {copy.cta}
                   </a>
@@ -178,7 +178,7 @@ export default async function GamesPage({ params }: { params: { locale: string }
                   {copy.liveTitle}{" "}
                   <a
                     href={PLAY_URL}
-                    rel="noopener noreferrer"
+                    rel="noopener"
                     className="group inline-flex items-baseline gap-2 transition-opacity hover:opacity-80"
                   >
                     <span className="text-gradient underline-offset-[6px] group-hover:underline">
@@ -273,7 +273,7 @@ export default async function GamesPage({ params }: { params: { locale: string }
                     <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
                       <a
                         href={PLAY_URL}
-                        rel="noopener noreferrer"
+                        rel="noopener"
                         className="inline-flex items-center gap-2 text-sm text-white/74 transition-colors hover:text-white"
                       >
                         <Play className="h-3.5 w-3.5 fill-current" strokeWidth={0} />

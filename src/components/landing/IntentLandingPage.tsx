@@ -124,7 +124,7 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
 
             <div className="mt-7 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
               <Button variant="hero" size="lg" asChild className="font-parkinsans">
-                <a href={data.ctaHref} target="_blank" rel="noopener noreferrer">
+                <a href={data.ctaHref} target="_blank" rel="noopener">
                   <Play className="h-5 w-5" />
                   {data.ctaLabel}
                 </a>
@@ -523,7 +523,7 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button variant="hero" size="lg" asChild className="font-parkinsans">
-              <a href={data.ctaHref} target="_blank" rel="noopener noreferrer">
+              <a href={data.ctaHref} target="_blank" rel="noopener">
                 <Play className="h-5 w-5" />
                 {data.ctaLabel}
               </a>

@@ -179,7 +179,7 @@ export default function PricingPlansGridClient({
                   size="lg"
                   className={cn("w-full", pricingCtaClassName)}
                 >
-                  <a href={plan.ctaHref} rel="noopener noreferrer">
+                  <a href={plan.ctaHref} rel="noopener">
                     {plan.ctaLabel}
                   </a>
                 </Button>

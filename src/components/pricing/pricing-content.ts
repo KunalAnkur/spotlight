@@ -129,6 +129,10 @@ export function buildDisplayPlan(
     eyebrow: t(`${display.copyKey}Eyebrow`),
     description: t(`${display.copyKey}Description`),
     ctaLabel: t(`${display.copyKey}Cta`),
+    // A paid card names the exact plan it is showing — tier and billing cycle — so the app
+    // can carry on from this click instead of presenting the same three cards again and
+    // asking for the choice a second time.
+    ctaHref: isFree ? display.ctaHref : `${display.ctaHref}?plan=${encodeURIComponent(plan.slug)}`,
     // Paid plans always show a per-month figure so tiers compare like for like; the yearly
     // one strikes through the monthly rate it undercuts. Every value comes from guardian.
     value: formatPlanPrice(

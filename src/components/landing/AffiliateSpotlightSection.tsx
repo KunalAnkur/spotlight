@@ -32,7 +32,7 @@ export default function AffiliateSpotlightSection() {
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild className="font-parkinsans">
-                <a href="https://app.movmash.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://app.movmash.com" target="_blank" rel="noopener">
                   Start a room
                 </a>
               </Button>

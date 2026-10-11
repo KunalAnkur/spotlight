@@ -20,7 +20,7 @@ interface GameCardProps {
 const GameCard = ({ game, blurb, name, players, mode, freeLabel, imageAlt, label }: GameCardProps) => (
   <a
     href={PLAY_URL}
-    rel="noopener noreferrer"
+    rel="noopener"
     className="game-card"
     aria-label={label}
     style={{ ["--acc" as string]: game.accent }}
