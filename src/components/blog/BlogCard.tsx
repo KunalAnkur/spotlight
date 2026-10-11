@@ -58,6 +58,8 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
               src={imageUrl}
               alt={post.mainImage?.alt?.trim() || post.title}
               fill
+              // Four across on desktop, two on tablet, one on a phone (secondary-blog-grid).
+              sizes="(min-width: 1024px) 288px, (min-width: 768px) 50vw, calc(100vw - 32px)"
               className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#09090c]/72 via-[#09090c]/18 to-transparent" />
@@ -122,6 +124,7 @@ export default function BlogCard({ post, locale }: BlogCardProps) {
                   src={urlFor(post.author.image).width(20).height(20).url()}
                   alt={post.author.name}
                   fill
+                  sizes="20px"
                   className="object-cover"
                 />
               </div>

@@ -114,6 +114,7 @@ export default function AboutPage() {
                 width={1280}
                 height={720}
                 className="relative z-10 h-auto w-full"
+                sizes="(min-width: 1088px) 1024px, calc(100vw - 32px)"
                 priority
               />
             </div>
@@ -143,6 +144,7 @@ export default function AboutPage() {
               width={1000}
               height={562}
               className="h-auto w-full rounded-[1.35rem] object-cover"
+              sizes="(min-width: 640px) 528px, calc(100vw - 72px)"
             />
           </div>
         </section>

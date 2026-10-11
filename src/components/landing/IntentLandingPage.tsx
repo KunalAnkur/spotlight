@@ -163,6 +163,10 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
                 width={1400}
                 height={860}
                 className={`h-auto w-full ${pageMedia.heroAspect} ${pageMedia.heroObject}`}
+                // Without `sizes` next/image only offers 1x and 2x of the 1400px width, so a
+                // phone was sent the 3840px file for a slot about 380px wide. This is the
+                // page's LCP element, which is what that cost.
+                sizes="(min-width: 1024px) 700px, calc(100vw - 32px)"
                 priority
               />
             </div>
@@ -244,6 +248,7 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
                 width={1400}
                 height={860}
                 className={`h-full w-full ${pageMedia.stepsAspect} ${pageMedia.stepsObject}`}
+                sizes="(min-width: 1024px) 680px, calc(100vw - 32px)"
               />
             </div>
 
@@ -321,6 +326,7 @@ export default function IntentLandingPage({ data }: IntentLandingPageProps) {
               width={1400}
               height={860}
               className={`h-full w-full ${pageMedia.featureAspect} ${pageMedia.featureObject}`}
+              sizes="(min-width: 1024px) 620px, calc(100vw - 32px)"
             />
           </div>
 

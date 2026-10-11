@@ -26,6 +26,7 @@ export const portableTextComponents: PortableTextComponents = {
                 alt={value.alt || "Blog post image"}
                 width={dimensions?.width || 1600}
                 height={dimensions?.height || 900}
+                sizes="(min-width: 1088px) 1008px, calc(100vw - 48px)"
                 className={
                   isPortrait
                     ? "h-auto max-h-[76vh] w-auto max-w-full object-contain"

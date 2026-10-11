@@ -11,6 +11,7 @@ import { baseUrl, createPageMetadata, robotsFor } from "@/lib/metadata";
 import { defaultLocale, dirFor, locales, type Locale } from "@/i18n/config";
 import { getMessages, resolveLocale } from "@/i18n/server";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
+import { jakarta, PARKINSANS_STYLESHEET } from "../fonts";
 import "../globals.css";
 
 const rootMetadata = createPageMetadata({
@@ -77,7 +78,32 @@ export default function RootLayout({
   const locale: Locale = resolveLocale(params.locale);
 
   return (
-    <html lang={locale} dir={dirFor(locale)}>
+    <html lang={locale} dir={dirFor(locale)} className={jakarta.variable}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* The heading font, loaded without holding up the first paint: the stylesheet is
+            requested as `print`, which the browser fetches but does not wait for, and is
+            switched on once it has arrived. Headings show in the fallback face until then,
+            exactly as `display=swap` already had them do. */}
+        <link rel="preload" as="style" href={PARKINSANS_STYLESHEET} />
+        <link
+          id="parkinsans-stylesheet"
+          rel="stylesheet"
+          href={PARKINSANS_STYLESHEET}
+          media="print"
+          suppressHydrationWarning
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){var l=document.getElementById('parkinsans-stylesheet');if(!l)return;var on=function(){l.media='all'};if(l.sheet){on()}else{l.addEventListener('load',on)}})()",
+          }}
+        />
+        <noscript>
+          <link rel="stylesheet" href={PARKINSANS_STYLESHEET} />
+        </noscript>
+      </head>
       <body>
         <div className="relative min-h-screen text-white">
           <MovmashBackdrop />

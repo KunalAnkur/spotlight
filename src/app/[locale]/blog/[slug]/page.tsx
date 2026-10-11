@@ -430,6 +430,7 @@ export default async function BlogPostPage({
                           src={urlFor(post.author.image).width(56).height(56).url()}
                           alt={post.author.name}
                           fill
+                          sizes="56px"
                           className="object-cover"
                         />
                       </div>

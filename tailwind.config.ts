@@ -81,7 +81,7 @@ export default {
         Array.from({ length: 101 }, (_, value) => [value, `${value / 100}`]),
       ),
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'sans-serif'],
+        sans: ['var(--font-jakarta)', 'Plus Jakarta Sans', 'sans-serif'],
         display: ['Space Grotesk', 'sans-serif'],
         parkinsans: ["var(--parkinsans)", "sans-serif"],
       },
