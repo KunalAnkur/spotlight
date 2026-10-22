@@ -1,7 +1,19 @@
 import { defaultLocale, isLocale, localizePath, type Locale } from "@/i18n/config";
 import type { LanguagePaths } from "@/lib/metadata";
+import retiredPosts from "@/content/retired-posts.json";
 import { client } from "@/sanity/lib/client";
 import { blogLanguagesQuery, guideVersionsQuery } from "@/sanity/lib/queries";
+
+const retiredSlugs = new Set(retiredPosts.map(({ from }) => from.replace("/blog/", "")));
+
+/**
+ * A retired post is still a document in Sanity, but its URL 308s to the article that replaced
+ * it (next.config.mjs). Anything that lists posts — the sitemap, the blog index, related
+ * posts — has to leave it out, or it advertises a redirect. The list holds English paths.
+ */
+export function isRetiredPost(slug: string | null | undefined, language: string): boolean {
+  return Boolean(slug) && language === defaultLocale && retiredSlugs.has(slug as string);
+}
 
 /** One language version of a post, as postVersions in the queries returns it. */
 export interface PostVersion {

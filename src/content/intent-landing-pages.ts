@@ -424,12 +424,12 @@ export const watchTogetherPageData: IntentLandingPageData = {
   guides: [
     {
       title: "How to watch movies together online",
-      description: "Six ways compared honestly: watch party rooms, sync extensions, screen sharing and more.",
-      href: "/blog/how-to-watch-movies-together-online",
+      description: "Six ways compared honestly, and exactly what the free plan covers.",
+      href: "/blog/watch-movies-together-online-free",
     },
     {
-      title: "Best watch party sites, compared",
-      description: "What each type is, what it demands of everyone watching, and what replaced Rabb.it.",
+      title: "Best free sites to watch movies together",
+      description: "Teleparty, Watch2Gether, Kosmi, Hyperbeam and more: what each needs, and what free leaves out.",
       href: "/blog/best-watch-party-sites",
     },
     {
@@ -448,9 +448,9 @@ export const watchTogetherPageData: IntentLandingPageData = {
       href: "/blog/how-to-use-movmash",
     },
     {
-      title: "Watch movies together online free",
-      description: "What the free plan actually covers, and where screen sharing takes over.",
-      href: "/blog/watch-movies-together-online-free",
+      title: "Teleparty alternatives",
+      description: "What to use when not everyone has the extension or the subscription.",
+      href: "/blog/teleparty-alternative",
     },
   ],
   exploreLinks: [

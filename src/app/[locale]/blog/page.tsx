@@ -8,7 +8,7 @@ import SecondaryPageLayout from "@/components/layout/SecondaryPageLayout";
 import { blogKeywords } from "@/constants/seo-keywords";
 import { defaultLocale, type Locale } from "@/i18n/config";
 import { getTranslations, resolveLocale } from "@/i18n/server";
-import { blogLanguagePaths } from "@/lib/blog";
+import { blogLanguagePaths, isRetiredPost } from "@/lib/blog";
 import { createPageMetadata, pageUrl } from "@/lib/metadata";
 import { client } from "@/sanity/lib/client";
 import { postsQuery } from "@/sanity/lib/queries";
@@ -37,7 +37,7 @@ export const revalidate = 60;
 async function getPosts(locale: Locale) {
   try {
     const posts = await client.fetch(postsQuery, { language: locale }, { next: { revalidate: 60 } });
-    return posts || [];
+    return (posts || []).filter((post: any) => !isRetiredPost(post.slug?.current, locale));
   } catch (error) {
     console.error("Error fetching posts:", error);
     return [];

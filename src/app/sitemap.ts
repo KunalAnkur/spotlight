@@ -1,9 +1,8 @@
 import { MetadataRoute } from 'next'
 import { client } from '@/sanity/lib/client'
 import { postSlugsQuery } from '@/sanity/lib/queries'
-import retiredPosts from '@/content/retired-posts.json'
 import { defaultLocale, isLocale, locales, type Locale } from '@/i18n/config'
-import { postLanguagePaths, type PostVersion } from '@/lib/blog'
+import { isRetiredPost, postLanguagePaths, type PostVersion } from '@/lib/blog'
 import { languageAlternates, pageUrl, staticLanguagePaths, type LanguagePaths } from '@/lib/metadata'
 
 // Without this the sitemap is generated once at build time and then served unchanged until
@@ -11,10 +10,6 @@ import { languageAlternates, pageUrl, staticLanguagePaths, type LanguagePaths } 
 // place Google is told the post exists. The blog pages already revalidate; the index of them
 // has to as well.
 export const revalidate = 3600
-
-// Retired posts are still documents in Sanity, but their URLs 308 to the article that
-// replaced them. A sitemap should list destinations, never redirects.
-const retiredSlugs = new Set(retiredPosts.map(({ from }) => from.replace('/blog/', '')))
 
 /**
  * When each static page's content last actually changed.
@@ -90,7 +85,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Continue without blog posts if there's an error
   }
   posts = posts.filter(
-    (post) => post.slug && isLocale(post.language) && !(post.language === defaultLocale && retiredSlugs.has(post.slug)),
+    (post) => post.slug && isLocale(post.language) && !isRetiredPost(post.slug, post.language),
   )
 
   // The blog index is a page in every language that has a post, and in English always.

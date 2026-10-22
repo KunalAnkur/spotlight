@@ -45,9 +45,9 @@ const footerLinks = {
   // translated: add `translations: { tr: "/blog/<the Turkish slug>" }` when that post is
   // published, and the label already translated in the message files starts to show.
   guides: [
-    { key: "guideWatchMovies", href: "/blog/how-to-watch-movies-together-online" },
+    { key: "guideWatchMovies", href: "/blog/watch-movies-together-online-free" },
     { key: "guideWatchPartySites", href: "/blog/best-watch-party-sites" },
-    { key: "guideWatchFree", href: "/blog/watch-movies-together-online-free" },
+    { key: "guideTeleparty", href: "/blog/teleparty-alternative" },
     { key: "guideLocalFiles", href: "/blog/watch-local-files-together-online" },
     { key: "guideNetflix", href: "/blog/how-to-watch-netflix-together-long-distance" },
     { key: "guideLdrApps", href: "/blog/best-apps-for-ldr-couples" },

@@ -15,17 +15,12 @@ import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { postQuery, postSlugsQuery, relatedPostsQuery } from "@/sanity/lib/queries";
 import { blogPostKeywords } from "@/constants/seo-keywords";
-import retiredPosts from "@/content/retired-posts.json";
 import { dateLocales, defaultLocale, locales, localizePath, type Locale } from "@/i18n/config";
 import { getTranslations, resolveLocale, type Translator } from "@/i18n/server";
-import { postLanguagePaths } from "@/lib/blog";
+import { isRetiredPost, postLanguagePaths } from "@/lib/blog";
 import { createPageMetadata, createSocialImage, pageUrl } from "@/lib/metadata";
 
 export const revalidate = 60;
-
-// These slugs are served by a permanent redirect in next.config.mjs, so prerendering them
-// only produces pages nothing can ever reach. The redirects are English addresses.
-const retiredSlugs = new Set(retiredPosts.map(({ from }) => from.replace("/blog/", "")));
 
 /**
  * Authors habitually type the brand into Sanity's SEO Title ("... | Movmash"), and the root
@@ -177,7 +172,9 @@ export async function generateStaticParams({ params }: { params: { locale: strin
     const posts = await client.fetch<{ slug: string; language: string }[]>(postSlugsQuery);
     return posts
       .filter((post) => post.language === params.locale)
-      .filter((post) => !(post.language === defaultLocale && retiredSlugs.has(post.slug)))
+      // Retired slugs are served by a permanent redirect in next.config.mjs, so prerendering
+      // them only produces pages nothing can ever reach.
+      .filter((post) => !isRetiredPost(post.slug, post.language))
       .map((post) => ({
         slug: post.slug,
       }));
@@ -195,7 +192,7 @@ async function getRelatedPosts(currentPostId: string, categoryRefs: string[], lo
       categoryRefs,
       language: locale,
     });
-    return posts || [];
+    return (posts || []).filter((post: any) => !isRetiredPost(post.slug?.current, locale));
   } catch (error) {
     console.error("Error fetching related posts:", error);
     return [];
