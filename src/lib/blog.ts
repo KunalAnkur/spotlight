@@ -33,7 +33,9 @@ export function postLanguagePaths(post: {
   const paths: LanguagePaths = {};
 
   for (const version of [...(post.versions ?? []), post]) {
-    if (version?.slug && isLocale(version.language)) {
+    // A translation can still be linked to an English post that has since been retired;
+    // its address only redirects now, so it is no longer that translation's English version.
+    if (version?.slug && isLocale(version.language) && !isRetiredPost(version.slug, version.language)) {
       paths[version.language] = `/blog/${version.slug}`;
     }
   }
