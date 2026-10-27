@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Check } from "lucide-react";
+import { Check, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { buildDisplayPlan } from "@/components/pricing/pricing-content";
@@ -34,7 +34,13 @@ const pricingValueClassName =
 const pricingValueMetaClassName = "pb-[3px] text-[12.5px] text-white/42";
 const pricingCompareAtClassName =
   "pb-[3px] font-parkinsans text-[22px] font-semibold leading-none tracking-[-0.04em] text-white/28 line-through";
-const pricingBilledNoteClassName = "mt-1.5 text-[12px] leading-tight text-white/38";
+const pricingBilledRowClassName = "mt-1.5 flex flex-wrap items-center gap-2";
+const pricingBilledNoteClassName = "text-[12px] leading-tight text-white/38";
+const pricingSavingsBadgeClassName =
+  "inline-flex items-center rounded-full bg-emerald-400/15 px-2 py-0.5 text-[11px] font-semibold leading-4 text-emerald-300";
+// On the active (pink) toggle button green clashes; white reads cleanly.
+const pricingSavingsOnActiveToggleClassName =
+  "inline-flex items-center rounded-full bg-white/20 px-2 py-0.5 text-[11px] font-semibold leading-4 text-white";
 const pricingPopularBadgeClassName =
   "inline-flex items-center rounded-full bg-gradient-to-r from-rose-500/20 via-pink-500/20 to-fuchsia-500/20 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-pink-200 ring-1 ring-pink-400/25";
 const pricingDescriptionClassName =
@@ -42,8 +48,11 @@ const pricingDescriptionClassName =
 const pricingFeaturesClassName = "mt-5 space-y-2.5";
 const pricingFeatureItemClassName =
   "flex items-start gap-[11px] text-[13px] leading-[1.5] text-white/72";
+const pricingFeatureHighlightClassName = "font-semibold text-white";
 const pricingFeatureIconClassName =
   "mt-px flex h-[17px] w-[17px] flex-shrink-0 items-center justify-center rounded-full bg-white/[0.05] text-white/78";
+const pricingFeatureHighlightIconClassName =
+  "mt-px flex h-[17px] w-[17px] flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rose-500 to-fuchsia-500 text-white";
 const pricingCtaClassName = "h-[38px] px-[18px] text-sm font-parkinsans";
 
 const billingToggleShellClassName =
@@ -62,6 +71,17 @@ export default function PricingPlansGridClient({
   // people land on rather than one they have to discover.
   const [billingCycle, setBillingCycle] = useState<BillingCycle>("yearly");
   const t = useT("pricing");
+
+  // The biggest yearly saving, for the toggle — it is what makes switching worth a click.
+  const maxYearlySavings = useMemo(() => {
+    const best = Math.max(
+      0,
+      ...catalogPlans
+        .filter((p) => p.billing_cycle === "yearly" && p.tier !== "free")
+        .map((p) => p.savings_percent ?? 0),
+    );
+    return best > 0 ? best : null;
+  }, [catalogPlans]);
 
   const plans = useMemo(() => {
     const freePlan = getPlanForTier(catalogPlans, "free");
@@ -93,7 +113,20 @@ export default function PricingPlansGridClient({
                 : billingToggleInactiveClassName,
             )}
           >
-            {t("yearly")}
+            <span className="inline-flex items-center gap-2">
+              {t("yearly")}
+              {maxYearlySavings && (
+                <span
+                  className={
+                    billingCycle === "yearly"
+                      ? pricingSavingsOnActiveToggleClassName
+                      : pricingSavingsBadgeClassName
+                  }
+                >
+                  {t("saveUpTo", { percent: maxYearlySavings })}
+                </span>
+              )}
+            </span>
           </button>
           <button
             type="button"
@@ -155,18 +188,37 @@ export default function PricingPlansGridClient({
                 </span>
               </div>
               {plan.billedNote && (
-                <p className={pricingBilledNoteClassName}>{plan.billedNote}</p>
+                <div className={pricingBilledRowClassName}>
+                  <p className={pricingBilledNoteClassName}>{plan.billedNote}</p>
+                  {plan.savingsPercent ? (
+                    <span className={pricingSavingsBadgeClassName}>
+                      {t("savePercent", { percent: plan.savingsPercent })}
+                    </span>
+                  ) : null}
+                </div>
               )}
 
               <p className={pricingDescriptionClassName}>{plan.description}</p>
 
               <ul className={pricingFeaturesClassName}>
                 {plan.features.map((feature) => (
-                  <li key={feature} className={pricingFeatureItemClassName}>
-                    <span className={pricingFeatureIconClassName}>
+                  <li
+                    key={feature.text}
+                    className={cn(
+                      pricingFeatureItemClassName,
+                      feature.highlight && pricingFeatureHighlightClassName,
+                    )}
+                  >
+                    <span
+                      className={
+                        feature.highlight
+                          ? pricingFeatureHighlightIconClassName
+                          : pricingFeatureIconClassName
+                      }
+                    >
                       <Check className="h-2.5 w-2.5" strokeWidth={3} />
                     </span>
-                    <span>{feature}</span>
+                    <span>{feature.text}</span>
                   </li>
                 ))}
               </ul>
@@ -188,6 +240,12 @@ export default function PricingPlansGridClient({
           );
         })}
       </div>
+
+      <p className="mt-6 text-center text-[12px] leading-5 text-white/45">
+        {/* Inline, so it stays with the first word when the line wraps on a phone. */}
+        <ShieldCheck className="me-1.5 inline h-3.5 w-3.5 align-[-3px] text-emerald-300/80" />
+        {t("reassurance")}
+      </p>
     </div>
   );
 }

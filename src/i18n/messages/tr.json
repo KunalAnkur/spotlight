@@ -174,7 +174,7 @@
     "subtitle": "Hızlı bir izleme için ücretsiz başlayın veya sınırsız süre, görüntülü arama ve daha iyi kalite için Couple ya da Crowd’a geçin. Oyunlar her planda var.",
     "yearly": "Yıllık",
     "monthly": "Aylık",
-    "popular": "Popüler",
+    "popular": "En popüler",
     "freeName": "Ücretsiz",
     "freeEyebrow": "Hızlı bir izleme için",
     "freeDescription": "Hızlı bir izleme partisi veya Movmash’i denemek için ideal.",
@@ -193,10 +193,13 @@
     "participants": "Oda başına {count} kişi",
     "participantsUpTo": "Oda başına {count} kişiye kadar",
     "watchMinutes": "Günde {minutes} dakika izleme süresi",
-    "watchUnlimited": "Sınırsız izleme süresi",
     "screenSharing": "{quality} ekran paylaşımı",
     "everyGame": "Tüm oyunlar dahil",
-    "videoCall": "İzlerken görüntülü + sesli arama"
+    "videoCall": "İzlerken görüntülü + sesli arama",
+    "noDailyLimit": "Günlük limit yok — filmi sonuna kadar izle",
+    "saveUpTo": "En fazla %{percent} tasarruf",
+    "savePercent": "%{percent} tasarruf",
+    "reassurance": "İstediğin zaman iptal et · Güvenli ödeme · Vergiler ödeme sırasında hesaplanır"
   },
   "blog": {
     "metaTitle": "Blog — İzleme Partisi ve Uzak Mesafe Rehberleri",

@@ -23,6 +23,11 @@ const paidCardClassName =
 const paidIconClassName =
   "bg-gradient-to-br from-rose-500 via-pink-500 to-fuchsia-500 text-white shadow-[0_18px_36px_rgba(244,63,94,0.2)]";
 const paidBadgeClassName = "bg-rose-500/12 text-rose-100";
+// The recommended plan (`is_popular` from guardian): a stronger ring and a pink glow so it is
+// the obvious choice, lifted on desktop, and first on a phone where the cards stack and Free
+// would otherwise fill the whole first screen. Mirrors costume's pricingFeaturedCardSurfaceClass.
+const featuredCardClassName =
+  "bg-[linear-gradient(180deg,rgba(236,72,153,0.16)_0%,rgba(244,63,94,0.06)_32%,rgba(255,255,255,0.025)_100%)] ring-2 ring-pink-500/60 shadow-[0_30px_80px_rgba(236,72,153,0.22)] lg:-translate-y-2 order-first lg:order-none";
 
 export const PRICING_DISPLAY: Record<SubscriptionPlanTier, PricingDisplayMeta> = {
   free: {
@@ -51,7 +56,7 @@ export const PRICING_DISPLAY: Record<SubscriptionPlanTier, PricingDisplayMeta> =
     icon: Crown,
     iconClassName: paidIconClassName,
     badgeClassName: paidBadgeClassName,
-    cardClassName: `${paidCardClassName} ring-2`,
+    cardClassName: paidCardClassName,
     ctaHref: "https://app.movmash.com/pricing",
     ctaVariant: "hero",
     external: true,
@@ -77,39 +82,62 @@ export function formatPlanPrice(amount: number, currency?: string | null): strin
   }
 }
 
+export interface FeatureBullet {
+  text: string;
+  /** The reason to buy this plan: listed first, brighter and bolder. */
+  highlight?: boolean;
+}
+
 export function buildFeatureBullets(
   tier: SubscriptionPlanTier,
   features: SubscriptionPlanFeatures,
   t: Translator,
-): string[] {
+): FeatureBullet[] {
   const participants = t(
     tier === "crowd" ? "participantsUpTo" : "participants",
     { count: features.max_room_participants },
   );
 
+  // Static, not from the plan: games are on every tier. Free says so, and the paid cards say
+  // it too, so nobody reads games as something Free lacks or something you upgrade for.
+  const everyGame = { text: t("everyGame") };
+
   if (tier === "free") {
     return [
-      participants,
-      t("watchMinutes", { minutes: features.max_watch_minutes_per_day }),
-      t("screenSharing", { quality: features.screen_share_quality }),
-      // Static, not from the plan: games are on every tier, and saying so on Free is the
-      // point — the paid cards must not imply games are something you upgrade for.
-      t("everyGame"),
+      { text: participants },
+      { text: t("watchMinutes", { minutes: features.max_watch_minutes_per_day }) },
+      { text: t("screenSharing", { quality: features.screen_share_quality }) },
+      everyGame,
     ];
   }
 
+  // People pay at the moment the free daily limit stops their film, so a plan without one
+  // says that plainly rather than "unlimited watch time".
   const watchTime =
     features.max_watch_minutes_per_day === -1
-      ? t("watchUnlimited")
+      ? t("noDailyLimit")
       : t("watchMinutes", { minutes: features.max_watch_minutes_per_day });
+  const screenSharing = { text: t("screenSharing", { quality: features.screen_share_quality }) };
 
   // No "Ad-free" bullet: Movmash shows no ads on any plan, Free included, so listing it as a
   // paid perk would imply Free is ad-supported. The flag stays on the plan in case that changes.
+  if (tier === "crowd") {
+    // Room size is what Crowd adds over Couple, so it leads there.
+    return [
+      { text: participants, highlight: true },
+      { text: watchTime },
+      { text: t("videoCall") },
+      screenSharing,
+      everyGame,
+    ];
+  }
+
   return [
-    t("videoCall"),
-    participants,
-    watchTime,
-    t("screenSharing", { quality: features.screen_share_quality }),
+    { text: watchTime, highlight: true },
+    { text: t("videoCall") },
+    screenSharing,
+    { text: participants },
+    everyGame,
   ];
 }
 
@@ -121,9 +149,13 @@ export function buildDisplayPlan(
   const display = PRICING_DISPLAY[tier];
 
   const isFree = tier === "free";
+  const isPopular = !isFree && plan.is_popular === true;
 
   return {
     ...display,
+    // One loud button and one highlighted card on the page: the recommended plan's.
+    cardClassName: isPopular ? featuredCardClassName : display.cardClassName,
+    ctaVariant: isFree || isPopular ? display.ctaVariant : ("outline" as const),
     tier,
     name: t(`${display.copyKey}Name`),
     eyebrow: t(`${display.copyKey}Eyebrow`),
@@ -148,7 +180,9 @@ export function buildDisplayPlan(
       !isFree && plan.billing_cycle === "yearly"
         ? t("billedYearly", { amount: formatPlanPrice(plan.billed_amount ?? plan.price, plan.currency) })
         : null,
-    isPopular: !isFree && plan.is_popular === true,
+    isPopular,
+    savingsPercent:
+      !isFree && plan.billing_cycle === "yearly" ? plan.savings_percent ?? null : null,
     features: buildFeatureBullets(tier, plan.features, t),
   };
 }

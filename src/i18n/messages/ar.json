@@ -193,10 +193,13 @@
     "participants": "{count} أشخاص لكل غرفة",
     "participantsUpTo": "حتى {count} شخصًا لكل غرفة",
     "watchMinutes": "{minutes} دقيقة مشاهدة يوميًا",
-    "watchUnlimited": "وقت مشاهدة غير محدود",
     "screenSharing": "مشاركة الشاشة بجودة {quality}",
     "everyGame": "كل الألعاب مشمولة",
-    "videoCall": "مكالمة مرئية وصوتية أثناء المشاهدة"
+    "videoCall": "مكالمة مرئية وصوتية أثناء المشاهدة",
+    "noDailyLimit": "بلا حد يومي — أكمل الفيلم حتى النهاية",
+    "saveUpTo": "وفّر حتى {percent}%",
+    "savePercent": "وفّر {percent}%",
+    "reassurance": "ألغِ في أي وقت · دفع آمن · تُحسب الضرائب عند الدفع"
   },
   "blog": {
     "metaTitle": "المدونة — أدلة حفلات المشاهدة والعلاقات عن بُعد",

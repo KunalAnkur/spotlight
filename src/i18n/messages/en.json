@@ -174,7 +174,7 @@
     "subtitle": "Start free for a quick watch, or move to Couple or Crowd for unlimited time, video calls and better quality. Games are on every plan.",
     "yearly": "Yearly",
     "monthly": "Monthly",
-    "popular": "Popular",
+    "popular": "Most popular",
     "freeName": "Free",
     "freeEyebrow": "For a quick watch",
     "freeDescription": "Best for a quick watch party or trying Movmash out.",
@@ -193,10 +193,13 @@
     "participants": "{count} people per room",
     "participantsUpTo": "Up to {count} people per room",
     "watchMinutes": "{minutes} minutes of watch time per day",
-    "watchUnlimited": "Unlimited watch time",
     "screenSharing": "{quality} screen sharing",
     "everyGame": "Every game included",
-    "videoCall": "Video + voice call while you watch"
+    "videoCall": "Video + voice call while you watch",
+    "noDailyLimit": "No daily limit — finish the whole movie",
+    "saveUpTo": "Save up to {percent}%",
+    "savePercent": "Save {percent}%",
+    "reassurance": "Cancel anytime · Secure checkout · Taxes calculated at checkout"
   },
   "blog": {
     "metaTitle": "Blog — Watch Party & Long-Distance Guides",

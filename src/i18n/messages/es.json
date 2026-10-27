@@ -174,7 +174,7 @@
     "subtitle": "Empieza gratis para un visionado rápido, o pasa a Couple o Crowd para tiempo ilimitado, videollamadas y mejor calidad. Los juegos están en todos los planes.",
     "yearly": "Anual",
     "monthly": "Mensual",
-    "popular": "Popular",
+    "popular": "Más popular",
     "freeName": "Gratis",
     "freeEyebrow": "Para un visionado rápido",
     "freeDescription": "Ideal para una sesión rápida o para probar Movmash.",
@@ -193,10 +193,13 @@
     "participants": "{count} personas por sala",
     "participantsUpTo": "Hasta {count} personas por sala",
     "watchMinutes": "{minutes} minutos de visionado al día",
-    "watchUnlimited": "Tiempo de visionado ilimitado",
     "screenSharing": "Pantalla compartida en {quality}",
     "everyGame": "Todos los juegos incluidos",
-    "videoCall": "Videollamada y voz mientras ves"
+    "videoCall": "Videollamada y voz mientras ves",
+    "noDailyLimit": "Sin límite diario: termina la película entera",
+    "saveUpTo": "Ahorra hasta un {percent} %",
+    "savePercent": "Ahorra un {percent} %",
+    "reassurance": "Cancela cuando quieras · Pago seguro · Los impuestos se calculan al pagar"
   },
   "blog": {
     "metaTitle": "Blog — Guías de watch party y relaciones a distancia",
