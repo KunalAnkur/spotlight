@@ -118,11 +118,11 @@
     "contact": "Contacto",
     "blog": "Blog",
     "guides": "Guías",
-    "guideWatchMovies": "Cómo ver películas juntos",
-    "guideWatchPartySites": "Mejores sitios de watch party",
+    "guideWatchMovies": "Ver películas juntos gratis",
+    "guideWatchPartySites": "Páginas para ver películas con amigos",
     "guideTeleparty": "Alternativas a Teleparty",
-    "guideLocalFiles": "Ver archivos locales juntos",
-    "guideNetflix": "Ver Netflix a distancia",
+    "guideLocalFiles": "Ver una película descargada con amigos",
+    "guideNetflix": "Ver Netflix juntos a distancia",
     "guideLdrApps": "Apps para parejas a distancia",
     "privacyPolicy": "Política de privacidad",
     "termsOfService": "Términos del servicio",
@@ -235,5 +235,10 @@
     "aboutAuthor": "Quién escribe",
     "moreTitle": "Más de Movmash",
     "moreCopy": "Otras lecturas sobre salas, ver juntos y cómo organizar mejor una sesión."
+  },
+  "error": {
+    "title": "La página no se cargó bien.",
+    "body": "Algo falló al cargarla. Recargarla suele solucionarlo.",
+    "retry": "Recargar la página"
   }
 }

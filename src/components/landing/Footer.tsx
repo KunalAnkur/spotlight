@@ -41,16 +41,56 @@ const footerLinks = {
   // linked to none of them, so new posts sat in "Discovered – currently not indexed".
   //
   // `href` is the English post. A post lives only under its own language — there is no
-  // "/tr/blog/<an English slug>" — so another language is offered a guide once it has been
-  // translated: add `translations: { tr: "/blog/<the Turkish slug>" }` when that post is
-  // published, and the label already translated in the message files starts to show.
+  // "/tr/blog/<an English slug>" — so each guide names its translations' own addresses, and a
+  // language is offered a guide only once it has one. Kept by hand: seo-i18n.test.mjs compares
+  // this list with what is published, so a renamed or unpublished post fails there.
   guides: [
-    { key: "guideWatchMovies", href: "/blog/watch-movies-together-online-free" },
-    { key: "guideWatchPartySites", href: "/blog/best-watch-party-sites" },
+    {
+      key: "guideWatchMovies",
+      href: "/blog/watch-movies-together-online-free",
+      translations: {
+        tr: "/blog/ucretsiz-birlikte-film-izleme",
+        es: "/blog/ver-peliculas-juntos-gratis",
+        ar: "/blog/watch-movies-with-friends-free",
+      },
+    },
+    {
+      key: "guideWatchPartySites",
+      href: "/blog/best-watch-party-sites",
+      translations: {
+        tr: "/blog/birlikte-film-izleme-siteleri",
+        es: "/blog/paginas-para-ver-peliculas-con-amigos",
+        ar: "/blog/best-group-watch-sites",
+      },
+    },
     { key: "guideTeleparty", href: "/blog/teleparty-alternative" },
-    { key: "guideLocalFiles", href: "/blog/watch-local-files-together-online" },
-    { key: "guideNetflix", href: "/blog/how-to-watch-netflix-together-long-distance" },
-    { key: "guideLdrApps", href: "/blog/best-apps-for-ldr-couples" },
+    {
+      key: "guideLocalFiles",
+      href: "/blog/watch-local-files-together-online",
+      translations: {
+        tr: "/blog/bilgisayardaki-filmi-birlikte-izleme",
+        es: "/blog/ver-pelicula-descargada-con-amigos",
+        ar: "/blog/watch-downloaded-movies-with-friends",
+      },
+    },
+    {
+      key: "guideNetflix",
+      href: "/blog/how-to-watch-netflix-together-long-distance",
+      translations: {
+        tr: "/blog/netflix-uzaktan-birlikte-izleme",
+        es: "/blog/ver-netflix-juntos-a-distancia",
+        ar: "/blog/watch-netflix-with-friends-remotely",
+      },
+    },
+    {
+      key: "guideLdrApps",
+      href: "/blog/best-apps-for-ldr-couples",
+      translations: {
+        tr: "/blog/uzak-mesafe-iliskisi-uygulamalari",
+        es: "/blog/apps-para-parejas-a-distancia",
+        ar: "/blog/long-distance-relationship-apps",
+      },
+    },
   ] satisfies FooterGuideItem[] as FooterGuideItem[],
   company: [
     { key: "aboutUs", href: "/about" },

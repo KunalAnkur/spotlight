@@ -118,12 +118,12 @@
     "contact": "İletişim",
     "blog": "Blog",
     "guides": "Rehberler",
-    "guideWatchMovies": "Birlikte Film Nasıl İzlenir",
-    "guideWatchPartySites": "En İyi İzleme Partisi Siteleri",
+    "guideWatchMovies": "Ücretsiz Birlikte Film İzleme",
+    "guideWatchPartySites": "Birlikte Film İzleme Siteleri",
     "guideTeleparty": "Teleparty Alternatifleri",
-    "guideLocalFiles": "Yerel Dosyaları Birlikte İzleyin",
-    "guideNetflix": "Uzaktan Birlikte Netflix",
-    "guideLdrApps": "Uzak Mesafe Çiftleri İçin Uygulamalar",
+    "guideLocalFiles": "Bilgisayardaki Filmi Birlikte İzleme",
+    "guideNetflix": "Netflix'i Uzaktan Birlikte İzleme",
+    "guideLdrApps": "Uzak Mesafe İlişkisi Uygulamaları",
     "privacyPolicy": "Gizlilik Politikası",
     "termsOfService": "Kullanım Şartları",
     "cookiePolicy": "Çerez Politikası",
@@ -235,5 +235,10 @@
     "aboutAuthor": "Yazar hakkında",
     "moreTitle": "Movmash'ten daha fazlası",
     "moreCopy": "Odalar, birlikte izleme ve daha rahat ev sahipliği üzerine diğer yazılar."
+  },
+  "error": {
+    "title": "Sayfa düzgün yüklenemedi.",
+    "body": "Sayfa yüklenirken bir sorun oldu. Yenilemek genelde düzeltir.",
+    "retry": "Sayfayı yenile"
   }
 }

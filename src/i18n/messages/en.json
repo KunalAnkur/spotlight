@@ -235,5 +235,10 @@
     "aboutAuthor": "About the author",
     "moreTitle": "More from Movmash",
     "moreCopy": "Other reads on rooms, shared watching, and smoother hosting."
+  },
+  "error": {
+    "title": "This page didn't load properly.",
+    "body": "Something went wrong while loading it. Reloading usually fixes it.",
+    "retry": "Reload the page"
   }
 }

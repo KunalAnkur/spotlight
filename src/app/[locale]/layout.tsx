@@ -114,7 +114,11 @@ export default function RootLayout({
               <TooltipProvider>
                 <Toaster />
                 <Sonner />
-                {children}
+                {/* #page-root is what [locale]/error.tsx puts back if the page breaks in the
+                    browser; `contents` keeps it out of the layout. */}
+                <div id="page-root" className="contents">
+                  {children}
+                </div>
               </TooltipProvider>
             </LocaleProvider>
           </div>

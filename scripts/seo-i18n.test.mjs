@@ -392,7 +392,20 @@ async function sanity(query) {
   return (await res.json()).result;
 }
 
-const posts = await sanity(`*[_type == "post" && defined(slug.current)]{
+/**
+ * A retired post is still a document in Sanity, but its address redirects to the article that
+ * replaced it (src/content/retired-posts.json, read by src/lib/blog.ts): the site lists it
+ * nowhere and names it as no translation's English version. The list holds English addresses.
+ */
+const retiredSlugs = new Set(
+  JSON.parse(readFileSync(new URL("../src/content/retired-posts.json", import.meta.url), "utf8")).map(
+    ({ from }) => from.replace("/blog/", ""),
+  ),
+);
+const isRetired = (version) => version?.language === "en" && retiredSlugs.has(version.slug);
+
+const posts = (
+  await sanity(`*[_type == "post" && defined(slug.current)]{
   "slug": slug.current,
   "language": coalesce(language, "en"),
   "modified": coalesce(updatedAt, _updatedAt),
@@ -401,7 +414,10 @@ const posts = await sanity(`*[_type == "post" && defined(slug.current)]{
     "language": coalesce(language, "en"),
     "slug": slug.current
   }
-}`);
+}`)
+)
+  .filter((post) => !isRetired(post))
+  .map((post) => ({ ...post, versions: post.versions?.filter((version) => !isRetired(version)) }));
 
 /** "/blog", "/tr/blog", "/blog/a-slug", "/tr/blog/bir-adres". */
 const blogPath = (language, slug) =>
@@ -612,6 +628,25 @@ test("a landing page offers each guide in the reader's language, and only once i
         `the guides on /${language}${path}`,
       );
     }
+  }
+});
+
+test("the footer offers each of its guides in the reader's language, and only once it is published in it", async () => {
+  const footerGuides = (html) =>
+    siteLinks(html.match(/<footer[\s\S]*<\/footer>/)?.[0] ?? "").filter((href) => /\/blog\/./.test(href));
+
+  const englishGuides = footerGuides((await get("/")).html);
+  assert.ok(englishGuides.length > 0, "the English footer links to no guides");
+
+  for (const language of languages.filter((other) => other !== "en")) {
+    const expected = englishGuides.flatMap((href) => {
+      const post = posts.find((candidate) => blogPath(candidate.language, candidate.slug) === href);
+      assert.ok(post, `${href}, linked from the footer, is not a published post`);
+      return versionsOf(post)[language] ?? [];
+    });
+
+    // In the English order: the column is the same list in every language.
+    assert.deepEqual(footerGuides((await get(`/${language}`)).html), expected, `the guides in the ${language} footer`);
   }
 });
 
