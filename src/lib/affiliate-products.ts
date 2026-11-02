@@ -1,3 +1,5 @@
+import { BUILD_ONLY } from "@/lib/build-only";
+
 export interface AffiliateProduct {
   id: string;
   name: string;
@@ -163,7 +165,7 @@ export async function fetchAffiliateProducts(): Promise<AffiliateProduct[]> {
   try {
     const response = await fetch(`${apiBaseUrl.replace(/\/$/, "")}/api/v1/products`, {
       headers: { Accept: "application/json" },
-      next: { revalidate: 1800 },
+      ...BUILD_ONLY,
     });
 
     if (!response.ok) return [];

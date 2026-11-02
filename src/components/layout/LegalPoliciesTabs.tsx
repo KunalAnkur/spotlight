@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Suspense, startTransition, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   AlertCircle,
   CheckCircle2,
@@ -62,17 +62,10 @@ export default function LegalPoliciesTabs({
 }: LegalPoliciesTabsProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<LegalPolicyKey>(initialTab);
   const [activePanelHeight, setActivePanelHeight] = useState<number | null>(null);
   const panelRefs = useRef<Array<HTMLDivElement | null>>([]);
 
-  useEffect(() => {
-    const tab = searchParams.get("tab");
-    if (isLegalPolicyKey(tab) && tab !== activeTab) {
-      setActiveTab(tab);
-    }
-  }, [activeTab, searchParams]);
 
   const activeIndex = useMemo(
     () => Math.max(0, policies.findIndex((policy) => policy.key === activeTab)),
@@ -119,7 +112,7 @@ export default function LegalPoliciesTabs({
 
     setActiveTab(tab);
 
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(window.location.search);
     params.set("tab", tab);
 
     startTransition(() => {
@@ -129,6 +122,12 @@ export default function LegalPoliciesTabs({
 
   return (
     <section className="mx-auto w-full max-w-6xl space-y-6">
+      {/* useSearchParams on a static page makes Next client-render everything up to the
+          nearest Suspense boundary. Kept in its own empty boundary so only this null-rendering
+          reader bails out, and the policies themselves stay in the prerendered HTML. */}
+      <Suspense fallback={null}>
+        <TabFromUrl onTab={setActiveTab} />
+      </Suspense>
       <div
         className="flex w-full flex-wrap items-center justify-start gap-3"
         role="tablist"
@@ -252,4 +251,21 @@ export default function LegalPoliciesTabs({
       </div>
     </section>
   );
+}
+
+/**
+ * Follows ?tab= in the URL — on first load, and when a link (the footer's, say) changes it
+ * while the page is already open. The page itself is static, so the server can't read it.
+ */
+// Reacts to the URL only. Depending on the active tab too would snap a click back to the old
+// tab for the moment between setActiveTab and router.replace landing.
+function TabFromUrl({ onTab }: { onTab: (tab: LegalPolicyKey) => void }) {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (isLegalPolicyKey(tab)) onTab(tab);
+  }, [onTab, searchParams]);
+
+  return null;
 }

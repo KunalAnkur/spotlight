@@ -15,14 +15,10 @@ export const metadata = createPageMetadata({
   },
 });
 
-interface LegalPageProps {
-  searchParams?: {
-    tab?: string;
-  };
-}
-
-export default function LegalPage({ searchParams }: LegalPageProps) {
-  const initialTab = getLegalPolicy(searchParams?.tab).key as LegalPolicyKey;
+// No searchParams here: reading them made this page render on the server for every visit.
+// It is now static, and LegalPoliciesTabs picks up ?tab= in the browser.
+export default function LegalPage() {
+  const initialTab = getLegalPolicy().key as LegalPolicyKey;
 
   return (
     <SecondaryPageLayout>

@@ -1,3 +1,4 @@
+import { BUILD_ONLY } from "@/lib/build-only";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -20,7 +21,12 @@ import { getTranslations, resolveLocale, type Translator } from "@/i18n/server";
 import { isRetiredPost, postLanguagePaths } from "@/lib/blog";
 import { createPageMetadata, createSocialImage, pageUrl } from "@/lib/metadata";
 
-export const revalidate = 60;
+// Built once per deploy, never re-rendered on a timer: see BUILD_ONLY in src/lib/build-only.ts.
+export const revalidate = false;
+
+// Only the posts that existed at build time are pages. Anything else is a static 404 rather
+// than a server render, so a crawler guessing slugs costs nothing.
+export const dynamicParams = false;
 
 /**
  * Authors habitually type the brand into Sanity's SEO Title ("... | Movmash"), and the root
@@ -103,7 +109,7 @@ const relatedLandingPages: Record<string, string> = {
  */
 async function getPost(slug: string, locale: Locale) {
   try {
-    const post = await client.fetch(postQuery, { slug, language: locale });
+    const post = await client.fetch(postQuery, { slug, language: locale }, BUILD_ONLY);
     return post || null;
   } catch (error) {
     console.error("Error fetching post:", error);
@@ -169,7 +175,7 @@ export async function generateMetadata({
 /** Called once per language by Next, with that language in `params`: only its own posts. */
 export async function generateStaticParams({ params }: { params: { locale: string } }) {
   try {
-    const posts = await client.fetch<{ slug: string; language: string }[]>(postSlugsQuery);
+    const posts = await client.fetch<{ slug: string; language: string }[]>(postSlugsQuery, {}, BUILD_ONLY);
     return posts
       .filter((post) => post.language === params.locale)
       // Retired slugs are served by a permanent redirect in next.config.mjs, so prerendering
@@ -191,7 +197,7 @@ async function getRelatedPosts(currentPostId: string, categoryRefs: string[], lo
       currentPostId,
       categoryRefs,
       language: locale,
-    });
+    }, BUILD_ONLY);
     return (posts || []).filter((post: any) => !isRetiredPost(post.slug?.current, locale));
   } catch (error) {
     console.error("Error fetching related posts:", error);

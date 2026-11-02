@@ -1,3 +1,4 @@
+import { BUILD_ONLY } from '@/lib/build-only'
 import { MetadataRoute } from 'next'
 import { client } from '@/sanity/lib/client'
 import { postSlugsQuery } from '@/sanity/lib/queries'
@@ -5,11 +6,9 @@ import { defaultLocale, isLocale, locales, type Locale } from '@/i18n/config'
 import { isRetiredPost, postLanguagePaths, type PostVersion } from '@/lib/blog'
 import { languageAlternates, pageUrl, staticLanguagePaths, type LanguagePaths } from '@/lib/metadata'
 
-// Without this the sitemap is generated once at build time and then served unchanged until
-// the next deploy — a post published in Sanity stayed out of it for weeks, which is the one
-// place Google is told the post exists. The blog pages already revalidate; the index of them
-// has to as well.
-export const revalidate = 3600
+// Generated once per deploy, like every page: a post published in Sanity appears here (and on
+// the blog) when the site is next deployed. See BUILD_ONLY in src/lib/build-only.ts.
+export const revalidate = false
 
 /**
  * When each static page's content last actually changed.
@@ -79,7 +78,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch blog posts from Sanity
   let posts: SitemapPost[] = []
   try {
-    posts = await client.fetch<SitemapPost[]>(postSlugsQuery)
+    posts = await client.fetch<SitemapPost[]>(postSlugsQuery, {}, BUILD_ONLY)
   } catch (error) {
     console.error('Error fetching blog posts for sitemap:', error)
     // Continue without blog posts if there's an error

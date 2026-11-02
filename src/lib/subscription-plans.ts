@@ -1,3 +1,5 @@
+import { BUILD_ONLY } from "@/lib/build-only";
+
 export type SubscriptionPlanTier = "free" | "couple" | "crowd";
 
 export interface SubscriptionPlanFeatures {
@@ -31,7 +33,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
-// Fetched server-side (SSR/ISR, cached for an hour) so the pricing section always renders
+// Fetched server-side at build time (see BUILD_ONLY) so the pricing section always renders
 // real numbers from the database. No hardcoded plan data in the frontend: if the fetch
 // fails, this returns an empty list and the pricing section simply doesn't render.
 export async function getSubscriptionPlans(): Promise<SubscriptionPlanData[]> {
@@ -39,9 +41,7 @@ export async function getSubscriptionPlans(): Promise<SubscriptionPlanData[]> {
   if (!baseUrl) return [];
 
   try {
-    const res = await fetch(`${baseUrl}/api/v1/subscription-plans`, {
-      next: { revalidate: 3600 },
-    });
+    const res = await fetch(`${baseUrl}/api/v1/subscription-plans`, BUILD_ONLY);
     if (!res.ok) return [];
 
     const json: unknown = await res.json();

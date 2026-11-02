@@ -1,3 +1,4 @@
+import { BUILD_ONLY } from "@/lib/build-only";
 import Link from "next/link";
 import { ArrowRight, BookOpenText } from "lucide-react";
 import BlogCard from "@/components/blog/BlogCard";
@@ -32,11 +33,12 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   });
 }
 
-export const revalidate = 60;
+// Built once per deploy, never re-rendered on a timer: see BUILD_ONLY in src/lib/build-only.ts.
+export const revalidate = false;
 
 async function getPosts(locale: Locale) {
   try {
-    const posts = await client.fetch(postsQuery, { language: locale }, { next: { revalidate: 60 } });
+    const posts = await client.fetch(postsQuery, { language: locale }, BUILD_ONLY);
     return (posts || []).filter((post: any) => !isRetiredPost(post.slug?.current, locale));
   } catch (error) {
     console.error("Error fetching posts:", error);

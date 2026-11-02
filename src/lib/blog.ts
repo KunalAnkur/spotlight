@@ -1,3 +1,4 @@
+import { BUILD_ONLY } from "@/lib/build-only";
 import { defaultLocale, isLocale, localizePath, type Locale } from "@/i18n/config";
 import type { LanguagePaths } from "@/lib/metadata";
 import retiredPosts from "@/content/retired-posts.json";
@@ -51,7 +52,7 @@ export async function blogLanguagePaths(): Promise<LanguagePaths> {
   let languages: string[] = [];
 
   try {
-    languages = await client.fetch<string[]>(blogLanguagesQuery, {}, { next: { revalidate: 60 } });
+    languages = await client.fetch<string[]>(blogLanguagesQuery, {}, BUILD_ONLY);
   } catch (error) {
     console.error("Error fetching blog languages:", error);
   }
@@ -78,7 +79,7 @@ export async function guidesIn<Guide extends { href: string }>(locale: Locale, g
     posts = await client.fetch(
       guideVersionsQuery,
       { slugs: guides.map(({ href }) => href.replace("/blog/", "")) },
-      { next: { revalidate: 60 } },
+      BUILD_ONLY,
     );
   } catch (error) {
     console.error("Error fetching translated guides:", error);

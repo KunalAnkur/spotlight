@@ -19,9 +19,10 @@ export const metadata = createPageMetadata({
   keywords: watchPartyShopKeywords,
 });
 
-// The feed changes rarely and the page has to be crawlable, so it is rebuilt on a timer
-// rather than per request.
-export const revalidate = 1800;
+// The feed changes rarely and the page has to be crawlable, so the product grid is baked in at
+// build time. useAffiliateProducts still refreshes it in the browser after load.
+// Built once per deploy, never re-rendered on a timer: see BUILD_ONLY in src/lib/build-only.ts.
+export const revalidate = false;
 
 const buyingNotes = [
   {
