@@ -63,7 +63,6 @@ const footerLinks = {
         ar: "/blog/best-group-watch-sites",
       },
     },
-    { key: "guideTeleparty", href: "/blog/teleparty-alternative" },
     {
       key: "guideLocalFiles",
       href: "/blog/watch-local-files-together-online",
