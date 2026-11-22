@@ -33,17 +33,48 @@ const UNPREFIXED_PATH =
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  /**
+   * These run in `beforeFiles`, not the default `afterFiles`, and the distinction is the whole
+   * point: Next resolves a route's RSC payload (the `.rsc` file a <Link> prefetch asks for)
+   * during the filesystem step, which `afterFiles` is too late for.
+   *
+   * As an afterFiles rule, `/blog/some-post` rendered fine but its prefetch —
+   * `GET /blog/some-post?_rsc=...` with the RSC header — resolved to `/blog/some-post.rsc`,
+   * which no rule matched (the source below skips anything with a file extension) and which
+   * the router answered with /404. Every <Link> on a page fired one of those on view: the blog
+   * index alone sent 25 failed prefetches per visit, none cacheable by the browser, so they
+   * came back on the next visit and grew with every post added. They were a large and rising
+   * share of the CDN requests on Vercel's Hobby plan.
+   *
+   * Running before the filesystem, the locale prefix is applied first, so the prefetch resolves
+   * to `/en/blog/some-post.rsc`, which is prerendered.
+   */
   async rewrites() {
-    return [
-      { source: '/', destination: '/en' },
-      { source: UNPREFIXED_PATH, destination: '/en/:path' },
-    ]
+    return {
+      beforeFiles: [
+        { source: '/', destination: '/en' },
+        { source: UNPREFIXED_PATH, destination: '/en/:path' },
+      ],
+      afterFiles: [],
+      fallback: [],
+    }
   },
   output: 'standalone',
   experimental: {
     externalDir: true,
   },
   images: {
+    /**
+     * An optimized image is re-validated by the browser as often as its source tells it to,
+     * and Next's floor for that is 60 seconds. /public was answering `max-age=0`, so the
+     * optimizer passed that on and every <Image> on the page came back to the CDN on each
+     * page view — 368 requests in a 12h window against ~6,000 for the whole site.
+     *
+     * A week is safe for everything served here: the files under /public change only on a
+     * deploy, and a Sanity asset URL carries the asset's own hash, so new artwork is a new
+     * URL rather than a changed one.
+     */
+    minimumCacheTTL: 604800,
     remotePatterns: [
       {
         protocol: 'https',
@@ -55,6 +86,37 @@ const nextConfig = {
       },
     ],
   },
+  /**
+   * Anything served out of /public gets `Cache-Control: public, max-age=0, must-revalidate`
+   * from Next by default, so the browser re-asks for it on every page view. The icons are
+   * referenced from <head> and the manifest, which means every visit to every page spent a
+   * CDN request per icon re-confirming a file that had not changed — in one 12h window on
+   * Vercel, /android-chrome-512x512.png alone accounted for 338 requests and
+   * /manifest.webmanifest for 179, against ~6,000 for the whole site.
+   *
+   * A week of freshness with a month of stale-while-revalidate keeps them out of the request
+   * count without pinning a stale icon: a rebrand reaches everyone within a week, and sooner
+   * for anyone who has not visited in the meantime. /_next/static is left alone — Next already
+   * sends `immutable` there, because those filenames carry a content hash.
+   */
+  async headers() {
+    const cache = [
+      {
+        key: 'Cache-Control',
+        value: 'public, max-age=604800, stale-while-revalidate=2592000',
+      },
+    ]
+
+    return [
+      {
+        source:
+          '/:icon(favicon.ico|favicon-16x16.png|favicon-32x32.png|apple-touch-icon.png|android-chrome-192x192.png|android-chrome-512x512.png|manifest.webmanifest)',
+        headers: cache,
+      },
+      { source: '/assets/:path*', headers: cache },
+    ]
+  },
+
   async redirects() {
     return [
       // English has one address, the bare one (see UNPREFIXED_PATH above).

@@ -45,12 +45,22 @@ export function generateMetadata({ params }: { params: { locale: string } }): Me
   // then /tr/… is the English page with translated menus and must not compete with the page
   // it duplicates.
   robots: robotsFor(isDefault),
+  // public/manifest.webmanifest, not app/manifest.ts. Next serves a generated metadata route
+  // with `max-age=0, must-revalidate` and appends that to whatever next.config.mjs sets, so
+  // the file came back with two Cache-Control headers and browsers re-fetched it on every page
+  // view (179 requests in a 12h window, for 448 bytes that change on a rebrand). As a file in
+  // /public it takes the cache header cleanly; the URL and contents are unchanged.
+  manifest: '/manifest.webmanifest',
+  // No entry for android-chrome-512x512.png here. It is a 276 KB image and it was listed with
+  // no `sizes`, which makes it a candidate for the tab icon: browsers fetched it on page views
+  // to draw it at 16px. The two PNGs above and favicon.ico cover every size a tab needs, and
+  // the 512px file is still offered where it is actually used — app/manifest.ts, for the
+  // install prompt and the home-screen icon.
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/android-chrome-512x512.png', type: 'image/png' },
     ],
     shortcut: '/favicon.ico',
     apple: '/apple-touch-icon.png',
