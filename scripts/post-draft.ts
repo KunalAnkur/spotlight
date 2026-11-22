@@ -83,8 +83,12 @@ async function main() {
     console.log(`Uploaded ${basename(upload.path)} → ${asset._id}`)
   }
 
+  // Annotated, because object rest drops the index signature: `fields` spreads as `{}`, which
+  // leaves the literal below typed as `{_id: string}` and too narrow to cast to a Sanity
+  // document. The site's build type-checks this file, so that is a failed deploy, not a lint.
   const {_rev, _createdAt, _updatedAt, ...fields} = post
-  await client.create({...fields, _id: `drafts.${id}`} as Parameters<typeof client.create>[0])
+  const draftDoc: Doc = {...fields, _id: `drafts.${id}`}
+  await client.create(draftDoc as Parameters<typeof client.create>[0])
   console.log(`\nSaved drafts.${id}. It is a draft: the site shows it once it is published.`)
 }
 
@@ -95,7 +99,9 @@ async function publish(id: string | undefined) {
   if (!draft) throw new Error(`"${id}" has no draft to publish.`)
 
   const {_rev, _createdAt, _updatedAt, ...fields} = draft
-  const post = {...fields, _id: id, updatedAt: new Date().toISOString()}
+  // Same reason as the annotation in main(): without it `post.title` and `post.slug` below are
+  // errors, because the spread of `fields` contributes no properties to the inferred type.
+  const post: Doc = {...fields, _id: id, updatedAt: new Date().toISOString()}
   console.log(`Post          ${post.title}  (${id})`)
   console.log(`Address       ${pageUrl(`/blog/${post.slug.current}`, post.language ?? 'en')}`)
   console.log(`Updated at    ${draft.updatedAt ?? '—'} → ${post.updatedAt}`)
